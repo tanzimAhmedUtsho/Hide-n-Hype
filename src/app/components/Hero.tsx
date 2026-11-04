@@ -93,9 +93,9 @@ export function Hero() {
           className="absolute bottom-6 right-6 flex gap-5 sm:gap-8 md:bottom-8 md:right-16"
         >
           {[
-            { num: "30+", label: "STYLES" },
-            { num: "15K+", label: "DROPS SOLD" },
-            { num: "4.7★", label: "RATING" },
+            { num: "15+", label: "STYLES" },
+            { num: "00K", label: "DROPS SOLD" },
+            { num: "0.0★", label: "RATING" },
           ].map((stat) => (
             <div key={stat.label} className="text-right">
               <div
