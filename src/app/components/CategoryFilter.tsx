@@ -8,6 +8,7 @@ const categories = [
   { label: "Men", path: "/collection/men" },
   { label: "Women", path: "/collection/women" },
   { label: "Kids", path: "/collection/kids" },
+  { label: "Denim", path: "/collection/denim" },
   { label: "Accessories", path: "/collection/accessories" },
   { label: "Leather Items", path: "/collection/leather" },
 ];

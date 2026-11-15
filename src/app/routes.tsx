@@ -8,6 +8,7 @@ import { WomenPage } from "./pages/WomenPage";
 import { KidsPage } from "./pages/KidsPage";
 import { AccessoriesPage } from "./pages/AccessoriesPage";
 import { LeatherPage } from "./pages/LeatherPage";
+import { DenimPage } from "./pages/DenimPage";
 import { LookbookPage } from "./pages/LookbookPage";
 import { AboutPage } from "./pages/AboutPage";
 //import { SalePage } from "./pages/SalePage";
@@ -27,6 +28,7 @@ export const router = createBrowserRouter([
       { path: "collection/kids", Component: KidsPage },
       { path: "collection/accessories", Component: AccessoriesPage },
       { path: "collection/leather", Component: LeatherPage },
+      { path: "collection/denim", Component: DenimPage },
       { path: "lookbook", Component: LookbookPage },
       { path: "about", Component: AboutPage },
       { path: "contact", Component: ContactPage },

@@ -9,6 +9,7 @@ import { womenProducts } from "./WomenPage";
 import { kidsProducts } from "./KidsPage";
 import { accessoriesProducts } from "./AccessoriesPage";
 import { leatherProducts } from "./LeatherPage";
+import { denimProducts } from "./DenimPage";
 
 
 const collectionProducts = [
@@ -17,6 +18,7 @@ const collectionProducts = [
   ...kidsProducts,
   ...accessoriesProducts,
   ...leatherProducts,
+  ...denimProducts,
 ].map((product, index) => ({
   ...product,
   collectionId: index + 1,

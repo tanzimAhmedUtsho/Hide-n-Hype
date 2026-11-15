@@ -4,6 +4,14 @@ import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 const categories = [
   {
+    name: "DENIM",
+    count: "6 styles",
+    image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&h=750&fit=crop&auto=format",
+    alt: "Blue denim jeans collection",
+    span: "col-span-1 row-span-1",
+    path: "/collection/denim",
+  },
+  {
     name: "HOODIES",
     count: "5 styles",
     image: "https://res.cloudinary.com/djdrghfqs/image/upload/v1782452805/image-34_fkhxab.png",
@@ -64,7 +72,7 @@ export function Categories() {
             className={cat.span}
           >
             <Link
-              to="/collection"
+              to={cat.path ?? "/collection"}
               className="group relative overflow-hidden bg-card block w-full h-full"
             >
             <ImageWithFallback
