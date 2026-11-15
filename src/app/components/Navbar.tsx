@@ -1,13 +1,53 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ShoppingBag, Search, Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Link, useLocation } from "react-router";
 import logoImage from "../../imports/logo.png";
+import { menProducts } from "../pages/MenPage";
+import { womenProducts } from "../pages/WomenPage";
+import { kidsProducts } from "../pages/KidsPage";
+import { accessoriesProducts } from "../pages/AccessoriesPage";
+import { leatherProducts } from "../pages/LeatherPage";
+import { denimProducts } from "../pages/DenimPage";
+
+const searchableProducts = [
+  ...menProducts.map((product) => ({ ...product, category: "Men", path: "/collection/men" })),
+  ...womenProducts.map((product) => ({ ...product, category: "Women", path: "/collection/women" })),
+  ...kidsProducts.map((product) => ({ ...product, category: "Kids", path: "/collection/kids" })),
+  ...denimProducts.map((product) => ({ ...product, category: "Denim", path: "/collection/denim" })),
+  ...accessoriesProducts.map((product) => ({ ...product, category: "Accessories", path: "/collection/accessories" })),
+  ...leatherProducts.map((product) => ({ ...product, category: "Leather Items", path: "/collection/leather" })),
+];
+
+const searchableCategories = [
+  { name: "Men", path: "/collection/men" },
+  { name: "Women", path: "/collection/women" },
+  { name: "Kids", path: "/collection/kids" },
+  { name: "Denim", path: "/collection/denim" },
+  { name: "Accessories", path: "/collection/accessories" },
+  { name: "Leather Items", path: "/collection/leather" },
+  { name: "All Collection", path: "/collection" },
+];
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [collectionDropdownOpen, setCollectionDropdownOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
+  const searchResults = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) return { products: [], categories: [] };
+
+    return {
+      products: searchableProducts
+        .filter((product) => `${product.name} ${product.category}`.toLowerCase().includes(query))
+        .slice(0, 5),
+      categories: searchableCategories
+        .filter((category) => category.name.toLowerCase().includes(query))
+        .slice(0, 3),
+    };
+  }, [searchQuery]);
 
   const navLinks = [
     { label: "NEW ARRIVALS", path: "/new-arrivals" },
@@ -111,8 +151,16 @@ export function Navbar() {
 
         {/* Right icons */}
         <div className="flex items-center gap-5">
-          <button className="text-muted-foreground hover:text-foreground transition-colors duration-200">
-            <Search size={18} />
+          <button
+            className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+            onClick={() => {
+              setSearchOpen((open) => !open);
+              setMenuOpen(false);
+            }}
+            aria-label={searchOpen ? "Close search" : "Open search"}
+            aria-expanded={searchOpen}
+          >
+            {searchOpen ? <X size={18} /> : <Search size={18} />}
           </button>
           <button className="text-muted-foreground hover:text-foreground transition-colors duration-200">
             <ShoppingBag size={18} />
@@ -125,6 +173,88 @@ export function Navbar() {
           </button>
         </div>
       </nav>
+
+      <AnimatePresence>
+        {searchOpen && (
+          <>
+            <motion.button
+              type="button"
+              aria-label="Close search"
+              className="fixed inset-0 z-[55] cursor-default bg-black/40"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSearchOpen(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              className="fixed right-4 top-20 z-[60] w-[calc(100%-2rem)] max-w-md border border-border bg-background p-4 shadow-xl md:right-10"
+            >
+              <div className="flex items-center gap-3 border-b border-border pb-3">
+                <Search size={18} className="shrink-0 text-muted-foreground" />
+                <input
+                  autoFocus
+                  type="search"
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Escape") setSearchOpen(false);
+                  }}
+                  placeholder="Search products and collections"
+                  className="w-full bg-transparent text-foreground outline-none placeholder:text-muted-foreground"
+                  aria-label="Search products and collections"
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery("")}
+                    className="text-muted-foreground hover:text-foreground"
+                    aria-label="Clear search"
+                  >
+                    <X size={16} />
+                  </button>
+                )}
+              </div>
+              {searchQuery.trim() && (
+                <div className="max-h-[60vh] overflow-y-auto pt-3">
+                  {searchResults.products.map((product) => (
+                    <Link
+                      key={`${product.category}-${product.id}`}
+                      to={product.path}
+                      onClick={() => {
+                        setSearchOpen(false);
+                        setSearchQuery("");
+                      }}
+                      className="block border-b border-border/60 px-2 py-3 hover:bg-accent/10"
+                    >
+                      <span className="block text-sm text-foreground">{product.name}</span>
+                      <span className="text-xs text-muted-foreground">{product.category}</span>
+                    </Link>
+                  ))}
+                  {searchResults.categories.map((category) => (
+                    <Link
+                      key={category.path}
+                      to={category.path}
+                      onClick={() => {
+                        setSearchOpen(false);
+                        setSearchQuery("");
+                      }}
+                      className="block border-b border-border/60 px-2 py-3 text-sm text-accent hover:bg-accent/10"
+                    >
+                      Browse {category.name} collection
+                    </Link>
+                  ))}
+                  {searchResults.products.length === 0 && searchResults.categories.length === 0 && (
+                    <p className="px-2 py-4 text-sm text-muted-foreground">No matching products or collections.</p>
+                  )}
+                </div>
+              )}
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Mobile menu */}
       <AnimatePresence>
