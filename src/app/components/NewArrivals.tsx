@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ShoppingBag, Heart } from "lucide-react";
+import { Heart } from "lucide-react";
 import { motion } from "motion/react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
@@ -11,6 +11,14 @@ const products = [
     image: "https://images.unsplash.com/photo-1779040620684-17e2384f2f1e?w=600&h=750&fit=crop&auto=format",
     alt: "Dark graphic oversized t-shirt streetwear",
     colorOptions: ["#1a1a1a", "#f0ebe0", "#c8a84b"],
+  },
+  {
+    id: 6,
+    name: "Oversized Denim Jacket",
+    tag: "NEW",
+    image: "https://images.unsplash.com/photo-1543076447-215ad9ba6923?w=600&h=750&fit=crop&auto=format",
+    alt: "Blue denim jacket",
+    colorOptions: ["#41678a", "#1a1a1a"],
   },
   {
     id: 2,
@@ -27,6 +35,14 @@ const products = [
     image: "https://images.unsplash.com/photo-1554925051-f668ed70d520?w=600&h=750&fit=crop&auto=format",
     alt: "Orange and black cargo jacket streetwear",
     colorOptions: ["#c84b1a", "#1a1a1a"],
+  },
+  {
+    id: 5,
+    name: "Classic Denim Jeans",
+    tag: "NEW",
+    image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&h=750&fit=crop&auto=format",
+    alt: "Classic blue denim jeans",
+    colorOptions: ["#41678a", "#1a1a1a", "#a9a9a9"],
   },
   {
     id: 4,
@@ -81,16 +97,16 @@ function ProductCard({ product, index }: { product: typeof products[0]; index: n
           <Heart size={14} fill={liked ? "#d4183d" : "none"} />
         </button>
 
-        {/* Quick add overlay */}
+        {/*
         <div className="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
           <button
             className="w-full flex items-center justify-center gap-2 py-3 bg-foreground text-background hover:bg-accent hover:text-accent-foreground transition-colors duration-200"
             style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.2em" }}
           >
-            <ShoppingBag size={14} />
             ADD TO CART
           </button>
         </div>
+        */}
       </div>
 
       {/* Product info */}

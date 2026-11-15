@@ -25,6 +25,12 @@ import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 
 const productCategories = [
   {
+    title: "Denim",
+    description: "Denim essentials for global buyers, from classic jeans and jackets to contemporary washes and fits.",
+    image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=700&h=520&fit=crop&auto=format",
+    icon: <Shirt size={20} />,
+  },
+  {
     title: "Knitwear",
     description: "Premium knit programs for everyday essentials, fleece, jersey, and elevated casualwear.",
     image: "https://images.unsplash.com/photo-1523398002811-999ca8dec234?w=700&h=520&fit=crop&auto=format",

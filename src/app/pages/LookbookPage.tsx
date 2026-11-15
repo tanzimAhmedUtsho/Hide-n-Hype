@@ -4,6 +4,20 @@ import { Newsletter } from "../components/Newsletter";
 
 const lookbookImages = [
   {
+    id: 7,
+    image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=800&h=1000&fit=crop&auto=format",
+    alt: "Classic blue denim jeans lookbook style",
+    title: "CLASSIC DENIM",
+    season: "DENIM COLLECTION",
+  },
+  {
+    id: 8,
+    image: "https://images.unsplash.com/photo-1543076447-215ad9ba6923?w=800&h=1000&fit=crop&auto=format",
+    alt: "Oversized blue denim jacket lookbook style",
+    title: "OVERSIZED DENIM",
+    season: "DENIM COLLECTION",
+  },
+  {
     id: 1,
     image: "https://res.cloudinary.com/djdrghfqs/image/upload/q_auto/f_auto/v1781886566/image-25_i3jzgc.png",
     alt: "Hide n Hype lookbook streetwear model",
