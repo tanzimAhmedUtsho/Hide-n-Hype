@@ -29,6 +29,38 @@ const searchableCategories = [
   { name: "All Collection", path: "/collection" },
 ];
 
+function normalizeSearchText(value: string) {
+  return value.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function isOneEditAway(left: string, right: string) {
+  if (Math.abs(left.length - right.length) > 1) return false;
+
+  let leftIndex = 0;
+  let rightIndex = 0;
+  let differences = 0;
+
+  while (leftIndex < left.length && rightIndex < right.length) {
+    if (left[leftIndex] === right[rightIndex]) {
+      leftIndex += 1;
+      rightIndex += 1;
+      continue;
+    }
+
+    differences += 1;
+    if (differences > 1) return false;
+
+    if (left.length > right.length) leftIndex += 1;
+    else if (right.length > left.length) rightIndex += 1;
+    else {
+      leftIndex += 1;
+      rightIndex += 1;
+    }
+  }
+
+  return differences + Number(leftIndex < left.length || rightIndex < right.length) <= 1;
+}
+
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [collectionDropdownOpen, setCollectionDropdownOpen] = useState(false);
@@ -37,15 +69,40 @@ export function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
   const searchResults = useMemo(() => {
-    const query = searchQuery.trim().toLowerCase();
+    const query = normalizeSearchText(searchQuery);
     if (!query) return { products: [], categories: [] };
 
+    const exactProducts = searchableProducts.filter(
+      (product) => normalizeSearchText(product.name) === query,
+    );
+    if (exactProducts.length > 0) {
+      return { products: exactProducts, categories: [] };
+    }
+
+    const matchingProducts = searchableProducts.filter((product) =>
+      normalizeSearchText(`${product.name} ${product.category}`).includes(query),
+    );
+    const queryWords = query.split(" ");
+    const typoMatches =
+      matchingProducts.length === 0
+        ? searchableProducts.filter((product) => {
+            const productWords = normalizeSearchText(product.name).split(" ");
+            return queryWords.every((queryWord) =>
+              productWords.some(
+                (productWord) =>
+                  queryWord === productWord ||
+                  (Math.max(queryWord.length, productWord.length) >= 5 &&
+                    isOneEditAway(queryWord, productWord)),
+              ),
+            );
+          })
+        : [];
+
     return {
-      products: searchableProducts
-        .filter((product) => `${product.name} ${product.category}`.toLowerCase().includes(query))
+      products: (matchingProducts.length > 0 ? matchingProducts : typoMatches)
         .slice(0, 5),
       categories: searchableCategories
-        .filter((category) => category.name.toLowerCase().includes(query))
+        .filter((category) => normalizeSearchText(category.name).includes(query))
         .slice(0, 3),
     };
   }, [searchQuery]);
