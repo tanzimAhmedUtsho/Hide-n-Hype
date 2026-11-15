@@ -1,7 +1,5 @@
 import { Newsletter } from "../components/Newsletter";
 import { CategoryFilter } from "../components/CategoryFilter";
-import { useState } from "react";
-import { Heart } from "lucide-react";
 import { motion } from "motion/react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { menProducts } from "./MenPage";
@@ -25,8 +23,6 @@ const collectionProducts = [
 }));
 
 function ProductCard({ product, index }: { product: typeof collectionProducts[0]; index: number }) {
-  const [liked, setLiked] = useState(false);
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -43,7 +39,7 @@ function ProductCard({ product, index }: { product: typeof collectionProducts[0]
           className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
         />
 
-        {/* Tag */}
+        {/*
         <div
           className="absolute top-4 left-4 px-2 py-1"
           style={{
@@ -57,15 +53,15 @@ function ProductCard({ product, index }: { product: typeof collectionProducts[0]
         >
           {product.tag}
         </div>
+        */}
 
-        {/* Wishlist */}
+        {/*
         <button
-          onClick={() => setLiked(!liked)}
           className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-background/80 backdrop-blur-sm hover:bg-accent transition-all duration-200"
-          style={{ color: liked ? "#d4183d" : "#f0ebe0" }}
         >
-          <Heart size={14} fill={liked ? "#d4183d" : "none"} />
+          <Heart size={14} />
         </button>
+        */}
       </div>
 
       {/* Product info */}

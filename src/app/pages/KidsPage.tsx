@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { Heart } from "lucide-react";
 import { motion } from "motion/react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { Newsletter } from "../components/Newsletter";
@@ -57,8 +55,6 @@ export const kidsProducts = [
 ];
 
 function ProductCard({ product, index }: { product: typeof kidsProducts[0]; index: number }) {
-  const [liked, setLiked] = useState(false);
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -73,6 +69,7 @@ function ProductCard({ product, index }: { product: typeof kidsProducts[0]; inde
           alt={product.alt}
           className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
         />
+        {/*
         <div
           className="absolute top-4 left-4 px-2 py-1"
           style={{
@@ -86,13 +83,14 @@ function ProductCard({ product, index }: { product: typeof kidsProducts[0]; inde
         >
           {product.tag}
         </div>
+        */}
+        {/*
         <button
-          onClick={() => setLiked(!liked)}
           className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-background/80 backdrop-blur-sm hover:bg-accent transition-all duration-200"
-          style={{ color: liked ? "#d4183d" : "#f0ebe0" }}
         >
-          <Heart size={14} fill={liked ? "#d4183d" : "none"} />
+          <Heart size={14} />
         </button>
+        */}
       </div>
       <div className="pt-3">
         <h3
