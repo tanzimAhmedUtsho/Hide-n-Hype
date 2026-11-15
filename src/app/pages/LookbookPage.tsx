@@ -1,8 +1,16 @@
 import { motion } from "motion/react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { Newsletter } from "../components/Newsletter";
+import performanceShortsImage from "../../imports/performance-shorts.png";
 
 const lookbookImages = [
+  {
+    id: 9,
+    image: performanceShortsImage,
+    alt: "Grey and black performance shorts lookbook style",
+    title: "PERFORMANCE SHORTS",
+    season: "SUMMER 2026",
+  },
   {
     id: 7,
     image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=800&h=1000&fit=crop&auto=format",

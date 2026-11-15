@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { Link } from "react-router";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import performanceShortsImage from "../../imports/performance-shorts.png";
 
 const categories = [
   {
@@ -21,9 +22,10 @@ const categories = [
   {
     name: " PERFORMANCE SHORTS",
     count: "4 styles",
-    image: "https://res.cloudinary.com/djdrghfqs/image/upload/v1782377248/image-30_h2zzhg.png",
+    image: performanceShortsImage,
     alt: "Performance shorts collection",
     span: "col-span-1 row-span-1",
+    path: "/collection/men",
   },
   {
     name: "OVERSIZED T-SHIRTS",

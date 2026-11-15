@@ -8,15 +8,17 @@ import { kidsProducts } from "./KidsPage";
 import { accessoriesProducts } from "./AccessoriesPage";
 import { leatherProducts } from "./LeatherPage";
 import { denimProducts } from "./DenimPage";
+import { performanceShortsProduct } from "./MenPage";
 
 
 const collectionProducts = [
-  ...menProducts,
+  ...menProducts.filter((product) => product !== performanceShortsProduct),
   ...womenProducts,
   ...kidsProducts,
   ...accessoriesProducts,
   ...leatherProducts,
   ...denimProducts,
+  performanceShortsProduct,
 ].map((product, index) => ({
   ...product,
   collectionId: index + 1,

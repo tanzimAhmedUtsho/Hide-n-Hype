@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import performanceShortsImage from "../../imports/performance-shorts.png";
 
 const products = [
   {
@@ -41,6 +42,14 @@ const products = [
     image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&h=750&fit=crop&auto=format",
     alt: "Classic blue denim jeans",
     colorOptions: ["#41678a", "#1a1a1a", "#a9a9a9"],
+  },
+  {
+    id: 7,
+    name: "Performance Shorts",
+    tag: "NEW",
+    image: performanceShortsImage,
+    alt: "Grey and black performance shorts",
+    colorOptions: ["#555", "#1a1a1a"],
   },
   {
     id: 4,

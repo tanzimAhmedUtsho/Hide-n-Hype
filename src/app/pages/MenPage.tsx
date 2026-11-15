@@ -2,6 +2,16 @@ import { motion } from "motion/react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { Newsletter } from "../components/Newsletter";
 import { CategoryFilter } from "../components/CategoryFilter";
+import performanceShortsImage from "../../imports/performance-shorts.png";
+
+export const performanceShortsProduct = {
+  id: 7,
+  name: "Performance Shorts",
+  tag: "NEW",
+  image: performanceShortsImage,
+  alt: "Grey and black performance shorts",
+  colorOptions: ["#555", "#1a1a1a"],
+};
 
 export const menProducts = [
   {
@@ -52,6 +62,7 @@ export const menProducts = [
     alt: "Men's utility bomber jacket",
     colorOptions: ["#1a1a1a", "#8b7355"],
   },
+  performanceShortsProduct,
 ];
 
 function ProductCard({ product, index }: { product: typeof menProducts[0]; index: number }) {
