@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.hidenhype.com/sitemap.xml
+Sitemap: https://hidenhype.com/sitemap.xml
