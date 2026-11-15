@@ -33,6 +33,7 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [collectionDropdownOpen, setCollectionDropdownOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [bagOpen, setBagOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
   const searchResults = useMemo(() => {
@@ -162,8 +163,17 @@ export function Navbar() {
           >
             {searchOpen ? <X size={18} /> : <Search size={18} />}
           </button>
-          <button className="text-muted-foreground hover:text-foreground transition-colors duration-200">
-            <ShoppingBag size={18} />
+          <button
+            className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+            onClick={() => {
+              setBagOpen((open) => !open);
+              setSearchOpen(false);
+              setMenuOpen(false);
+            }}
+            aria-label={bagOpen ? "Close shopping bag" : "Open shopping bag"}
+            aria-expanded={bagOpen}
+          >
+            {bagOpen ? <X size={18} /> : <ShoppingBag size={18} />}
           </button>
           <button
             className="md:hidden text-muted-foreground hover:text-foreground transition-colors duration-200"
@@ -252,6 +262,65 @@ export function Navbar() {
                 </div>
               )}
             </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {bagOpen && (
+          <>
+            <motion.button
+              type="button"
+              aria-label="Close shopping bag"
+              className="fixed inset-0 z-[55] cursor-default bg-black/50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setBagOpen(false)}
+            />
+            <motion.aside
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="shopping-bag-title"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "tween", duration: 0.25 }}
+              className="fixed right-0 top-0 z-[60] flex h-full w-[min(100%,400px)] flex-col border-l border-border bg-background p-6 shadow-xl"
+            >
+              <div className="flex items-center justify-between border-b border-border pb-5">
+                <h2
+                  id="shopping-bag-title"
+                  className="text-foreground"
+                  style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "24px", fontWeight: 800, letterSpacing: "0.08em" }}
+                >
+                  YOUR BAG
+                </h2>
+                <button
+                  type="button"
+                  onClick={() => setBagOpen(false)}
+                  className="text-muted-foreground hover:text-foreground"
+                  aria-label="Close shopping bag"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+              <div className="flex flex-1 flex-col items-center justify-center text-center">
+                <ShoppingBag size={32} className="mb-4 text-accent" />
+                <p className="mb-2 text-foreground">Online ordering is not available yet.</p>
+                <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
+                  Get in touch with us for product and order enquiries.
+                </p>
+                <Link
+                  to="/contact"
+                  onClick={() => setBagOpen(false)}
+                  className="mt-6 bg-accent px-6 py-3 text-sm font-semibold tracking-widest text-accent-foreground transition-colors hover:bg-foreground"
+                  style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
+                >
+                  CONTACT US
+                </Link>
+              </div>
+            </motion.aside>
           </>
         )}
       </AnimatePresence>
