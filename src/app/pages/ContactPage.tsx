@@ -17,7 +17,7 @@ const countryDetails = [
     name: "Finland Office",
     city: "Vuohisillantie 46 E 35,68600 Pietarsaari, Finland",
     phone: "+358 40 2453236",
-    email: "hidenhypeofficial@gmail.com",
+    emails: ["hidenhypeofficial@gmail.com", "info@hidenhype.com"],
     hours: "Mon-Fri, 10:00-18:00 EET",
     focus: "Global customer care, retail partnerships, wholesale meetings and brand operations.",
   },
@@ -25,7 +25,7 @@ const countryDetails = [
     name: "Bangladesh Office",
     city: "Agargaon, Dhaka, Bangladesh",
     phone: "+880 1756 467670",
-    email: "hidenhypeofficial@gmail.com",
+    emails: ["hidenhypeofficial@gmail.com", "info@hidenhype.com"],
     hours: "Sat-Thu, 10:00-18:00 BST",
     focus: "Design direction, sourcing, sampling, production coordination and local support.",
   },
@@ -102,11 +102,15 @@ function CountryPanel({ detail }: { detail: typeof countryDetails[0] }) {
         {[
           { icon: <MapPin size={17} />, label: "Address", value: detail.city },
           { icon: <Phone size={17} />, label: "Phone", value: detail.phone },
-          { icon: <Mail size={17} />, label: "Email", value: detail.email },
+          ...detail.emails.map((email) => ({
+            icon: <Mail size={17} />,
+            label: "Email",
+            value: email,
+          })),
           { icon: <Clock size={17} />, label: "Hours", value: detail.hours },
         ].map((item) => (
           <div
-            key={item.label}
+            key={`${item.label}-${item.value}`}
             className="flex gap-3 border-b border-border/20 pb-4 last:border-b-0 last:pb-0"
           >
             <div className="mt-1 text-accent">{item.icon}</div>
@@ -121,16 +125,30 @@ function CountryPanel({ detail }: { detail: typeof countryDetails[0] }) {
               >
                 {item.label}
               </span>
-              <p
-                className="text-foreground break-words"
-                style={{
-                  fontFamily: "'Barlow', sans-serif",
-                  fontSize: "16px",
-                  lineHeight: "1.7",
-                }}
-              >
-                {item.value}
-              </p>
+              {item.label === "Email" ? (
+                <a
+                  href={`mailto:${item.value}`}
+                  className="text-foreground break-words hover:text-accent"
+                  style={{
+                    fontFamily: "'Barlow', sans-serif",
+                    fontSize: "16px",
+                    lineHeight: "1.7",
+                  }}
+                >
+                  {item.value}
+                </a>
+              ) : (
+                <p
+                  className="text-foreground break-words"
+                  style={{
+                    fontFamily: "'Barlow', sans-serif",
+                    fontSize: "16px",
+                    lineHeight: "1.7",
+                  }}
+                >
+                  {item.value}
+                </p>
+              )}
             </div>
           </div>
         ))}
