@@ -5,7 +5,7 @@ const footerLinks = {
   SHOP: [
     { label: "New Arrivals", path: "/new-arrivals" },
     { label: "Collection", path: "/collection" },
-    { label: "Sale", path: "/sale" },
+    // { label: "Sale", path: "/sale" },
   ],
   HELP: [
     { label: "FAQ", path: "#" },

@@ -12,7 +12,7 @@ export function Navbar() {
   const navLinks = [
     { label: "NEW ARRIVALS", path: "/new-arrivals" },
     { label: "COLLECTION", path: "/collection", hasDropdown: true },
-    { label: "SALE", path: "/sale" },
+    //{ label: "SALE", path: "/sale" },
     { label: "LOOKBOOK", path: "/lookbook" },
     { label: "SOURCING", path: "/sourcing-manufacturing" },
     { label: "ABOUT", path: "/about" },

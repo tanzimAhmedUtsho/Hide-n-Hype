@@ -10,7 +10,7 @@ import { AccessoriesPage } from "./pages/AccessoriesPage";
 import { LeatherPage } from "./pages/LeatherPage";
 import { LookbookPage } from "./pages/LookbookPage";
 import { AboutPage } from "./pages/AboutPage";
-import { SalePage } from "./pages/SalePage";
+//import { SalePage } from "./pages/SalePage";
 import { ContactPage } from "./pages/ContactPage";
 import { SourcingManufacturingPage } from "./pages/SourcingManufacturingPage";
 
@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
       { path: "lookbook", Component: LookbookPage },
       { path: "about", Component: AboutPage },
       { path: "contact", Component: ContactPage },
-      { path: "sale", Component: SalePage },
+      // { path: "sale", Component: SalePage },
       { path: "sourcing-manufacturing", Component: SourcingManufacturingPage },
     ],
   },
