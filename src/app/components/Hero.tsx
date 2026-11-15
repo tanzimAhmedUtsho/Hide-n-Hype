@@ -1,4 +1,3 @@
-import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
 import { Link } from "react-router";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
@@ -74,14 +73,14 @@ export function Hero() {
               <br />
               Hide Your Doubts, Hype your Style.
             </p>
-            <Link
+            {/* <Link
               to="/collection"
               className="group flex items-center gap-3 bg-foreground text-background px-7 py-3.5 hover:bg-accent hover:text-accent-foreground transition-all duration-300"
               style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.2em" }}
             >
               SHOP NOW
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-200" />
-            </Link>
+            </Link> */}
           </motion.div>
         </div>
 

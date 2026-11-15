@@ -64,7 +64,7 @@ export function BrandStory() {
           <div className="grid grid-cols-3 gap-6 mt-10 pt-10 border-t border-border">
             {[
               { value: "100%", label: "Premium Fabric" },
-              { value: "4.7★", label: "Avg. Review" },
+              { value: "00", label: "Avg. Review" },
               { value: "2026", label: "Est. Year" },
             ].map((item) => (
               <div key={item.label}>
