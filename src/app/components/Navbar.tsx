@@ -14,7 +14,7 @@ export function Navbar() {
     { label: "COLLECTION", path: "/collection", hasDropdown: true },
     //{ label: "SALE", path: "/sale" },
     { label: "LOOKBOOK", path: "/lookbook" },
-    { label: "SOURCING", path: "/sourcing-manufacturing" },
+    { label: "OUR BUSINESS", path: "/sourcing-manufacturing" },
     { label: "ABOUT", path: "/about" },
   ];
 
