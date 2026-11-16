@@ -214,10 +214,10 @@ export function Navbar() {
             to="/contact"
             aria-label="Contact Hide n Hype"
             title="Contact us"
-            className="hidden h-9 items-center justify-center gap-2 rounded-full border border-accent/50 px-3 text-accent transition-colors hover:bg-accent hover:text-accent-foreground md:flex lg:px-4"
-            style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.1em" }}
+            className="hidden h-8 w-9 items-center justify-center gap-2 rounded-full border border-accent/35 text-accent/90 transition-colors hover:border-accent hover:bg-accent hover:text-accent-foreground md:flex xl:w-auto xl:px-3"
+            style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em" }}
           >
-            <Mail size={16} />
+            <Mail size={14} />
             <span className="hidden xl:inline">CONTACT</span>
           </Link>
           <Link
@@ -226,7 +226,7 @@ export function Navbar() {
             title="Contact us"
             className="text-muted-foreground transition-colors hover:text-accent md:hidden"
           >
-            <Mail size={18} />
+            <Mail size={16} />
           </Link>
           <button
             className="text-muted-foreground hover:text-foreground transition-colors duration-200"
