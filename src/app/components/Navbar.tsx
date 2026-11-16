@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { ShoppingBag, Search, Menu, X, ChevronDown } from "lucide-react";
+import { ShoppingBag, Search, Menu, X, ChevronDown, Mail } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Link, useLocation } from "react-router";
 import logoImage from "../../imports/logo.png";
@@ -9,14 +9,15 @@ import { kidsProducts } from "../pages/KidsPage";
 import { accessoriesProducts } from "../pages/AccessoriesPage";
 import { leatherProducts } from "../pages/LeatherPage";
 import { denimProducts } from "../pages/DenimPage";
+import { productSlug } from "../productCatalog";
 
 const searchableProducts = [
-  ...menProducts.map((product) => ({ ...product, category: "Men", path: "/collection/men" })),
-  ...womenProducts.map((product) => ({ ...product, category: "Women", path: "/collection/women" })),
-  ...kidsProducts.map((product) => ({ ...product, category: "Kids", path: "/collection/kids" })),
-  ...denimProducts.map((product) => ({ ...product, category: "Denim", path: "/collection/denim" })),
-  ...accessoriesProducts.map((product) => ({ ...product, category: "Accessories", path: "/collection/accessories" })),
-  ...leatherProducts.map((product) => ({ ...product, category: "Leather Items", path: "/collection/leather" })),
+  ...menProducts.map((product) => ({ ...product, category: "Men", path: `/products/${productSlug(product.name)}` })),
+  ...womenProducts.map((product) => ({ ...product, category: "Women", path: `/products/${productSlug(product.name)}` })),
+  ...kidsProducts.map((product) => ({ ...product, category: "Kids", path: `/products/${productSlug(product.name)}` })),
+  ...denimProducts.map((product) => ({ ...product, category: "Denim", path: `/products/${productSlug(product.name)}` })),
+  ...accessoriesProducts.map((product) => ({ ...product, category: "Accessories", path: `/products/${productSlug(product.name)}` })),
+  ...leatherProducts.map((product) => ({ ...product, category: "Leather Items", path: `/products/${productSlug(product.name)}` })),
 ];
 
 const searchableCategories = [
@@ -209,6 +210,24 @@ export function Navbar() {
 
         {/* Right icons */}
         <div className="flex items-center gap-5">
+          <Link
+            to="/contact"
+            aria-label="Contact Hide n Hype"
+            title="Contact us"
+            className="hidden h-9 items-center justify-center gap-2 rounded-full border border-accent/50 px-3 text-accent transition-colors hover:bg-accent hover:text-accent-foreground md:flex lg:px-4"
+            style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.1em" }}
+          >
+            <Mail size={16} />
+            <span className="hidden xl:inline">CONTACT</span>
+          </Link>
+          <Link
+            to="/contact"
+            aria-label="Contact Hide n Hype"
+            title="Contact us"
+            className="text-muted-foreground transition-colors hover:text-accent md:hidden"
+          >
+            <Mail size={18} />
+          </Link>
           <button
             className="text-muted-foreground hover:text-foreground transition-colors duration-200"
             onClick={() => {
@@ -409,6 +428,20 @@ export function Navbar() {
                 </Link>
               </motion.div>
             ))}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: navLinks.length * 0.07 }}
+            >
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-3 rounded-full border border-accent/60 px-6 py-3 text-accent transition-colors hover:bg-accent hover:text-accent-foreground"
+                style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "22px", fontWeight: 700, letterSpacing: "0.12em" }}
+                onClick={() => setMenuOpen(false)}
+              >
+                <Mail size={20} /> CONTACT US
+              </Link>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

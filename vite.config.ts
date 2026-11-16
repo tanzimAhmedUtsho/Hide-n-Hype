@@ -59,7 +59,9 @@ function routeMetadataHtml() {
         html = setMeta(html, 'name', 'twitter:image', socialImageUrl)
 
         const routeId = route.slice(1).replaceAll('/', '--')
-        const pagePath = path.join(outDir, 'seo-pages', `${routeId}.html`)
+        const pagePath = route.startsWith('/products/')
+          ? path.join(outDir, 'seo-pages', 'products', `${route.slice('/products/'.length)}.html`)
+          : path.join(outDir, 'seo-pages', `${routeId}.html`)
         await mkdir(path.dirname(pagePath), { recursive: true })
         await writeFile(pagePath, html)
       }

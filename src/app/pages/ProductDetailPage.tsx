@@ -2,11 +2,27 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
 import { Link, useParams } from "react-router";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
-import { newArrivalProducts } from "../productCatalog";
+import { accessoriesProducts } from "./AccessoriesPage";
+import { denimProducts } from "./DenimPage";
+import { kidsProducts } from "./KidsPage";
+import { leatherProducts } from "./LeatherPage";
+import { menProducts } from "./MenPage";
+import { womenProducts } from "./WomenPage";
+import { newArrivalProducts, productSlug } from "../productCatalog";
+
+const productDetails = [
+  ...newArrivalProducts,
+  ...menProducts.map((product) => ({ ...product, slug: productSlug(product.name), category: "Men" })),
+  ...womenProducts.map((product) => ({ ...product, slug: productSlug(product.name), category: "Women" })),
+  ...kidsProducts.map((product) => ({ ...product, slug: productSlug(product.name), category: "Kids" })),
+  ...accessoriesProducts.map((product) => ({ ...product, slug: productSlug(product.name), category: "Accessories" })),
+  ...leatherProducts.map((product) => ({ ...product, slug: productSlug(product.name), category: "Leather Goods" })),
+  ...denimProducts.map((product) => ({ ...product, slug: productSlug(product.name), category: "Denim" })),
+].filter((product, index, products) => products.findIndex((candidate) => candidate.slug === product.slug) === index);
 
 export function ProductDetailPage() {
   const { slug } = useParams();
-  const product = newArrivalProducts.find((item) => item.slug === slug);
+  const product = productDetails.find((item) => item.slug === slug);
 
   if (!product) {
     return (

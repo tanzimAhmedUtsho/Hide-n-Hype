@@ -72,3 +72,56 @@ export const newArrivalProducts = [
 ];
 
 export type CatalogProduct = (typeof newArrivalProducts)[number];
+
+export function productSlug(name: string) {
+  return name
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+export const catalogProductRoutes = [
+  ["Men", "Shadow Oversized Tee"],
+  ["Men", "Urban Fleece Hoodie"],
+  ["Men", "Hype Cargo Jacket"],
+  ["Men", "Street Layer Longline"],
+  ["Men", "Cargo Tech Pants"],
+  ["Men", "Utility Bomber"],
+  ["Activewear", "Performance Shorts"],
+  ["Women", "Cropped Hoodie"],
+  ["Women", "Oversized Graphic Tee"],
+  ["Women", "Cargo Wide Pants"],
+  ["Women", "Puffer Vest"],
+  ["Women", "Utility Jacket"],
+  ["Women", "Relaxed Fit Joggers"],
+  ["Kids", "Kids Oversized Hoodie"],
+  ["Kids", "Mini Streetwear Tee"],
+  ["Kids", "Kids Cargo Shorts"],
+  ["Kids", "Junior Bomber"],
+  ["Kids", "Youth Joggers"],
+  ["Kids", "Kids Track Jacket"],
+  ["Accessories", "Hide n Hype Cap"],
+  ["Accessories", "Urban Backpack"],
+  ["Accessories", "Crossbody Bag"],
+  ["Accessories", "Beanie"],
+  ["Accessories", "Chain Necklace"],
+  ["Accessories", "Belt Bag"],
+  ["Leather Goods", "Classic Leather Jacket"],
+  ["Leather Goods", "Leather Bomber"],
+  ["Leather Goods", "Leather Crossbody"],
+  ["Leather Goods", "Moto Leather Jacket"],
+  ["Leather Goods", "Leather Belt"],
+  ["Leather Goods", "Leather Backpack"],
+  ["Denim", "Classic Denim Jeans"],
+  ["Denim", "Oversized Denim Jacket"],
+  ["Denim", "Relaxed Fit Jeans"],
+  ["Denim", "Denim Cargo Pants"],
+  ["Denim", "Washed Denim Shirt"],
+  ["Denim", "Denim Shorts"],
+].map(([category, name]) => ({
+  category,
+  name,
+  slug: productSlug(name),
+}));

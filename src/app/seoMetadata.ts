@@ -1,4 +1,4 @@
-import { newArrivalProducts } from "./productCatalog";
+import { catalogProductRoutes } from "./productCatalog";
 
 export const siteUrl = "https://www.hidenhype.com";
 export const socialImageUrl = `${siteUrl}/hnh-social-preview.png`;
@@ -64,9 +64,9 @@ export const pageMetadata: Record<string, { title: string; description: string }
   },
 };
 
-for (const product of newArrivalProducts) {
+for (const product of catalogProductRoutes) {
   pageMetadata[`/products/${product.slug}`] = {
     title: `${product.name} | Hide n Hype`,
-    description: `Discover the ${product.name}, a ${product.category.toLowerCase()} style in the Hide n Hype collection. Contact us for current product options and availability.`,
+    description: `Explore the ${product.name} in the Hide n Hype ${product.category} collection. View product details and contact us about this style.`,
   };
 }

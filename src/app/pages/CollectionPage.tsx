@@ -9,6 +9,8 @@ import { accessoriesProducts } from "./AccessoriesPage";
 import { leatherProducts } from "./LeatherPage";
 import { denimProducts } from "./DenimPage";
 import { performanceShortsProduct } from "./MenPage";
+import { Link } from "react-router";
+import { productSlug } from "../productCatalog";
 
 
 const collectionProducts = [
@@ -40,6 +42,7 @@ function ProductCard({ product, index }: { product: typeof collectionProducts[0]
           alt={product.alt}
           className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
         />
+        <Link to={`/products/${productSlug(product.name)}`} aria-label={`View details for ${product.name}`} className="absolute inset-0 z-[1]" />
 
         {/*
         <div
@@ -68,12 +71,14 @@ function ProductCard({ product, index }: { product: typeof collectionProducts[0]
 
       {/* Product info */}
       <div className="pt-3">
+        <Link to={`/products/${productSlug(product.name)}`} className="inline-block hover:text-accent">
         <h3
           className="text-foreground mb-1"
           style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "16px", fontWeight: 700, letterSpacing: "0.05em" }}
         >
           {product.name}
         </h3>
+        </Link>
         {/* Color swatches */}
         <div className="flex gap-1.5 mt-2">
           {product.colorOptions.map((color, i) => (
