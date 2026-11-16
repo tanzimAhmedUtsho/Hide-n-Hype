@@ -13,7 +13,7 @@ import { LookbookPage } from "./pages/LookbookPage";
 import { AboutPage } from "./pages/AboutPage";
 //import { SalePage } from "./pages/SalePage";
 import { ContactPage } from "./pages/ContactPage";
-import { SourcingManufacturingPage } from "./pages/SourcingManufacturingPage";
+import { OurBusinessPage } from "./pages/OurBusinessPage";
 
 export const router = createBrowserRouter([
   {
@@ -33,7 +33,7 @@ export const router = createBrowserRouter([
       { path: "about", Component: AboutPage },
       { path: "contact", Component: ContactPage },
       // { path: "sale", Component: SalePage },
-      { path: "sourcing-manufacturing", Component: SourcingManufacturingPage },
+      { path: "sourcing-manufacturing", Component: OurBusinessPage },
     ],
   },
 ]);

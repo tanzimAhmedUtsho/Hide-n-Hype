@@ -1,5 +1,6 @@
 import {
   ArrowRight,
+  ArrowUpRight,
   BadgeCheck,
   Boxes,
   CalendarDays,
@@ -9,6 +10,7 @@ import {
   Globe2,
   Handshake,
   Layers3,
+  Mail,
   PackageCheck,
   Scissors,
   ShieldCheck,
@@ -194,7 +196,7 @@ function InfoCard({ title, items }: { title: string; items: typeof moqDetails })
   );
 }
 
-export function SourcingManufacturingPage() {
+export function OurBusinessPage() {
   return (
     <div className="overflow-hidden bg-background">
       <section className="relative min-h-screen w-full overflow-hidden">
@@ -253,6 +255,119 @@ export function SourcingManufacturingPage() {
               >
                 BOOK A MEETING
               </Link>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="relative isolate overflow-hidden border-y border-[#c8a45d]/20 bg-[#090909] px-6 py-16 md:px-16 md:py-24">
+        <div className="absolute inset-0 -z-20">
+          <ImageWithFallback
+            src="/threadb2b-home-hero.webp"
+            alt="ThreadB2B apparel designers and seamstresses working on garments"
+            className="h-full w-full object-cover object-center"
+            style={{ filter: "brightness(0.3) saturate(0.65)" }}
+            loading="lazy"
+          />
+        </div>
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(105deg,rgba(5,5,5,0.97)_0%,rgba(9,9,9,0.91)_48%,rgba(9,9,9,0.78)_100%)]" />
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_78%_50%,rgba(200,164,93,0.13),transparent_48%)]" />
+
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-16">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.65 }}
+            className="max-w-2xl"
+          >
+            <span className="mb-6 inline-flex items-center rounded-full border border-white/20 bg-[#365866]/90 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-white shadow-lg" style={{ fontFamily: "'Barlow', sans-serif" }}>
+              Welcome to ThreadB2B
+            </span>
+            <div className="mb-6 flex items-center gap-3">
+              <span className="h-px w-10 bg-[#c8a45d]" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.38em] text-[#d8bd80]" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
+                A New Division. A Global Outlook.
+              </span>
+            </div>
+            <h2 className="max-w-xl text-foreground" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(42px, 6vw, 76px)", fontWeight: 700, lineHeight: 0.98, letterSpacing: "-0.015em" }}>
+              Beyond Fashion.<br />
+              <span className="text-[#d8bd80]">Into Global Business.</span>
+            </h2>
+            <p className="mt-6 max-w-xl text-[15px] leading-[1.9] text-white/70 md:text-[17px]" style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300 }}>
+              ThreadB2B is the B2B business division of Hide n Hype, focused on connecting global buyers with sourcing, buyer development, and apparel manufacturing opportunities.
+            </p>
+            <a
+              href="https://threadb2b.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group mt-8 inline-flex min-h-12 items-center justify-center gap-3 rounded-[5px] border border-[#d8bd80]/70 bg-[#c8a45d] px-6 py-3 text-[#111] shadow-[0_12px_40px_rgba(200,164,93,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#e0c787]"
+              style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "13px", fontWeight: 800, letterSpacing: "0.14em" }}
+            >
+              VISIT THREADB2B.COM
+              <ArrowUpRight size={17} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </a>
+            <a
+              href="mailto:info@threadb2b.com"
+              className="mt-5 flex w-fit items-center gap-2 text-sm text-white/65 transition-colors hover:text-[#e1ca91]"
+              style={{ fontFamily: "'Barlow', sans-serif" }}
+            >
+              <Mail size={15} className="text-[#d8bd80]" />
+              info@threadb2b.com
+            </a>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.7, delay: 0.12 }}
+            className="relative overflow-hidden rounded-[10px] border border-white/10 bg-[#111]/85 p-6 shadow-[0_28px_90px_rgba(0,0,0,0.42)] backdrop-blur-md sm:p-8 md:p-10"
+          >
+            <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-[#c8a45d]/10 blur-3xl" />
+            <div className="relative">
+              <div className="mb-8 flex flex-wrap items-end justify-between gap-5 border-b border-white/10 pb-7">
+                <div>
+                  <img
+                    src="/threadb2b-wordmark.png"
+                    alt="B2B Thread logo"
+                    className="h-auto w-48 object-contain sm:w-56"
+                    loading="lazy"
+                  />
+                  <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.34em] text-white/40" style={{ fontFamily: "'Barlow', sans-serif" }}>
+                    Global apparel business
+                  </p>
+                </div>
+                <span className="inline-flex items-center gap-2 rounded-full border border-[#d8bd80]/25 bg-[#c8a45d]/[0.08] px-3 py-2 text-[10px] font-medium uppercase tracking-[0.16em] text-[#e1ca91]" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#d8bd80]" />
+                  A Hide n Hype Company
+                </span>
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-2">
+                {[
+                  { title: "Global Buyer Hunting", icon: <Globe2 size={19} /> },
+                  { title: "B2B Lead Generation", icon: <Users size={19} /> },
+                  { title: "Product Sourcing", icon: <PackageCheck size={19} /> },
+                  { title: "Manufacturing Coordination", icon: <Factory size={19} /> },
+                ].map((service, index) => (
+                  <motion.div
+                    key={service.title}
+                    initial={{ opacity: 0, y: 14 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.4 }}
+                    transition={{ duration: 0.45, delay: 0.18 + index * 0.08 }}
+                    className="group flex min-h-[82px] items-center gap-4 rounded-[6px] border border-white/[0.08] bg-white/[0.025] px-4 py-4 transition-colors duration-300 hover:border-[#d8bd80]/35 hover:bg-[#c8a45d]/[0.06] sm:px-5"
+                  >
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[5px] border border-[#d8bd80]/20 bg-[#c8a45d]/[0.09] text-[#d8bd80] transition-colors group-hover:bg-[#c8a45d]/[0.16]">
+                      {service.icon}
+                    </span>
+                    <span className="text-[17px] leading-tight text-white/90" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 600, letterSpacing: "0.015em" }}>
+                      {service.title}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </motion.div>
         </div>
