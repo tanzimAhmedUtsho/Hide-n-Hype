@@ -11,6 +11,7 @@ import {
   Twitter,
 } from "lucide-react";
 import { motion } from "motion/react";
+import type { FormEvent } from "react";
 
 const countryDetails = [
   {
@@ -55,6 +56,30 @@ const socialLinks = [
 ];
 
 const inquiryTypes = ["General", "Wholesale", "Collaboration", "Press"];
+
+function handleContactSubmit(event: FormEvent<HTMLFormElement>) {
+  event.preventDefault();
+
+  const data = new FormData(event.currentTarget);
+  const fields = [
+    ["Name", data.get("name")],
+    ["Email", data.get("email")],
+    ["Phone", data.get("phone")],
+    ["Address / city", data.get("location")],
+    ["Instagram", data.get("instagram")],
+    ["Facebook", data.get("facebook")],
+    ["Website / portfolio", data.get("website")],
+    ["Inquiry type", data.get("inquiry")],
+    ["Message", data.get("message")],
+  ]
+    .filter(([, value]) => typeof value === "string" && value.trim())
+    .map(([label, value]) => `${label}: ${String(value).trim()}`);
+  const name = String(data.get("name") ?? "").trim();
+  const subject = encodeURIComponent(`Hide n Hype enquiry${name ? ` from ${name}` : ""}`);
+  const body = encodeURIComponent(fields.join("\n\n"));
+
+  window.location.href = `mailto:info@hidenhype.com?subject=${subject}&body=${body}`;
+}
 
 function CountryPanel({ detail }: { detail: typeof countryDetails[0] }) {
   return (
@@ -290,12 +315,16 @@ export function ContactPage() {
 
             <form
               className="grid gap-4"
-              onSubmit={(event) => event.preventDefault()}
+              onSubmit={handleContactSubmit}
             >
               <div className="grid md:grid-cols-2 gap-4">
                 <input
                   type="text"
+                  name="name"
+                  aria-label="Name"
                   placeholder="Name"
+                  autoComplete="name"
+                  required
                   className="w-full rounded-[8px] border border-border/35 bg-transparent px-4 py-3 text-foreground outline-none transition-all focus:border-accent/80"
                   style={{
                     fontFamily: "'Barlow', sans-serif",
@@ -305,7 +334,11 @@ export function ContactPage() {
                 />
                 <input
                   type="email"
+                  name="email"
+                  aria-label="Email"
                   placeholder="Email"
+                  autoComplete="email"
+                  required
                   className="w-full rounded-[8px] border border-border/35 bg-transparent px-4 py-3 text-foreground outline-none transition-all focus:border-accent/80"
                   style={{
                     fontFamily: "'Barlow', sans-serif",
@@ -318,7 +351,10 @@ export function ContactPage() {
               <div className="grid md:grid-cols-2 gap-4">
                 <input
                   type="tel"
+                  name="phone"
+                  aria-label="Phone number"
                   placeholder="Phone number"
+                  autoComplete="tel"
                   className="w-full rounded-[8px] border border-border/35 bg-transparent px-4 py-3 text-foreground outline-none transition-all focus:border-accent/80"
                   style={{
                     fontFamily: "'Barlow', sans-serif",
@@ -328,7 +364,10 @@ export function ContactPage() {
                 />
                 <input
                   type="text"
+                  name="location"
+                  aria-label="Address or city"
                   placeholder="Address / city"
+                  autoComplete="address-level2"
                   className="w-full rounded-[8px] border border-border/35 bg-transparent px-4 py-3 text-foreground outline-none transition-all focus:border-accent/80"
                   style={{
                     fontFamily: "'Barlow', sans-serif",
@@ -341,6 +380,8 @@ export function ContactPage() {
               <div className="grid sm:grid-cols-3 gap-4">
                 <input
                   type="url"
+                  name="instagram"
+                  aria-label="Instagram link"
                   placeholder="Instagram link"
                   className="w-full rounded-[8px] border border-border/35 bg-transparent px-4 py-3 text-foreground outline-none transition-all focus:border-accent/80"
                   style={{
@@ -351,6 +392,8 @@ export function ContactPage() {
                 />
                 <input
                   type="url"
+                  name="facebook"
+                  aria-label="Facebook link"
                   placeholder="Facebook link"
                   className="w-full rounded-[8px] border border-border/35 bg-transparent px-4 py-3 text-foreground outline-none transition-all focus:border-accent/80"
                   style={{
@@ -361,6 +404,8 @@ export function ContactPage() {
                 />
                 <input
                   type="url"
+                  name="website"
+                  aria-label="Website or portfolio"
                   placeholder="Website / portfolio"
                   className="w-full rounded-[8px] border border-border/35 bg-transparent px-4 py-3 text-foreground outline-none transition-all focus:border-accent/80"
                   style={{
@@ -395,8 +440,11 @@ export function ContactPage() {
               </div>
 
               <textarea
+                name="message"
+                aria-label="Message"
                 placeholder="Message"
                 rows={4}
+                required
                 className="w-full resize-none rounded-[8px] border border-border/35 bg-transparent px-4 py-3 text-foreground outline-none transition-all focus:border-accent/80"
                 style={{
                   fontFamily: "'Barlow', sans-serif",
@@ -417,6 +465,10 @@ export function ContactPage() {
               >
                 SEND MESSAGE <ArrowRight size={15} />
               </button>
+              <p className="text-sm text-muted-foreground" style={{ fontFamily: "'Barlow', sans-serif", lineHeight: "1.7" }}>
+                This opens your email app with your enquiry ready to send. If it does not open, email{" "}
+                <a href="mailto:info@hidenhype.com" className="text-accent underline underline-offset-4">info@hidenhype.com</a>.
+              </p>
             </form>
           </motion.div>
         </div>

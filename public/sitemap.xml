@@ -52,4 +52,32 @@
     <loc>https://www.hidenhype.com/sourcing-manufacturing</loc>
     <priority>0.9</priority>
   </url>
+  <url>
+    <loc>https://www.hidenhype.com/products/shadow-oversized-tee</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.hidenhype.com/products/oversized-denim-jacket</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.hidenhype.com/products/urban-fleece-hoodie</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.hidenhype.com/products/hype-cargo-jacket</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.hidenhype.com/products/classic-denim-jeans</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.hidenhype.com/products/performance-shorts</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.hidenhype.com/products/street-layer-longline</loc>
+    <priority>0.7</priority>
+  </url>
 </urlset>

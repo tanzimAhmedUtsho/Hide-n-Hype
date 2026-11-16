@@ -11,6 +11,13 @@
     { "source": "/lookbook", "destination": "/seo-pages/lookbook.html" },
     { "source": "/about", "destination": "/seo-pages/about.html" },
     { "source": "/contact", "destination": "/seo-pages/contact.html" },
-    { "source": "/sourcing-manufacturing", "destination": "/seo-pages/sourcing-manufacturing.html" }
+    { "source": "/sourcing-manufacturing", "destination": "/seo-pages/sourcing-manufacturing.html" },
+    { "source": "/products/shadow-oversized-tee", "destination": "/seo-pages/products--shadow-oversized-tee.html" },
+    { "source": "/products/oversized-denim-jacket", "destination": "/seo-pages/products--oversized-denim-jacket.html" },
+    { "source": "/products/urban-fleece-hoodie", "destination": "/seo-pages/products--urban-fleece-hoodie.html" },
+    { "source": "/products/hype-cargo-jacket", "destination": "/seo-pages/products--hype-cargo-jacket.html" },
+    { "source": "/products/classic-denim-jeans", "destination": "/seo-pages/products--classic-denim-jeans.html" },
+    { "source": "/products/performance-shorts", "destination": "/seo-pages/products--performance-shorts.html" },
+    { "source": "/products/street-layer-longline", "destination": "/seo-pages/products--street-layer-longline.html" }
   ]
 }

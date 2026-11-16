@@ -2,13 +2,12 @@ import { motion } from "motion/react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { Newsletter } from "../components/Newsletter";
 import { CategoryFilter } from "../components/CategoryFilter";
-import performanceShortsImage from "../../imports/performance-shorts.png";
 
 export const performanceShortsProduct = {
   id: 7,
   name: "Performance Shorts",
   tag: "NEW",
-  image: performanceShortsImage,
+  image: "/performance-shorts.jpg",
   alt: "Grey and black performance shorts",
   colorOptions: ["#555", "#1a1a1a"],
 };

@@ -1,7 +1,6 @@
 import { motion } from "motion/react";
 import { Link } from "react-router";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import performanceShortsImage from "../../imports/performance-shorts.png";
 
 const categories = [
   {
@@ -22,7 +21,7 @@ const categories = [
   {
     name: " PERFORMANCE SHORTS",
     count: "4 styles",
-    image: performanceShortsImage,
+    image: "/performance-shorts.jpg",
     alt: "Performance shorts collection",
     span: "col-span-1 row-span-1",
     path: "/collection/men",

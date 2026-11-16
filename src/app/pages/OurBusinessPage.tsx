@@ -4,7 +4,6 @@ import {
   BadgeCheck,
   Boxes,
   CalendarDays,
-  CheckCircle2,
   ClipboardCheck,
   Factory,
   Globe2,
@@ -97,7 +96,7 @@ const capabilities = [
   { title: "Packaging & Shipping", icon: <Truck size={22} /> },
 ];
 
-const certifications = ["OEKO-TEX", "BSCI", "WRAP", "SEDEX", "ISO Certified Factories"];
+const standardsToDiscuss = ["OEKO-TEX", "BSCI", "WRAP", "SEDEX", "ISO"];
 
 const moqDetails = [
   { label: "Basic Apparel", value: "300 pcs/style" },
@@ -461,20 +460,20 @@ export function OurBusinessPage() {
               className="mb-3 block uppercase tracking-[0.35em] text-accent"
               style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "12px", fontWeight: 600 }}
             >
-              Certifications & Compliance
+              Partner Standards & Compliance
             </span>
             <h2
               className="mb-6 text-foreground leading-none"
               style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(38px, 5vw, 70px)", fontWeight: 700, letterSpacing: "-0.01em" }}
             >
-              Built around responsible production
+              Compliance, confirmed per partner
             </h2>
             <p className="text-muted-foreground" style={{ fontFamily: "'Barlow', sans-serif", fontSize: "16px", lineHeight: "1.8", fontWeight: 300 }}>
-              We work with compliant and certified manufacturing partners to ensure quality, sustainability, and ethical production standards.
+              Certification availability varies by factory and production program. Ask us for current documentation relevant to a specific manufacturing partner before confirming an order.
             </p>
           </motion.div>
           <div className="grid gap-3 sm:grid-cols-2">
-            {certifications.map((cert, index) => (
+            {standardsToDiscuss.map((cert, index) => (
               <motion.div
                 key={cert}
                 initial={{ opacity: 0, y: 18 }}
@@ -485,7 +484,7 @@ export function OurBusinessPage() {
               >
                 <div className="flex items-center gap-4">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] bg-accent/12 text-accent">
-                    <CheckCircle2 size={21} />
+                    <ShieldCheck size={21} />
                   </div>
                   <span
                     className="block text-foreground/95"

@@ -3,6 +3,7 @@ import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { pageMetadata, siteUrl, socialImageUrl } from './src/app/seoMetadata'
+import { existsSync } from 'node:fs'
 
 function escapeHtml(value: string) {
   return value.replace(/[&<>"']/g, (character) => ({
@@ -35,6 +36,7 @@ function routeMetadataHtml() {
     async writeBundle(options) {
       const outDir = options.dir ?? path.resolve(__dirname, 'dist')
       const indexPath = path.join(outDir, 'index.html')
+      if (!existsSync(indexPath)) return
       const baseHtml = await import('node:fs/promises').then(({ readFile }) => readFile(indexPath, 'utf8'))
       const { writeFile, mkdir } = await import('node:fs/promises')
 

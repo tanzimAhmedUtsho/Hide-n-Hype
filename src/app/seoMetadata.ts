@@ -1,3 +1,5 @@
+import { newArrivalProducts } from "./productCatalog";
+
 export const siteUrl = "https://www.hidenhype.com";
 export const socialImageUrl = `${siteUrl}/hnh-social-preview.png`;
 
@@ -61,3 +63,10 @@ export const pageMetadata: Record<string, { title: string; description: string }
       "Hide n Hype supports global buyers with apparel sourcing, manufacturing, sampling, quality control, and export coordination from Bangladesh.",
   },
 };
+
+for (const product of newArrivalProducts) {
+  pageMetadata[`/products/${product.slug}`] = {
+    title: `${product.name} | Hide n Hype`,
+    description: `Discover the ${product.name}, a ${product.category.toLowerCase()} style in the Hide n Hype collection. Contact us for current product options and availability.`,
+  };
+}

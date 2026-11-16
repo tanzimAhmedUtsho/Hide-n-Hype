@@ -1,67 +1,9 @@
 import { motion } from "motion/react";
+import { Link } from "react-router";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import performanceShortsImage from "../../imports/performance-shorts.png";
+import { newArrivalProducts, type CatalogProduct } from "../productCatalog";
 
-const products = [
-  {
-    id: 1,
-    name: "Shadow Oversized Tee",
-    tag: "NEW",
-    image: "https://images.unsplash.com/photo-1779040620684-17e2384f2f1e?w=600&h=750&fit=crop&auto=format",
-    alt: "Dark graphic oversized t-shirt streetwear",
-    colorOptions: ["#1a1a1a", "#f0ebe0", "#c8a84b"],
-  },
-  {
-    id: 6,
-    name: "Oversized Denim Jacket",
-    tag: "NEW",
-    image: "https://images.unsplash.com/photo-1543076447-215ad9ba6923?w=600&h=750&fit=crop&auto=format",
-    alt: "Blue denim jacket",
-    colorOptions: ["#41678a", "#1a1a1a"],
-  },
-  {
-    id: 2,
-    name: "Urban Fleece Hoodie",
-    tag: "SALE",
-    image: "https://images.unsplash.com/photo-1564557287817-3785e38ec1f5?w=600&h=750&fit=crop&auto=format",
-    alt: "Grey oversized hoodie streetwear fashion",
-    colorOptions: ["#555", "#1a1a1a", "#8b7355"],
-  },
-  {
-    id: 3,
-    name: "Hype Cargo Jacket",
-    tag: "NEW",
-    image: "https://images.unsplash.com/photo-1554925051-f668ed70d520?w=600&h=750&fit=crop&auto=format",
-    alt: "Orange and black cargo jacket streetwear",
-    colorOptions: ["#c84b1a", "#1a1a1a"],
-  },
-  {
-    id: 5,
-    name: "Classic Denim Jeans",
-    tag: "NEW",
-    image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&h=750&fit=crop&auto=format",
-    alt: "Classic blue denim jeans",
-    colorOptions: ["#41678a", "#1a1a1a", "#a9a9a9"],
-  },
-  {
-    id: 7,
-    name: "Performance Shorts",
-    tag: "NEW",
-    image: performanceShortsImage,
-    alt: "Grey and black performance shorts",
-    colorOptions: ["#555", "#1a1a1a"],
-  },
-  {
-    id: 4,
-    name: "Street Layer Longline",
-    tag: "HOT",
-    image: "https://images.unsplash.com/photo-1532074198010-97d0c3700b7a?w=600&h=750&fit=crop&auto=format",
-    alt: "Man in minimal streetwear against white wall",
-    colorOptions: ["#f0ebe0", "#1a1a1a", "#2d3748"],
-  },
-];
-
-function ProductCard({ product, index }: { product: typeof products[0]; index: number }) {
+function ProductCard({ product, index }: { product: CatalogProduct; index: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -72,11 +14,13 @@ function ProductCard({ product, index }: { product: typeof products[0]; index: n
     >
       {/* Image container */}
       <div className="relative overflow-hidden bg-card aspect-[3/4]">
-        <ImageWithFallback
-          src={product.image}
-          alt={product.alt}
-          className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-        />
+        <Link to={`/products/${product.slug}`} aria-label={`View ${product.name}`} className="block h-full w-full">
+          <ImageWithFallback
+            src={product.image}
+            alt={product.alt}
+            className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+          />
+        </Link>
 
         {/*
         <div
@@ -116,12 +60,14 @@ function ProductCard({ product, index }: { product: typeof products[0]; index: n
 
       {/* Product info */}
       <div className="pt-3">
+        <Link to={`/products/${product.slug}`} className="inline-block">
         <h3
           className="text-foreground mb-1"
           style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "16px", fontWeight: 700, letterSpacing: "0.05em" }}
         >
           {product.name}
         </h3>
+        </Link>
         {/* Color swatches */}
         <div className="flex gap-1.5 mt-2">
           {product.colorOptions.map((color, i) => (
@@ -157,18 +103,18 @@ export function NewArrivals() {
             NEW ARRIVALS
           </h2>
         </div>
-        <a
-          href="#"
+        <Link
+          to="/collection"
           className="text-muted-foreground hover:text-accent transition-colors tracking-widest underline underline-offset-4"
           style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "13px", fontWeight: 600 }}
         >
           VIEW ALL PRODUCTS →
-        </a>
+        </Link>
       </div>
 
       {/* Products grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-        {products.map((product, i) => (
+        {newArrivalProducts.map((product, i) => (
           <ProductCard key={product.id} product={product} index={i} />
         ))}
       </div>
