@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import {
   ArrowRight,
   BadgeCheck,
@@ -196,22 +195,6 @@ function InfoCard({ title, items }: { title: string; items: typeof moqDetails })
 }
 
 export function SourcingManufacturingPage() {
-  useEffect(() => {
-    document.title = "Sourcing & Manufacturing | Hide n Hype";
-
-    const description =
-      "Hide n Hype provides premium apparel sourcing, manufacturing, activewear production, OEM/ODM, sampling, QC, and export support from Bangladesh.";
-    let meta = document.querySelector('meta[name="description"]');
-
-    if (!meta) {
-      meta = document.createElement("meta");
-      meta.setAttribute("name", "description");
-      document.head.appendChild(meta);
-    }
-
-    meta.setAttribute("content", description);
-  }, []);
-
   return (
     <div className="overflow-hidden bg-background">
       <section className="relative min-h-screen w-full overflow-hidden">

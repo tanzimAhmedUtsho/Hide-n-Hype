@@ -1,16 +1,16 @@
 {
   "rewrites": [
-    { "source": "/new-arrivals", "destination": "/" },
-    { "source": "/collection", "destination": "/" },
-    { "source": "/collection/men", "destination": "/" },
-    { "source": "/collection/women", "destination": "/" },
-    { "source": "/collection/kids", "destination": "/" },
-    { "source": "/collection/accessories", "destination": "/" },
-    { "source": "/collection/leather", "destination": "/" },
-    { "source": "/collection/denim", "destination": "/" },
-    { "source": "/lookbook", "destination": "/" },
-    { "source": "/about", "destination": "/" },
-    { "source": "/contact", "destination": "/" },
-    { "source": "/sourcing-manufacturing", "destination": "/" }
+    { "source": "/new-arrivals", "destination": "/seo-pages/new-arrivals.html" },
+    { "source": "/collection", "destination": "/seo-pages/collection.html" },
+    { "source": "/collection/men", "destination": "/seo-pages/collection--men.html" },
+    { "source": "/collection/women", "destination": "/seo-pages/collection--women.html" },
+    { "source": "/collection/kids", "destination": "/seo-pages/collection--kids.html" },
+    { "source": "/collection/accessories", "destination": "/seo-pages/collection--accessories.html" },
+    { "source": "/collection/leather", "destination": "/seo-pages/collection--leather.html" },
+    { "source": "/collection/denim", "destination": "/seo-pages/collection--denim.html" },
+    { "source": "/lookbook", "destination": "/seo-pages/lookbook.html" },
+    { "source": "/about", "destination": "/seo-pages/about.html" },
+    { "source": "/contact", "destination": "/seo-pages/contact.html" },
+    { "source": "/sourcing-manufacturing", "destination": "/seo-pages/sourcing-manufacturing.html" }
   ]
 }
