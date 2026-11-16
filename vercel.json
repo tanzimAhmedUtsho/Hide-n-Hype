@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    { "source": "/new-arrivals", "destination": "/" },
+    { "source": "/collection", "destination": "/" },
+    { "source": "/collection/men", "destination": "/" },
+    { "source": "/collection/women", "destination": "/" },
+    { "source": "/collection/kids", "destination": "/" },
+    { "source": "/collection/accessories", "destination": "/" },
+    { "source": "/collection/leather", "destination": "/" },
+    { "source": "/collection/denim", "destination": "/" },
+    { "source": "/lookbook", "destination": "/" },
+    { "source": "/about", "destination": "/" },
+    { "source": "/contact", "destination": "/" },
+    { "source": "/sourcing-manufacturing", "destination": "/" }
+  ]
+}
