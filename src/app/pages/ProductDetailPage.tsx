@@ -52,18 +52,18 @@ export function ProductDetailPage() {
           <ArrowLeft size={16} /> {product.category === "Riding Gear" ? "Back to riding gear" : "Back to new arrivals"}
         </Link>
 
-        <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:items-center lg:gap-14">
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55 }}
-            className={product.category === "Riding Gear" ? "overflow-hidden bg-[#e7e6e2]" : "overflow-hidden bg-card"}
+            className={`mx-auto w-full max-w-[430px] overflow-hidden rounded-[8px] border border-border/20 ${product.category === "Riding Gear" ? "bg-[#e7e6e2]" : "bg-card"}`}
           >
-            <div className="aspect-[4/5]">
+            <div className="aspect-[4/4.6]">
               <ImageWithFallback src={activeImage} alt={product.alt} className={`h-full w-full ${product.category === "Riding Gear" ? "object-contain mix-blend-multiply" : "object-cover object-top"}`} />
             </div>
             {productImages.length > 1 && (
-              <div className="grid grid-cols-2 gap-2 p-2">
+              <div className="grid grid-cols-2 gap-2 border-t border-black/10 p-2">
                 {productImages.map((image, index) => (
                   <button
                     key={image}
@@ -71,7 +71,7 @@ export function ProductDetailPage() {
                     onClick={() => setActiveImageIndex(index)}
                     aria-label={`View image ${index + 1} for ${product.name}`}
                     aria-pressed={activeImageIndex === index}
-                    className={`aspect-[4/3] overflow-hidden border-2 bg-[#e7e6e2] transition-colors ${activeImageIndex === index ? "border-accent" : "border-transparent hover:border-accent/50"}`}
+                    className={`aspect-[4/3] overflow-hidden rounded-[4px] border-2 bg-[#e7e6e2] transition-colors ${activeImageIndex === index ? "border-accent" : "border-transparent hover:border-accent/50"}`}
                   >
                     <ImageWithFallback src={image} alt={`${product.alt} — view ${index + 1}`} className="h-full w-full object-contain mix-blend-multiply" />
                   </button>
