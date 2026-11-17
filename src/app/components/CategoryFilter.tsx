@@ -9,9 +9,9 @@ const categories = [
   { label: "Women", path: "/collection/women" },
   { label: "Kids", path: "/collection/kids" },
   { label: "Denim", path: "/collection/denim" },
+  { label: "Riding Gear", path: "/collection/riding-gear" },
   { label: "Accessories", path: "/collection/accessories" },
   { label: "Leather Items", path: "/collection/leather" },
-  { label: "Riding Gear", path: "/collection/riding-gear" },
 ];
 
 interface CategoryFilterProps {

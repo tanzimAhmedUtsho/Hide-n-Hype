@@ -27,9 +27,9 @@ const searchableCategories = [
   { name: "Women", path: "/collection/women" },
   { name: "Kids", path: "/collection/kids" },
   { name: "Denim", path: "/collection/denim" },
+  { name: "Riding Gear", path: "/collection/riding-gear" },
   { name: "Accessories", path: "/collection/accessories" },
   { name: "Leather Items", path: "/collection/leather" },
-  { name: "Riding Gear", path: "/collection/riding-gear" },
   { name: "All Collection", path: "/collection" },
 ];
 
@@ -125,9 +125,9 @@ export function Navbar() {
     { label: "Women", path: "/collection/women" },
     { label: "Kids", path: "/collection/kids" },
     { label: "Denim", path: "/collection/denim" },
+    { label: "Riding Gear", path: "/collection/riding-gear" },
     { label: "Accessories", path: "/collection/accessories" },
     { label: "Leather Items", path: "/collection/leather" },
-    { label: "Riding Gear", path: "/collection/riding-gear" },
   ];
 
   return (
