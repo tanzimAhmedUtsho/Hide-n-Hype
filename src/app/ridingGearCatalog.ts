@@ -47,7 +47,7 @@ export const ridingGearProducts = ridingGearItems.map(([name, description], inde
   const imagePath = (imageId: number) => `/riding-gear/riding-gear-${String(imageId).padStart(2, "0")}.jpeg`;
   const images = (galleryImagesById[id] ?? [id]).map(imagePath);
 
-  return {
+  const product = {
     id,
     name,
     slug: `riding-gear-${String(id).padStart(2, "0")}`,
@@ -58,4 +58,18 @@ export const ridingGearProducts = ridingGearItems.map(([name, description], inde
     alt: description,
     colorOptions: ["#171717", "#73766b", "#c72b37"],
   };
-}).filter((product) => ![2, 5, 7, 13, 17, 20, 24, 26, 30].includes(product.id));
+
+  if (id === 6) {
+    return {
+      ...product,
+      name: "Mesh Riding Jacket",
+      alt: "Ventilated mesh riding jacket with contrast color panels and reflective branding.",
+      variants: [
+        { name: "Navy", color: "#263a5b", images: [imagePath(6)] },
+        { name: "Hi-Vis", color: "#d8ee32", images: [imagePath(19)] },
+      ],
+    };
+  }
+
+  return product;
+}).filter((product) => ![2, 5, 7, 13, 17, 19, 20, 24, 26, 30].includes(product.id));

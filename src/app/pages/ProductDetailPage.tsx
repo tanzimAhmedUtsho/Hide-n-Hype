@@ -27,7 +27,11 @@ export function ProductDetailPage() {
   const { slug } = useParams();
   const product = productDetails.find((item) => item.slug === slug);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
-  useEffect(() => setActiveImageIndex(0), [slug]);
+  const [activeVariantIndex, setActiveVariantIndex] = useState(0);
+  useEffect(() => {
+    setActiveImageIndex(0);
+    setActiveVariantIndex(0);
+  }, [slug]);
 
   if (!product) {
     return (
@@ -42,7 +46,8 @@ export function ProductDetailPage() {
     );
   }
 
-  const productImages = "images" in product ? product.images : [product.image];
+  const productVariants = "variants" in product ? product.variants : undefined;
+  const productImages = productVariants?.[activeVariantIndex]?.images ?? ("images" in product ? product.images : [product.image]);
   const activeImage = productImages[activeImageIndex] ?? productImages[0];
 
   return (
@@ -100,7 +105,22 @@ export function ProductDetailPage() {
                 Color options shown
               </h2>
               <div className="mt-4 flex flex-wrap gap-3" aria-label="Colors shown in product imagery">
-                {product.colorOptions.map((color, index) => (
+                {productVariants ? productVariants.map((variant, index) => (
+                  <button
+                    key={variant.name}
+                    type="button"
+                    onClick={() => {
+                      setActiveVariantIndex(index);
+                      setActiveImageIndex(0);
+                    }}
+                    aria-label={`Show ${variant.name} color`}
+                    aria-pressed={activeVariantIndex === index}
+                    className={`flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs transition-colors ${activeVariantIndex === index ? "border-accent text-foreground" : "border-border/50 text-muted-foreground hover:border-accent/60"}`}
+                  >
+                    <span className="h-4 w-4 rounded-full border border-white/20" style={{ backgroundColor: variant.color }} />
+                    {variant.name}
+                  </button>
+                )) : product.colorOptions.map((color, index) => (
                   <span key={`${color}-${index}`} className="h-7 w-7 rounded-full border border-white/25" style={{ backgroundColor: color }} />
                 ))}
               </div>
