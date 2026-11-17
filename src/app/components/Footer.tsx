@@ -8,7 +8,7 @@ const footerLinks = {
     // { label: "Sale", path: "/sale" },
   ],
   HELP: [
-    { label: "FAQ", path: "#" },
+    { label: "FAQ", path: "/faq" },
     { label: "Shipping & Returns", path: "#" },
     { label: "Size Guide", path: "#" },
     { label: "Track Order", path: "#" },

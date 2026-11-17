@@ -15,6 +15,7 @@ import { ContactPage } from "./pages/ContactPage";
 import { OurBusinessPage } from "./pages/OurBusinessPage";
 import { ProductDetailPage } from "./pages/ProductDetailPage";
 import { RidingGearPage } from "./pages/RidingGearPage";
+import { FaqPage } from "./pages/FaqPage";
 
 export const routeConfig: RouteObject[] = [
   {
@@ -34,6 +35,7 @@ export const routeConfig: RouteObject[] = [
       { path: "lookbook", Component: LookbookPage },
       { path: "about", Component: AboutPage },
       { path: "contact", Component: ContactPage },
+      { path: "faq", Component: FaqPage },
       { path: "sourcing-manufacturing", Component: OurBusinessPage },
       { path: "products/:slug", Component: ProductDetailPage },
     ],
