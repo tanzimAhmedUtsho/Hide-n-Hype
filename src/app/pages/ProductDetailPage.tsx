@@ -67,7 +67,9 @@ export function ProductDetailPage() {
 
   const productVariants = "variants" in product ? product.variants : undefined;
   const productImages = productVariants?.[activeVariantIndex]?.images ?? ("images" in product ? product.images : [product.image]);
+  const productImageBackgrounds = productVariants?.[activeVariantIndex]?.backgrounds ?? ("imageBackgrounds" in product ? product.imageBackgrounds : []);
   const activeImage = productImages[activeImageIndex] ?? productImages[0];
+  const activeImageBackground = productImageBackgrounds[activeImageIndex] ?? "#f3f3f3";
 
   return (
     <main className="px-6 pb-20 pt-28 md:px-16 md:pt-36">
@@ -81,10 +83,11 @@ export function ProductDetailPage() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55 }}
-            className={`mx-auto w-full max-w-[430px] overflow-hidden rounded-[8px] border border-border/20 ${product.category === "Riding Gear" ? "bg-[#e7e6e2]" : "bg-card"}`}
+            className={`mx-auto w-full max-w-[430px] overflow-hidden rounded-[8px] border border-border/20 ${product.category === "Riding Gear" ? "" : "bg-card"}`}
+            style={product.category === "Riding Gear" ? { backgroundColor: activeImageBackground } : undefined}
           >
             <div className="aspect-[4/4.6]">
-              <ImageWithFallback src={activeImage} alt={product.alt} className={`h-full w-full ${product.category === "Riding Gear" ? "object-contain mix-blend-multiply" : "object-cover object-top"}`} />
+              <ImageWithFallback src={activeImage} alt={product.alt} className={`h-full w-full ${product.category === "Riding Gear" ? "object-contain" : "object-cover object-top"}`} />
             </div>
             {productImages.length > 1 && (
               <div className="grid grid-cols-2 gap-2 border-t border-black/10 p-2">
@@ -95,9 +98,10 @@ export function ProductDetailPage() {
                     onClick={() => setActiveImageIndex(index)}
                     aria-label={`View image ${index + 1} for ${product.name}`}
                     aria-pressed={activeImageIndex === index}
-                    className={`aspect-[4/3] overflow-hidden rounded-[4px] border-2 bg-[#e7e6e2] transition-colors ${activeImageIndex === index ? "border-accent" : "border-transparent hover:border-accent/50"}`}
+                    className={`aspect-[4/3] overflow-hidden rounded-[4px] border-2 transition-colors ${activeImageIndex === index ? "border-accent" : "border-transparent hover:border-accent/50"}`}
+                    style={{ backgroundColor: productImageBackgrounds[index] ?? "#f3f3f3" }}
                   >
-                    <ImageWithFallback src={image} alt={`${product.alt} — view ${index + 1}`} className="h-full w-full object-contain mix-blend-multiply" />
+                    <ImageWithFallback src={image} alt={`${product.alt} — view ${index + 1}`} className="h-full w-full object-contain" />
                   </button>
                 ))}
               </div>

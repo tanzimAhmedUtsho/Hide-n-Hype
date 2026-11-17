@@ -36,8 +36,8 @@ export function RidingGearPage() {
               className="group"
             >
               <Link to={`/products/${product.slug}`} aria-label={`View details for ${product.name}`} className="block">
-                <div className="aspect-[3/4] overflow-hidden bg-[#e7e6e2]">
-                  <ImageWithFallback src={product.image} alt={product.alt} loading="lazy" className="h-full w-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-[1.03]" />
+                <div className="aspect-[3/4] overflow-hidden" style={{ backgroundColor: product.imageBackgrounds[0] }}>
+                  <ImageWithFallback src={product.image} alt={product.alt} loading="lazy" className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.03]" />
                 </div>
                 <div className="pt-3">
                   <h2 className="text-foreground transition-colors group-hover:text-accent" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "18px", fontWeight: 700, letterSpacing: "0.025em" }}>
