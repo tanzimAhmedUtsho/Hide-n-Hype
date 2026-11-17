@@ -17,6 +17,7 @@ import { ProductDetailPage } from "./pages/ProductDetailPage";
 import { RidingGearPage } from "./pages/RidingGearPage";
 import { FaqPage } from "./pages/FaqPage";
 import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
+import { CookiePolicyPage } from "./pages/CookiePolicyPage";
 
 export const routeConfig: RouteObject[] = [
   {
@@ -38,6 +39,7 @@ export const routeConfig: RouteObject[] = [
       { path: "contact", Component: ContactPage },
       { path: "faq", Component: FaqPage },
       { path: "privacy-policy", Component: PrivacyPolicyPage },
+      { path: "cookie-policy", Component: CookiePolicyPage },
       { path: "sourcing-manufacturing", Component: OurBusinessPage },
       { path: "products/:slug", Component: ProductDetailPage },
     ],

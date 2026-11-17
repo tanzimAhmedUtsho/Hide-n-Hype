@@ -65,6 +65,10 @@ export const pageMetadata: Record<string, { title: string; description: string }
     title: "Privacy Policy | Hide n Hype",
     description: "Learn how Hide n Hype handles personal information across its Finland and Bangladesh operations.",
   },
+  "/cookie-policy": {
+    title: "Cookie Policy | Hide n Hype",
+    description: "Learn how Hide n Hype uses essential browser storage and consent-based Google Analytics.",
+  },
   "/sourcing-manufacturing": {
     title: "Apparel Sourcing & Manufacturing in Bangladesh | Hide n Hype",
     description:

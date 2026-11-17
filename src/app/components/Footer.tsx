@@ -122,12 +122,21 @@ export function Footer() {
         >
           © 2026 Hide n Hype. All rights reserved.
         </span>
-        <div className="flex gap-6">
+        <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
           {["Privacy Policy", "Terms of Service", "Cookie Policy"].map((item) =>
             item === "Privacy Policy" ? (
               <Link
                 key={item}
                 to="/privacy-policy"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+                style={{ fontFamily: "'Barlow', sans-serif", fontSize: "12px" }}
+              >
+                {item}
+              </Link>
+            ) : item === "Cookie Policy" ? (
+              <Link
+                key={item}
+                to="/cookie-policy"
                 className="text-muted-foreground hover:text-foreground transition-colors"
                 style={{ fontFamily: "'Barlow', sans-serif", fontSize: "12px" }}
               >
@@ -144,6 +153,14 @@ export function Footer() {
               </a>
             ),
           )}
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new Event("hnh:open-cookie-settings"))}
+            className="text-muted-foreground hover:text-foreground transition-colors"
+            style={{ fontFamily: "'Barlow', sans-serif", fontSize: "12px" }}
+          >
+            Cookie Settings
+          </button>
         </div>
       </div>
     </footer>
