@@ -1,18 +1,16 @@
 const ridingGearItems = [
-  ["Armored Riding Pants – Front", "Riding pants with knee panels, adjustable waist tabs, and reflective red accents."],
-  ["Armored Riding Pants – Rear", "Rear view of technical riding pants with stretch panels and adjustable ankle tabs."],
+  ["Armored Riding Pants", "Technical riding pants with knee panels, adjustable waist tabs, and reflective red accents."],
   ["Quilted Lining Riding Jacket", "Riding jacket showing a quilted lining and bright contrast inner panel."],
-  ["Touring Jacket – Olive Rear", "Touring jacket with olive shoulder panels, reflective detailing, and adjustable cuffs."],
-  ["Touring Jacket – Olive Front", "Olive and charcoal touring jacket with adjustable fit and reflective detailing."],
+  ["Touring Jacket – Olive", "Olive and charcoal touring jacket with reflective detailing and an adjustable fit."],
   ["Mesh Riding Jacket – Navy", "Black mesh riding jacket with navy panels and adjustable sleeve tabs."],
   ["Mesh Riding Jacket – Black", "Black ventilated mesh riding jacket with reflective chest branding."],
   ["Leather Riding Jacket – Black and White", "Black and white color-block leather riding jacket with zip front."],
   ["Mesh Riding Jacket – Red", "Red and black ventilated riding jacket with contrast panels."],
   ["Mesh Riding Jacket – Stealth Black", "Minimal all-black mesh riding jacket with a clean technical finish."],
-  ["Touring Jacket – Olive Back Detail", "Rear view of an olive touring jacket with padded panels and reflective accents."],
+  ["Olive W5 Touring Jacket", "Olive touring jacket with padded panels, reflective accents, and an adjustable fit."],
   ["Sport Riding Jacket – Red White and Black", "Sport riding jacket with red, white, and black panels and shoulder protection."],
   ["Touring Jacket – Olive Utility", "Olive touring jacket with zip pockets, reinforced elbows, and adjustable cuffs."],
-  ["Mesh Riding Jacket – White Rear", "Rear view of a white and black ventilated riding jacket with red accents."],
+  ["Mesh Riding Jacket – White and Black", "White and black ventilated riding jacket with red contrast trim."],
   ["Leather Riding Jacket – Black Detail", "Close view of a black leather riding jacket with reflective chest graphics."],
   ["Armored Leather Riding Jacket", "Black leather riding jacket with structured shoulder protection and zip pockets."],
   ["Mesh Riding Jacket – White and Black", "White and black ventilated riding jacket with red contrast trim."],
@@ -37,13 +35,27 @@ const ridingGearItems = [
   ["Two-Piece Rain Suit – Black Detail", "Black hooded rain jacket and trousers with reflective branding."],
 ] as const;
 
-export const ridingGearProducts = ridingGearItems.map(([name, description], index) => ({
-  id: index + 1,
-  name,
-  slug: `riding-gear-${String(index + 1).padStart(2, "0")}`,
-  category: "Riding Gear",
-  tag: "NEW",
-  image: `/riding-gear/riding-gear-${String(index + 1).padStart(2, "0")}.jpeg`,
-  alt: description,
-  colorOptions: ["#171717", "#73766b", "#c72b37"],
-})).filter((product) => ![7, 20, 24, 26, 30].includes(product.id));
+const galleryImagesById: Record<number, number[]> = {
+  1: [1, 2],
+  4: [5, 4],
+  11: [13, 11],
+  14: [17, 14],
+};
+
+export const ridingGearProducts = ridingGearItems.map(([name, description], index) => {
+  const id = index + 1;
+  const imagePath = (imageId: number) => `/riding-gear/riding-gear-${String(imageId).padStart(2, "0")}.jpeg`;
+  const images = (galleryImagesById[id] ?? [id]).map(imagePath);
+
+  return {
+    id,
+    name,
+    slug: `riding-gear-${String(id).padStart(2, "0")}`,
+    category: "Riding Gear",
+    tag: "NEW",
+    image: images[0],
+    images,
+    alt: description,
+    colorOptions: ["#171717", "#73766b", "#c72b37"],
+  };
+}).filter((product) => ![2, 5, 7, 13, 17, 20, 24, 26, 30].includes(product.id));

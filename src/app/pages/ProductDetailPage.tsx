@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
 import { Link, useParams } from "react-router";
@@ -25,6 +26,8 @@ const productDetails = [
 export function ProductDetailPage() {
   const { slug } = useParams();
   const product = productDetails.find((item) => item.slug === slug);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  useEffect(() => setActiveImageIndex(0), [slug]);
 
   if (!product) {
     return (
@@ -38,6 +41,9 @@ export function ProductDetailPage() {
       </main>
     );
   }
+
+  const productImages = "images" in product ? product.images : [product.image];
+  const activeImage = productImages[activeImageIndex] ?? productImages[0];
 
   return (
     <main className="px-6 pb-20 pt-28 md:px-16 md:pt-36">
@@ -54,8 +60,24 @@ export function ProductDetailPage() {
             className={product.category === "Riding Gear" ? "overflow-hidden bg-[#e7e6e2]" : "overflow-hidden bg-card"}
           >
             <div className="aspect-[4/5]">
-              <ImageWithFallback src={product.image} alt={product.alt} className={`h-full w-full ${product.category === "Riding Gear" ? "object-contain mix-blend-multiply" : "object-cover object-top"}`} />
+              <ImageWithFallback src={activeImage} alt={product.alt} className={`h-full w-full ${product.category === "Riding Gear" ? "object-contain mix-blend-multiply" : "object-cover object-top"}`} />
             </div>
+            {productImages.length > 1 && (
+              <div className="grid grid-cols-2 gap-2 p-2">
+                {productImages.map((image, index) => (
+                  <button
+                    key={image}
+                    type="button"
+                    onClick={() => setActiveImageIndex(index)}
+                    aria-label={`View image ${index + 1} for ${product.name}`}
+                    aria-pressed={activeImageIndex === index}
+                    className={`aspect-[4/3] overflow-hidden border-2 bg-[#e7e6e2] transition-colors ${activeImageIndex === index ? "border-accent" : "border-transparent hover:border-accent/50"}`}
+                  >
+                    <ImageWithFallback src={image} alt={`${product.alt} — view ${index + 1}`} className="h-full w-full object-contain mix-blend-multiply" />
+                  </button>
+                ))}
+              </div>
+            )}
           </motion.div>
 
           <motion.section
