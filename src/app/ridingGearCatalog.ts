@@ -46,4 +46,4 @@ export const ridingGearProducts = ridingGearItems.map(([name, description], inde
   image: `/riding-gear/riding-gear-${String(index + 1).padStart(2, "0")}.jpeg`,
   alt: description,
   colorOptions: ["#171717", "#73766b", "#c72b37"],
-}));
+})).filter((product) => ![7, 20, 24, 26, 30].includes(product.id));
