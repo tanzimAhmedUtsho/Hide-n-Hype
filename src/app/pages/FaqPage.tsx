@@ -27,7 +27,7 @@ const faqGroups = [
     questions: [
       {
         question: "What is the minimum order quantity (MOQ)?",
-        answer: "Our current guide is 300 pieces per style for basic apparel and 500 pieces per style for activewear. Custom production quantities can be discussed for your program.",
+        answer: "Our current guide is 500 pieces per style for both basic apparel and activewear. Custom production quantities can be discussed for your program.",
       },
       {
         question: "What are the sampling and production lead times?",

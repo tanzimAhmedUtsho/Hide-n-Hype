@@ -99,7 +99,7 @@ const capabilities = [
 const standardsToDiscuss = ["OEKO-TEX", "BSCI", "WRAP", "SEDEX", "ISO"];
 
 const moqDetails = [
-  { label: "Basic Apparel", value: "300 pcs/style" },
+  { label: "Basic Apparel", value: "500 pcs/style" },
   { label: "Activewear", value: "500 pcs/style" },
   { label: "Custom Production", value: "Negotiable" },
 ];

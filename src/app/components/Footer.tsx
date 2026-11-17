@@ -123,16 +123,27 @@ export function Footer() {
           © 2026 Hide n Hype. All rights reserved.
         </span>
         <div className="flex gap-6">
-          {["Privacy Policy", "Terms of Service", "Cookie Policy"].map((item) => (
-            <a
-              key={item}
-              href="#"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-              style={{ fontFamily: "'Barlow', sans-serif", fontSize: "12px" }}
-            >
-              {item}
-            </a>
-          ))}
+          {["Privacy Policy", "Terms of Service", "Cookie Policy"].map((item) =>
+            item === "Privacy Policy" ? (
+              <Link
+                key={item}
+                to="/privacy-policy"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+                style={{ fontFamily: "'Barlow', sans-serif", fontSize: "12px" }}
+              >
+                {item}
+              </Link>
+            ) : (
+              <a
+                key={item}
+                href="#"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+                style={{ fontFamily: "'Barlow', sans-serif", fontSize: "12px" }}
+              >
+                {item}
+              </a>
+            ),
+          )}
         </div>
       </div>
     </footer>

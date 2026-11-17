@@ -61,6 +61,10 @@ export const pageMetadata: Record<string, { title: string; description: string }
     title: "Frequently Asked Questions | Hide n Hype",
     description: "Find answers about Hide n Hype product enquiries, apparel sourcing, manufacturing, order quantities, and lead times.",
   },
+  "/privacy-policy": {
+    title: "Privacy Policy | Hide n Hype",
+    description: "Learn how Hide n Hype handles personal information across its Finland and Bangladesh operations.",
+  },
   "/sourcing-manufacturing": {
     title: "Apparel Sourcing & Manufacturing in Bangladesh | Hide n Hype",
     description:
