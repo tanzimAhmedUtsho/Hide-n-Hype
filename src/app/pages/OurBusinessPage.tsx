@@ -416,7 +416,7 @@ export function OurBusinessPage() {
         </div>
       </section>
 
-      <section className="border-y border-border/25 bg-[#0b0b0b] px-6 py-16 md:px-16">
+      <section className="border-y border-border/25 bg-[#0b0b0b] px-6 py-12 md:px-16 md:py-14">
         <div className="mx-auto max-w-7xl">
           <SectionHeader
             eyebrow="Capabilities"
@@ -431,29 +431,29 @@ export function OurBusinessPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.45, delay: index * 0.04 }}
-                className="group rounded-[8px] border border-border/30 bg-background/45 p-5 transition-colors duration-300 hover:border-accent/55 hover:bg-background/75"
+                className="group flex min-h-[92px] items-center gap-4 rounded-[8px] border border-border/30 bg-background/45 p-4 transition-colors duration-300 hover:border-accent/55 hover:bg-background/75"
               >
-                <div className="mb-5 flex items-center justify-between gap-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-[8px] bg-accent/12 text-accent transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] bg-accent/12 text-accent transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
                     {item.icon}
-                  </div>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-foreground/95" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "20px", fontWeight: 600, letterSpacing: "0.025em" }}>
+                    {item.title}
+                  </h3>
+                </div>
                   <span
-                    className="text-muted-foreground/55"
+                    className="text-muted-foreground/45"
                     style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.08em" }}
                   >
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                </div>
-                <h3 className="text-foreground/95" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "21px", fontWeight: 600, letterSpacing: "0.04em" }}>
-                  {item.title}
-                </h3>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="px-6 py-20 md:px-16">
+      <section className="px-6 py-12 md:px-16 md:py-14">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
             <span
@@ -480,7 +480,7 @@ export function OurBusinessPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.45, delay: index * 0.06 }}
-                className="flex min-h-24 items-center rounded-[8px] border border-border/30 bg-card/35 p-5 transition-colors hover:border-accent/50"
+                className="flex min-h-[76px] items-center rounded-[8px] border border-border/30 bg-card/35 p-4 transition-colors hover:border-accent/50"
               >
                 <div className="flex items-center gap-4">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] bg-accent/12 text-accent">
@@ -499,7 +499,7 @@ export function OurBusinessPage() {
         </div>
       </section>
 
-      <section className="bg-[#0b0b0b] px-6 py-16 md:px-16">
+      <section className="bg-[#0b0b0b] px-6 py-12 md:px-16 md:py-14">
         <div className="mx-auto max-w-7xl">
           <SectionHeader
             eyebrow="MOQ & Lead Time"
@@ -516,7 +516,7 @@ export function OurBusinessPage() {
         </div>
       </section>
 
-      <section className="px-6 py-16 md:px-16">
+      <section className="px-6 py-12 md:px-16 md:py-14">
         <div className="mx-auto max-w-7xl">
           <SectionHeader
             eyebrow="Why Choose Hide n Hype"
@@ -531,12 +531,12 @@ export function OurBusinessPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.45, delay: index * 0.05 }}
-                className="group flex min-h-24 items-center gap-4 rounded-[8px] border border-border/30 bg-card/30 p-5 transition-colors hover:border-accent/50 hover:bg-card/55"
+                className="group flex min-h-[76px] items-center gap-4 rounded-[8px] border border-border/30 bg-card/30 p-4 transition-colors hover:border-accent/50 hover:bg-card/55"
               >
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[8px] bg-accent/12 text-accent transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] bg-accent/12 text-accent transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
                   {point.icon}
                 </div>
-                <h3 className="text-foreground/95" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "23px", fontWeight: 600, letterSpacing: "0.04em" }}>
+                <h3 className="text-foreground/95" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "21px", fontWeight: 600, letterSpacing: "0.035em" }}>
                   {point.title}
                 </h3>
               </motion.div>
