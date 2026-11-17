@@ -23,6 +23,25 @@ const productDetails = [
   ...ridingGearProducts,
 ].filter((product, index, products) => products.findIndex((candidate) => candidate.slug === product.slug) === index);
 
+function colorLabel(color: string) {
+  const labels: Record<string, string> = {
+    "#1a1a1a": "Black",
+    "#171717": "Black",
+    "#f0ebe0": "Off White",
+    "#c8a84b": "Gold",
+    "#41678a": "Denim Blue",
+    "#555": "Charcoal",
+    "#8b7355": "Brown",
+    "#c84b1a": "Rust",
+    "#a9a9a9": "Grey",
+    "#2d3748": "Navy",
+    "#73766b": "Olive",
+    "#c72b37": "Red",
+  };
+
+  return labels[color.toLowerCase()] ?? color;
+}
+
 export function ProductDetailPage() {
   const { slug } = useParams();
   const product = productDetails.find((item) => item.slug === slug);
@@ -104,7 +123,7 @@ export function ProductDetailPage() {
               <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-foreground" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
                 Color options shown
               </h2>
-              <div className="mt-4 flex flex-wrap gap-3" aria-label="Colors shown in product imagery">
+              <div className="mt-4 flex flex-wrap gap-2.5" aria-label="Colors shown in product imagery">
                 {productVariants ? productVariants.map((variant, index) => (
                   <button
                     key={variant.name}
@@ -115,13 +134,19 @@ export function ProductDetailPage() {
                     }}
                     aria-label={`Show ${variant.name} color`}
                     aria-pressed={activeVariantIndex === index}
-                    className={`flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs transition-colors ${activeVariantIndex === index ? "border-accent text-foreground" : "border-border/50 text-muted-foreground hover:border-accent/60"}`}
+                    className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-xs font-medium transition-colors ${activeVariantIndex === index ? "border-accent text-foreground" : "border-border/50 text-muted-foreground hover:border-accent/60"}`}
                   >
                     <span className="h-4 w-4 rounded-full border border-white/20" style={{ backgroundColor: variant.color }} />
                     {variant.name}
                   </button>
                 )) : product.colorOptions.map((color, index) => (
-                  <span key={`${color}-${index}`} className="h-7 w-7 rounded-full border border-white/25" style={{ backgroundColor: color }} />
+                  <span
+                    key={`${color}-${index}`}
+                    className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-xs font-medium ${index === 0 ? "border-accent text-foreground" : "border-border/50 text-muted-foreground"}`}
+                  >
+                    <span className="h-4 w-4 rounded-full border border-white/20" style={{ backgroundColor: color }} />
+                    {colorLabel(color)}
+                  </span>
                 ))}
               </div>
               <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
