@@ -51,10 +51,10 @@ export function ProductDetailPage() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55 }}
-            className="overflow-hidden bg-card"
+            className={product.category === "Riding Gear" ? "overflow-hidden bg-[#e7e6e2]" : "overflow-hidden bg-card"}
           >
             <div className="aspect-[4/5]">
-              <ImageWithFallback src={product.image} alt={product.alt} className={`h-full w-full ${product.category === "Riding Gear" ? "object-contain" : "object-cover object-top"}`} />
+              <ImageWithFallback src={product.image} alt={product.alt} className={`h-full w-full ${product.category === "Riding Gear" ? "object-contain mix-blend-multiply" : "object-cover object-top"}`} />
             </div>
           </motion.div>
 
