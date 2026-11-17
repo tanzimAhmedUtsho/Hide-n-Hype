@@ -1,4 +1,4 @@
-const GA_MEASUREMENT_ID = "G-SWDNSVV7ZM";
+const GTM_CONTAINER_ID = "GTM-TF7XCN3C";
 const CONSENT_STORAGE_KEY = "hnh-privacy-consent";
 
 type PrivacyConsent = {
@@ -8,14 +8,13 @@ type PrivacyConsent = {
 
 declare global {
   interface Window {
-    dataLayer?: unknown[][];
+    dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
   }
 }
 
-let defaultsSet = false;
-let googleTagConfigured = false;
-let googleTagScriptAdded = false;
+let gtmLoaded = false;
+let consentDefaultsSet = false;
 
 function getSavedConsent(): PrivacyConsent | null {
   try {
@@ -30,78 +29,88 @@ function getSavedConsent(): PrivacyConsent | null {
   }
 }
 
-function ensureGtagQueue() {
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = window.gtag || ((...args: unknown[]) => window.dataLayer?.push(args));
-}
-
 export function getPrivacyConsent() {
   return getSavedConsent();
 }
 
-export function initializeAnalyticsConsent() {
-  ensureGtagQueue();
+function initializeConsentDefaults() {
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = window.gtag || ((...args: unknown[]) => window.dataLayer?.push(args));
 
-  if (!defaultsSet) {
-    window.gtag?.("consent", "default", {
-      analytics_storage: "denied",
-      ad_storage: "denied",
-      ad_user_data: "denied",
-      ad_personalization: "denied",
-    });
-    defaultsSet = true;
-  }
-
-  const consent = getSavedConsent();
-  if (consent?.analytics) {
-    applyAnalyticsConsent(true);
-  }
-}
-
-function applyAnalyticsConsent(allowed: boolean) {
-  ensureGtagQueue();
-  window.gtag?.("consent", "update", {
-    analytics_storage: allowed ? "granted" : "denied",
+  if (consentDefaultsSet) return;
+  window.gtag("consent", "default", {
+    analytics_storage: "denied",
     ad_storage: "denied",
     ad_user_data: "denied",
     ad_personalization: "denied",
   });
+  consentDefaultsSet = true;
+}
 
-  if (!allowed) return;
+function loadGoogleTagManager() {
+  if (gtmLoaded) return;
 
-  if (!googleTagScriptAdded) {
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-    document.head.appendChild(script);
-    googleTagScriptAdded = true;
+  initializeConsentDefaults();
+  window.dataLayer.push({ "gtm.start": Date.now(), event: "gtm.js" });
+
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_CONTAINER_ID}`;
+  document.head.appendChild(script);
+  gtmLoaded = true;
+}
+
+export function initializeAnalyticsConsent() {
+  initializeConsentDefaults();
+
+  if (getSavedConsent()?.analytics) {
+    window.gtag?.("consent", "update", {
+      analytics_storage: "granted",
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+    });
+    loadGoogleTagManager();
   }
+}
 
-  if (!googleTagConfigured) {
-    window.gtag?.("js", new Date());
-    window.gtag?.("config", GA_MEASUREMENT_ID, { send_page_view: false });
-    googleTagConfigured = true;
+function expireGoogleAnalyticsCookies() {
+  const cookieNames = document.cookie
+    .split(";")
+    .map((cookie) => cookie.trim().split("=")[0])
+    .filter((name) => name === "_ga" || name.startsWith("_ga_"));
+  const hostname = window.location.hostname;
+  const domain = hostname.split(".").length > 1 ? hostname.split(".").slice(-2).join(".") : hostname;
+
+  for (const name of cookieNames) {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Lax`;
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${domain}; SameSite=Lax`;
   }
 }
 
 export function saveAnalyticsConsent(allowed: boolean) {
+  const previousConsent = getSavedConsent();
   const consent = { analytics: allowed, updatedAt: new Date().toISOString() };
+
   try {
     window.localStorage.setItem(CONSENT_STORAGE_KEY, JSON.stringify(consent));
   } catch {
-    // The current choice still applies for this page view if storage is unavailable.
+    // The current page still honors this choice if browser storage is unavailable.
   }
-  applyAnalyticsConsent(allowed);
+
+  if (allowed) {
+    initializeConsentDefaults();
+    window.gtag?.("consent", "update", {
+      analytics_storage: "granted",
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+    });
+    loadGoogleTagManager();
+  } else if (previousConsent?.analytics) {
+    expireGoogleAnalyticsCookies();
+    window.location.reload();
+  }
+
   return consent;
-}
-
-export function trackPageView(path: string, title: string) {
-  initializeAnalyticsConsent();
-  if (!getSavedConsent()?.analytics) return;
-
-  window.gtag?.("event", "page_view", {
-    page_path: path,
-    page_title: title,
-    page_location: window.location.href,
-  });
 }

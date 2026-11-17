@@ -4,7 +4,6 @@ import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { LiveChat } from "../components/LiveChat";
 import { CookieConsent } from "../components/CookieConsent";
-import { trackPageView } from "../analytics";
 import { pageMetadata, siteUrl, socialImageUrl } from "../seoMetadata";
 
 function updateMetaTag(selector: string, attribute: string, key: string, value: string) {
@@ -18,7 +17,7 @@ function updateMetaTag(selector: string, attribute: string, key: string, value: 
 }
 
 export function Layout() {
-  const { pathname, hash, search } = useLocation();
+  const { pathname, hash } = useLocation();
 
   useEffect(() => {
     if (hash) {
@@ -67,10 +66,6 @@ export function Layout() {
     updateMetaTag('meta[name="twitter:description"]', "name", "twitter:description", metadata.description);
     updateMetaTag('meta[name="twitter:image"]', "name", "twitter:image", socialImageUrl);
   }, [pathname]);
-
-  useEffect(() => {
-    trackPageView(`${pathname}${search}`, document.title);
-  }, [pathname, search]);
 
   return (
     <div className="bg-background min-h-screen" style={{ fontFamily: "'Barlow', sans-serif" }}>

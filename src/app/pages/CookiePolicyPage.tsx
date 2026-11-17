@@ -7,7 +7,7 @@ export function CookiePolicyPage() {
       <div className="mx-auto max-w-5xl">
         <span className="mb-3 block text-xs font-semibold uppercase tracking-[0.38em] text-accent" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>Privacy / Cookies</span>
         <h1 className="mb-7 text-foreground leading-[0.9]" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(48px, 8vw, 88px)", fontWeight: 800, letterSpacing: "-0.025em" }}>COOKIE POLICY<span className="text-accent">.</span></h1>
-        <p className="mb-12 max-w-3xl text-sm leading-7 text-muted-foreground md:text-base">Hide n Hype uses essential browser storage to remember your cookie choice. If you allow analytics, Google Analytics loads to measure website visits and page views. Advertising storage and ad personalization remain disabled in our Google consent settings.</p>
+        <p className="mb-12 max-w-3xl text-sm leading-7 text-muted-foreground md:text-base">Hide n Hype uses essential browser storage to remember your cookie choice. Google Tag Manager loads only after you allow analytics; the Google Analytics 4 tag in our container measures website visits and page views. Google advertising storage and ad personalization are set to denied.</p>
 
         <div className="divide-y divide-white/10 border-y border-white/10">
           <section className="grid gap-3 py-7 sm:grid-cols-[180px_1fr] sm:gap-8">
@@ -15,8 +15,8 @@ export function CookiePolicyPage() {
             <p className="text-sm leading-7 text-muted-foreground">We use browser local storage to remember whether you allow or reject optional analytics. This preference storage is needed to respect your choice on later visits. It does not send your preference to an advertising platform.</p>
           </section>
           <section className="grid gap-3 py-7 sm:grid-cols-[180px_1fr] sm:gap-8">
-            <h2 className="text-xl font-bold text-foreground" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>Google Analytics</h2>
-            <p className="text-sm leading-7 text-muted-foreground">If you allow analytics, we load Google Analytics 4 to measure page views and general site use. Google Analytics may use cookies or similar identifiers and process information such as page URL, browser/device details, and interactions. The tag does not load when you reject optional analytics. Learn more in <a className="text-accent underline underline-offset-4" href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">Google’s privacy information</a>.</p>
+            <h2 className="text-xl font-bold text-foreground" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>Google Tag Manager & Analytics</h2>
+            <p className="text-sm leading-7 text-muted-foreground">If you allow analytics, we load Google Tag Manager. The Google Analytics 4 tag configured in our container measures page views and general site use. Google Analytics may use cookies or similar identifiers and process information such as page URL, browser/device details, and interactions. The container does not load when you reject optional analytics. Learn more in <a className="text-accent underline underline-offset-4" href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">Google’s privacy information</a>.</p>
           </section>
           <section className="grid gap-3 py-7 sm:grid-cols-[180px_1fr] sm:gap-8">
             <h2 className="text-xl font-bold text-foreground" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>Change your choice</h2>
