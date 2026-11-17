@@ -14,6 +14,7 @@ import { AboutPage } from "./pages/AboutPage";
 import { ContactPage } from "./pages/ContactPage";
 import { OurBusinessPage } from "./pages/OurBusinessPage";
 import { ProductDetailPage } from "./pages/ProductDetailPage";
+import { RidingGearPage } from "./pages/RidingGearPage";
 
 export const routeConfig: RouteObject[] = [
   {
@@ -29,6 +30,7 @@ export const routeConfig: RouteObject[] = [
       { path: "collection/accessories", Component: AccessoriesPage },
       { path: "collection/leather", Component: LeatherPage },
       { path: "collection/denim", Component: DenimPage },
+      { path: "collection/riding-gear", Component: RidingGearPage },
       { path: "lookbook", Component: LookbookPage },
       { path: "about", Component: AboutPage },
       { path: "contact", Component: ContactPage },

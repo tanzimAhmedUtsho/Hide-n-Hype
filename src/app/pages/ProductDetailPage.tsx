@@ -9,6 +9,7 @@ import { leatherProducts } from "./LeatherPage";
 import { menProducts } from "./MenPage";
 import { womenProducts } from "./WomenPage";
 import { newArrivalProducts, productSlug } from "../productCatalog";
+import { ridingGearProducts } from "../ridingGearCatalog";
 
 const productDetails = [
   ...newArrivalProducts,
@@ -18,6 +19,7 @@ const productDetails = [
   ...accessoriesProducts.map((product) => ({ ...product, slug: productSlug(product.name), category: "Accessories" })),
   ...leatherProducts.map((product) => ({ ...product, slug: productSlug(product.name), category: "Leather Goods" })),
   ...denimProducts.map((product) => ({ ...product, slug: productSlug(product.name), category: "Denim" })),
+  ...ridingGearProducts,
 ].filter((product, index, products) => products.findIndex((candidate) => candidate.slug === product.slug) === index);
 
 export function ProductDetailPage() {
@@ -40,8 +42,8 @@ export function ProductDetailPage() {
   return (
     <main className="px-6 pb-20 pt-28 md:px-16 md:pt-36">
       <div className="mx-auto max-w-7xl">
-        <Link to="/new-arrivals" className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-accent">
-          <ArrowLeft size={16} /> Back to new arrivals
+        <Link to={product.category === "Riding Gear" ? "/collection/riding-gear" : "/new-arrivals"} className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-accent">
+          <ArrowLeft size={16} /> {product.category === "Riding Gear" ? "Back to riding gear" : "Back to new arrivals"}
         </Link>
 
         <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
@@ -52,7 +54,7 @@ export function ProductDetailPage() {
             className="overflow-hidden bg-card"
           >
             <div className="aspect-[4/5]">
-              <ImageWithFallback src={product.image} alt={product.alt} className="h-full w-full object-cover object-top" />
+              <ImageWithFallback src={product.image} alt={product.alt} className={`h-full w-full ${product.category === "Riding Gear" ? "object-contain" : "object-cover object-top"}`} />
             </div>
           </motion.div>
 

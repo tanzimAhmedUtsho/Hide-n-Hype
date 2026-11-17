@@ -11,6 +11,7 @@ import { denimProducts } from "./DenimPage";
 import { performanceShortsProduct } from "./MenPage";
 import { Link } from "react-router";
 import { productSlug } from "../productCatalog";
+import { ridingGearProducts } from "../ridingGearCatalog";
 
 
 const collectionProducts = [
@@ -20,6 +21,7 @@ const collectionProducts = [
   ...accessoriesProducts,
   ...leatherProducts,
   ...denimProducts,
+  ...ridingGearProducts,
   performanceShortsProduct,
 ].map((product, index) => ({
   ...product,

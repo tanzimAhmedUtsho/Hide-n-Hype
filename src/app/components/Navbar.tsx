@@ -10,6 +10,7 @@ import { accessoriesProducts } from "../pages/AccessoriesPage";
 import { leatherProducts } from "../pages/LeatherPage";
 import { denimProducts } from "../pages/DenimPage";
 import { productSlug } from "../productCatalog";
+import { ridingGearProducts } from "../ridingGearCatalog";
 
 const searchableProducts = [
   ...menProducts.map((product) => ({ ...product, category: "Men", path: `/products/${productSlug(product.name)}` })),
@@ -18,6 +19,7 @@ const searchableProducts = [
   ...denimProducts.map((product) => ({ ...product, category: "Denim", path: `/products/${productSlug(product.name)}` })),
   ...accessoriesProducts.map((product) => ({ ...product, category: "Accessories", path: `/products/${productSlug(product.name)}` })),
   ...leatherProducts.map((product) => ({ ...product, category: "Leather Items", path: `/products/${productSlug(product.name)}` })),
+  ...ridingGearProducts.map((product) => ({ ...product, path: `/products/${product.slug}` })),
 ];
 
 const searchableCategories = [
@@ -27,6 +29,7 @@ const searchableCategories = [
   { name: "Denim", path: "/collection/denim" },
   { name: "Accessories", path: "/collection/accessories" },
   { name: "Leather Items", path: "/collection/leather" },
+  { name: "Riding Gear", path: "/collection/riding-gear" },
   { name: "All Collection", path: "/collection" },
 ];
 
@@ -124,6 +127,7 @@ export function Navbar() {
     { label: "Denim", path: "/collection/denim" },
     { label: "Accessories", path: "/collection/accessories" },
     { label: "Leather Items", path: "/collection/leather" },
+    { label: "Riding Gear", path: "/collection/riding-gear" },
   ];
 
   return (

@@ -11,6 +11,7 @@ const categories = [
   { label: "Denim", path: "/collection/denim" },
   { label: "Accessories", path: "/collection/accessories" },
   { label: "Leather Items", path: "/collection/leather" },
+  { label: "Riding Gear", path: "/collection/riding-gear" },
 ];
 
 interface CategoryFilterProps {
