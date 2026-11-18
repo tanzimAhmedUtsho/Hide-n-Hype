@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
   if (file.size > 5 * 1024 * 1024) return NextResponse.json({ error: "Images must be 5 MB or smaller." }, { status: 413 });
   const filename = `${randomUUID()}${types[file.type]}`;
   const adminRoot = path.basename(process.cwd()) === "admin" ? process.cwd() : path.join(process.cwd(), "admin");
-  const folder = path.join(adminRoot, "public", "uploads");
+  const folder = path.join(adminRoot, ".data", "uploads");
   const bytes = Buffer.from(await file.arrayBuffer());
   const validSignature = file.type === "image/jpeg" ? bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff
     : file.type === "image/png" ? bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))
@@ -24,5 +24,5 @@ export async function POST(request: NextRequest) {
     : bytes.toString("ascii", 0, 6) === "GIF87a" || bytes.toString("ascii", 0, 6) === "GIF89a";
   if (!validSignature) return NextResponse.json({ error: "The file content does not match its image type." }, { status: 415 });
   await mkdir(folder, { recursive: true }); await writeFile(path.join(folder, filename), bytes);
-  return NextResponse.json({ url: `/uploads/${filename}`, name: file.name, size: file.size, mimeType: file.type }, { status: 201 });
+  return NextResponse.json({ url: `/api/media/${filename}`, name: file.name, size: file.size, mimeType: file.type }, { status: 201 });
 }
