@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { readFile } from "node:fs/promises";
-import path from "node:path";
+import { getMediaBucket } from "@/lib/db";
 
 export const runtime = "nodejs";
 
@@ -17,14 +16,15 @@ export async function GET(_request: Request, { params }: { params: Promise<{ fil
     return NextResponse.json({ error: "Image not found." }, { status: 404 });
   }
 
-  const adminRoot = path.basename(process.cwd()) === "admin" ? process.cwd() : path.join(process.cwd(), "admin");
-  const uploadPath = path.join(adminRoot, ".data", "uploads", filename);
   try {
-    const image = await readFile(uploadPath);
-    const extension = path.extname(filename).slice(1).toLowerCase();
-    return new NextResponse(image, {
+    const bucket = await getMediaBucket();
+    const [file] = await bucket.find({ filename }).sort({ uploadDate: -1 }).limit(1).toArray();
+    if (!file) return NextResponse.json({ error: "Image not found." }, { status: 404 });
+    const chunks: Buffer[] = [];
+    for await (const chunk of bucket.openDownloadStream(file._id)) chunks.push(Buffer.from(chunk));
+    return new NextResponse(Buffer.concat(chunks), {
       headers: {
-        "Content-Type": contentTypes[extension],
+        "Content-Type": String(file.metadata?.contentType ?? contentTypes[filename.split(".").pop()?.toLowerCase() ?? ""] ?? "application/octet-stream"),
         "Cache-Control": "public, max-age=31536000, immutable",
         "X-Content-Type-Options": "nosniff",
       },

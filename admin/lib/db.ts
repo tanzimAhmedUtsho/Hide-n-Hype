@@ -1,74 +1,88 @@
-import Database from "better-sqlite3";
-import { existsSync, readFileSync } from "node:fs";
-import path from "node:path";
 import { randomUUID } from "node:crypto";
-import { hashPassword } from "@/lib/password";
+import { GridFSBucket, MongoClient, type Db } from "mongodb";
 
-type DbGlobal = typeof globalThis & { hnhSqlite?: Database.Database };
-const adminRoot = path.basename(process.cwd()) === "admin" ? process.cwd() : path.join(process.cwd(), "admin");
-const configuredPath = process.env.DATABASE_URL?.startsWith("file:") ? process.env.DATABASE_URL.slice(5) : ".data/hnh.sqlite";
-const databasePath = path.isAbsolute(configuredPath) ? configuredPath : path.resolve(adminRoot, configuredPath);
-const migrations = [readFileSync(path.join(adminRoot, "prisma/migrations/001_init/migration.sql"), "utf8")];
+type DbGlobal = typeof globalThis & { hnhMongo?: Promise<Db> };
+type AdminRecord = { _id: string; email: string; name: string; password_hash: string; role: string; status: string; created_at: string; updated_at: string };
+const databaseName = process.env.MONGODB_DATABASE || "hidenhype";
 
-function applyMigrations(database: Database.Database) {
-  database.exec("CREATE TABLE IF NOT EXISTS schema_migrations (version INTEGER PRIMARY KEY, applied_at TEXT NOT NULL)");
-  const applied = new Set((database.prepare("SELECT version FROM schema_migrations").all() as { version: number }[]).map(row => row.version));
-  migrations.forEach((sql, index) => {
-    const version = index + 1;
-    if (applied.has(version)) return;
-    const migrate = database.transaction(() => {
-      database.exec(sql);
-      database.prepare("INSERT INTO schema_migrations(version, applied_at) VALUES (?, ?)").run(version, new Date().toISOString());
-    });
-    migrate();
-  });
-}
+async function connectDatabase(): Promise<Db> {
+  const uri = process.env.DATABASE_URL;
+  if (!uri?.startsWith("mongodb://") && !uri?.startsWith("mongodb+srv://")) {
+    throw new Error("Set DATABASE_URL to your MongoDB Atlas connection string.");
+  }
 
-function migrateLegacyJson(database: Database.Database) {
-  const existingCount = database.prepare("SELECT COUNT(*) AS count FROM cms_items").get() as { count: number } | undefined;
-  if (Number(existingCount?.count ?? 0) > 0) return;
-  const legacyFile = path.join(adminRoot, ".data/cms.json");
-  if (!existsSync(legacyFile)) return;
-  try {
-    const legacy = JSON.parse(readFileSync(legacyFile, "utf8")) as Record<string, Array<Record<string, unknown>>>;
-    const insert = database.prepare("INSERT OR IGNORE INTO cms_items(id, collection, lookup_key, data, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)");
-    const tx = database.transaction(() => {
-      for (const [collection, items] of Object.entries(legacy)) {
-        if (!Array.isArray(items) || collection === "admins") continue;
-        for (const item of items) {
-          if (typeof item.id !== "string") continue;
-          const now = String(item.createdAt ?? new Date().toISOString());
-          const lookup = collection === "products" || collection === "categories" ? String(item.slug ?? "").toLowerCase() : collection === "coupons" ? String(item.code ?? "").toLowerCase() : collection === "subscribers" ? String(item.email ?? "").toLowerCase() : null;
-          insert.run(item.id, collection, lookup || null, JSON.stringify(item), now, String(item.updatedAt ?? now));
-        }
-      }
-    });
-    tx();
-  } catch (error) { console.error("Could not import legacy CMS JSON data:", error); }
-}
+  const client = new MongoClient(uri, { maxPoolSize: 5, serverSelectionTimeoutMS: 10_000 });
+  await client.connect();
+  const database = client.db(databaseName);
+  await Promise.all([
+    database.collection("cms_items").createIndex({ collection: 1, created_at: -1 }),
+    database.collection("cms_items").createIndex(
+      { collection: 1, lookup_key: 1 },
+      { unique: true, partialFilterExpression: { lookup_key: { $type: "string" } } },
+    ),
+    database.collection<AdminRecord>("admin_users").createIndex({ email: 1 }, { unique: true }),
+  ]);
 
-function ensureOwner(database: Database.Database) {
   const email = process.env.ADMIN_EMAIL?.trim().toLowerCase();
   const passwordHash = process.env.ADMIN_PASSWORD_HASH;
-  if (!email || !passwordHash || database.prepare("SELECT 1 FROM admin_users LIMIT 1").get()) return;
-  const now = new Date().toISOString();
-  database.prepare("INSERT INTO admin_users(id,email,name,password_hash,role,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)")
-    .run(randomUUID(), email, "Store Owner", passwordHash, "owner", "active", now, now);
-}
+  if (email && passwordHash && !(await database.collection("admin_users").findOne({ email }))) {
+    const now = new Date().toISOString();
+    await database.collection<AdminRecord>("admin_users").insertOne({
+      _id: randomUUID(), email, name: "Store Owner", password_hash: passwordHash,
+      role: "owner", status: "active", created_at: now, updated_at: now,
+    });
+  }
 
-export function getDb() {
-  const shared = globalThis as DbGlobal;
-  if (shared.hnhSqlite) return shared.hnhSqlite;
-  const database = new Database(databasePath);
-  database.pragma("journal_mode = WAL");
-  database.pragma("foreign_keys = ON");
-  applyMigrations(database);
-  migrateLegacyJson(database);
-  ensureOwner(database);
-  shared.hnhSqlite = database;
+  const metadata = database.collection<{ _id: string; imported_at?: string }>("cms_meta");
+  const marker = await metadata.findOne({ _id: "legacy-json-import-v1" });
+  if (!marker) {
+    const { existsSync, readFileSync } = await import("node:fs");
+    const path = await import("node:path");
+    const adminRoot = path.basename(process.cwd()) === "admin" ? process.cwd() : path.join(process.cwd(), "admin");
+    const legacyPath = path.join(adminRoot, ".data", "cms.json");
+    if (existsSync(legacyPath)) {
+      try {
+        const legacy = JSON.parse(readFileSync(legacyPath, "utf8")) as Record<string, Array<Record<string, unknown>>>;
+        const items = database.collection<{ _id: string; collection: string; lookup_key: string | null; data: Record<string, unknown>; created_at: string; updated_at: string }>("cms_items");
+        for (const [collection, entries] of Object.entries(legacy)) {
+          if (!Array.isArray(entries) || collection === "admins") continue;
+          for (const item of entries) {
+            if (typeof item.id !== "string") continue;
+            const now = String(item.createdAt ?? new Date().toISOString());
+            const lookup = collection === "products" || collection === "categories" ? String(item.slug ?? "").toLowerCase()
+              : collection === "coupons" ? String(item.code ?? "").toLowerCase()
+              : collection === "subscribers" ? String(item.email ?? "").toLowerCase() : null;
+            await items.updateOne({ _id: item.id }, { $setOnInsert: {
+              _id: item.id, collection, lookup_key: lookup || null, data: item,
+              created_at: now, updated_at: String(item.updatedAt ?? now),
+            } }, { upsert: true });
+          }
+        }
+      } catch (error) {
+        console.error("Could not import legacy CMS JSON data:", error);
+      }
+    }
+    await metadata.updateOne({ _id: "legacy-json-import-v1" }, { $set: { imported_at: new Date().toISOString() } }, { upsert: true });
+  }
+
   return database;
 }
 
+export function getDb(): Promise<Db> {
+  const shared = globalThis as DbGlobal;
+  if (!shared.hnhMongo) {
+    shared.hnhMongo = connectDatabase().catch(error => {
+      shared.hnhMongo = undefined;
+      throw error;
+    });
+  }
+  return shared.hnhMongo;
+}
+
+export async function getMediaBucket() {
+  return new GridFSBucket(await getDb(), { bucketName: "media" });
+}
+
 export function publicAdmin(user: Record<string, unknown>) {
-  return { id: user.id, email: user.email, name: user.name, role: user.role, status: user.status, createdAt: user.created_at };
+  return { id: user._id ?? user.id, email: user.email, name: user.name, role: user.role, status: user.status, createdAt: user.created_at };
 }
