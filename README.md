@@ -40,3 +40,18 @@ npm install -g pnpm
  pnpm run dev
 
 ```
+
+## CMS Admin (Next.js)
+
+The existing public storefront remains on Vite + React + TypeScript. A separate Next.js App Router application lives in `admin/` and runs alongside it.
+
+1. Install the repository dependencies with `pnpm install`.
+2. Run `pnpm.cmd admin:dev`. On first run, a setup prompt asks for an email and a password twice, then creates the local database and starts the CMS. It stores only a salted password hash.
+3. Open `http://localhost:3000/admin` and sign in with the email and password you entered. Later starts only need `pnpm.cmd admin:dev`.
+4. To run the public storefront at the same time, open a second terminal and run `pnpm.cmd dev`. For newsletter and order forms, copy root `.env.example` to `.env.local`; keep `VITE_CMS_API_URL=http://localhost:3000` locally. For deployment, set this to the reachable CMS URL and set `STOREFRONT_ORIGIN` in `admin/.env.local` to the storefront's exact origin.
+
+The admin includes a dashboard, searchable and paginated content tables, CRUD forms for catalog/content/commerce collections, image uploads (JPG/PNG/WebP/GIF, 5 MB maximum), subscriber CSV export, session-protected API routes, and admin sign-in. Passwords use salted scrypt hashes. The initial owner is created from the environment values when the database is empty; additional active admin accounts can be created in the panel with owner, editor, or orders manager roles. Role checks are enforced by the server API. Legacy records from the earlier JSON store are imported automatically on first database startup.
+
+The homepage newsletter form now saves subscriptions to the CMS database. The bag panel submits product enquiries, which appear as pending orders in the admin. The storefront currently has no cart checkout or payment processor, so an enquiry is not a paid or confirmed order. The Vite site calls `VITE_CMS_API_URL` (see root `.env.example`); set this to the reachable CMS URL for local or deployed use. Set `STOREFRONT_ORIGIN` in `admin/.env.local` to the public site's origin for cross-origin form requests. Newsletter and order endpoints validate inputs, limit request rates, and restrict browser origins.
+
+SQLite data is stored in `admin/.data/` and uploaded images in `admin/public/uploads/`. Back up both folders. The SQLite file works for a single server with persistent disk; use PostgreSQL plus shared object storage for multi-instance/serverless production deployments. Admin roles are enforced server-side: owners manage everything and other admins have scoped catalog/content or order access.

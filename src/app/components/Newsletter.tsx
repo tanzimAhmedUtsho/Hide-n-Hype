@@ -5,11 +5,28 @@ import { motion } from "motion/react";
 export function Newsletter() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (email.trim()) {
+    if (!email.trim() || submitting) return;
+    setSubmitting(true);
+    setError("");
+    try {
+      const apiBase = import.meta.env.VITE_CMS_API_URL || "http://localhost:3000";
+      const response = await fetch(`${apiBase.replace(/\/$/, "")}/api/public/subscribers`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Could not join the newsletter.");
       setSubmitted(true);
+    } catch (submitError) {
+      setError(submitError instanceof Error ? submitError.message : "Could not join the newsletter.");
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -95,6 +112,7 @@ export function Newsletter() {
               />
               <button
                 type="submit"
+                disabled={submitting}
                 className="flex items-center gap-2 px-6 py-3.5 hover:bg-opacity-90 transition-all duration-200"
                 style={{
                   background: "#080808",
@@ -105,10 +123,12 @@ export function Newsletter() {
                   letterSpacing: "0.15em",
                 }}
               >
-                JOIN <ArrowRight size={14} />
+                {submitting ? "SENDING…" : "JOIN"} {!submitting && <ArrowRight size={14} />}
               </button>
             </form>
           )}
+
+          {error && <p role="alert" className="mt-3 text-sm text-black">{error}</p>}
 
           <p
             className="mt-4"
