@@ -3,6 +3,7 @@ import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { CategoryFilter } from "../components/CategoryFilter";
 import { Link } from "react-router";
 import { productSlug } from "../productCatalog";
+import { CmsProductsGrid } from "../components/CmsProductsGrid";
 
 export const denimProducts = [
   {
@@ -151,6 +152,7 @@ export function DenimPage() {
           {denimProducts.map((product, i) => (
             <ProductCard key={product.id} product={product} index={i} />
           ))}
+          <CmsProductsGrid collection="Denim" />
         </div>
       </div>
     </div>

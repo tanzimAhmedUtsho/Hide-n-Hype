@@ -11,6 +11,7 @@ import { menProducts } from "./MenPage";
 import { womenProducts } from "./WomenPage";
 import { newArrivalProducts, productSlug } from "../productCatalog";
 import { ridingGearProducts } from "../ridingGearCatalog";
+import { cmsProductImage, loadCmsProducts, type CmsProduct } from "../cmsProducts";
 
 const productDetails = [
   ...newArrivalProducts,
@@ -44,7 +45,27 @@ function colorLabel(color: string) {
 
 export function ProductDetailPage() {
   const { slug } = useParams();
-  const product = productDetails.find((item) => item.slug === slug);
+  const [cmsProducts, setCmsProducts] = useState<CmsProduct[]>([]);
+  const [cmsLoaded, setCmsLoaded] = useState(false);
+  useEffect(() => {
+    const controller = new AbortController();
+    loadCmsProducts(controller.signal).then(setCmsProducts).catch(() => {}).finally(() => setCmsLoaded(true));
+    return () => controller.abort();
+  }, []);
+  const staticProduct = productDetails.find((item) => item.slug === slug);
+  const cmsRecord = cmsProducts.find((item) => item.slug === slug);
+  const cmsProduct = cmsRecord ? {
+    ...cmsRecord,
+    category: cmsRecord.collection || cmsRecord.category || "Collection",
+    tag: "NEW",
+    image: cmsProductImage(cmsRecord.image),
+    alt: cmsRecord.description || cmsRecord.name,
+    colorOptions: String(cmsRecord.colors ?? "").split(",").map(color => color.trim()).filter(Boolean),
+  } : undefined;
+  const product = staticProduct ?? cmsProduct;
+  const isCmsProduct = !staticProduct && !!cmsRecord;
+  const cmsCollectionPath: Record<string, string> = { "New Arrivals": "/new-arrivals", Men: "/collection/men", Women: "/collection/women", Kids: "/collection/kids", Accessories: "/collection/accessories", Leather: "/collection/leather", Denim: "/collection/denim", "Riding Gear": "/collection/riding-gear", Sale: "/sale" };
+  const backPath = cmsRecord ? cmsCollectionPath[cmsRecord.collection ?? ""] ?? "/collection" : product?.category === "Riding Gear" ? "/collection/riding-gear" : "/new-arrivals";
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [activeVariantIndex, setActiveVariantIndex] = useState(0);
   useEffect(() => {
@@ -52,7 +73,7 @@ export function ProductDetailPage() {
     setActiveVariantIndex(0);
   }, [slug]);
 
-  if (!product) {
+  if (!product && cmsLoaded) {
     return (
       <main className="flex min-h-[70vh] flex-col items-center justify-center px-6 pt-24 text-center">
         <h1 className="text-4xl font-bold text-foreground" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
@@ -64,6 +85,7 @@ export function ProductDetailPage() {
       </main>
     );
   }
+  if (!product) return <main className="flex min-h-[70vh] items-center justify-center px-6 pt-24 text-muted-foreground">Loading product…</main>;
 
   const productVariants = "variants" in product ? product.variants : undefined;
   const productImages = productVariants?.[activeVariantIndex]?.images ?? ("images" in product ? product.images : [product.image]);
@@ -74,8 +96,8 @@ export function ProductDetailPage() {
   return (
     <main className="px-6 pb-20 pt-28 md:px-16 md:pt-36">
       <div className="mx-auto max-w-7xl">
-        <Link to={product.category === "Riding Gear" ? "/collection/riding-gear" : "/new-arrivals"} className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-accent">
-          <ArrowLeft size={16} /> {product.category === "Riding Gear" ? "Back to riding gear" : "Back to new arrivals"}
+        <Link to={backPath} className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-accent">
+          <ArrowLeft size={16} /> Back to collection
         </Link>
 
         <div className="grid gap-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:items-center lg:gap-14">
@@ -120,8 +142,10 @@ export function ProductDetailPage() {
               {product.name}
             </h1>
             <p className="mt-6 max-w-xl text-muted-foreground" style={{ fontFamily: "'Barlow', sans-serif", fontSize: "17px", lineHeight: 1.8 }}>
-              {product.alt}. Contact our team to ask about current availability, size options, and product details.
+              {isCmsProduct ? product.description || `${product.name}. Contact our team to ask about current availability and product details.` : `${product.alt}. Contact our team to ask about current availability, size options, and product details.`}
             </p>
+
+            {isCmsProduct && <div className="mt-5 flex flex-wrap items-baseline gap-3"><strong className="text-xl text-foreground">৳{Number(cmsRecord?.salePrice || cmsRecord?.price || 0).toLocaleString()}</strong>{Number(cmsRecord?.salePrice) > 0 && <span className="text-muted-foreground line-through">৳{Number(cmsRecord?.price).toLocaleString()}</span>}{cmsRecord?.sizes && <span className="text-sm text-muted-foreground">Sizes: {cmsRecord.sizes}</span>}</div>}
 
             <div className="mt-8 border-y border-border/30 py-6">
               <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-foreground" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>

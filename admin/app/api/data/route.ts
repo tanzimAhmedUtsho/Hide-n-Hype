@@ -43,6 +43,7 @@ export async function POST(request: NextRequest) {
   if (!user) return NextResponse.json({ error: "Unauthorized or insufficient role" }, { status: 403 });
   const body = clean(await request.json().catch(() => null));
   if (!body) return NextResponse.json({ error: "Invalid data" }, { status: 400 });
+  if (collection === "products" && !["New Arrivals", "Men", "Women", "Kids", "Accessories", "Leather", "Denim", "Riding Gear", "Sale"].includes(String(body.collection ?? ""))) return NextResponse.json({ error: "Choose the website collection where this product should appear." }, { status: 422 });
   if (collection === "admins" && (typeof body.password !== "string" || body.password.length < 12)) return NextResponse.json({ error: "A temporary password of at least 12 characters is required." }, { status: 422 });
   if (collection === "products" && (!body.name || !body.slug || !Number.isFinite(Number(body.price)))) return NextResponse.json({ error: "Product name, slug and valid price are required." }, { status: 422 });
   if (collection === "categories" && !body.name) return NextResponse.json({ error: "Category name is required." }, { status: 422 });
@@ -58,6 +59,7 @@ export async function PATCH(request: NextRequest) {
   if (!user) return NextResponse.json({ error: "Unauthorized or insufficient role" }, { status: 403 });
   const body = clean(await request.json().catch(() => null));
   if (!body) return NextResponse.json({ error: "Invalid data" }, { status: 400 });
+  if (collection === "products" && body.collection !== undefined && !["New Arrivals", "Men", "Women", "Kids", "Accessories", "Leather", "Denim", "Riding Gear", "Sale"].includes(String(body.collection))) return NextResponse.json({ error: "Choose a valid website collection for this product." }, { status: 422 });
   if (collection === "admins" && id === user.id && (body.role && String(body.role).toLowerCase() !== "owner" || body.status && String(body.status).toLowerCase() !== "active")) return NextResponse.json({ error: "You cannot remove your own owner access." }, { status: 422 });
   try {
     const result = await upsertItem(collection, body, id);

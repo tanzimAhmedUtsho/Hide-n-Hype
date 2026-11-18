@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { Newsletter } from "../components/Newsletter";
+import { CmsProductsGrid } from "../components/CmsProductsGrid";
 
 const saleProducts = [
   {
@@ -148,6 +149,7 @@ export function SalePage() {
           {saleProducts.map((product, i) => (
             <SaleProductCard key={product.id} product={product} index={i} />
           ))}
+          <CmsProductsGrid collection="Sale" />
         </div>
       </div>
 

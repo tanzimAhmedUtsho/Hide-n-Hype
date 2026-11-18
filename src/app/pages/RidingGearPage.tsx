@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { Link } from "react-router";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { ridingGearProducts } from "../ridingGearCatalog";
+import { CmsProductsGrid } from "../components/CmsProductsGrid";
 
 export function RidingGearPage() {
   return (
@@ -47,6 +48,7 @@ export function RidingGearPage() {
               </Link>
             </motion.article>
           ))}
+          <CmsProductsGrid collection="Riding Gear" />
         </div>
       </div>
     </main>

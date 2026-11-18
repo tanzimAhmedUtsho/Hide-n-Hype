@@ -4,6 +4,7 @@ import { Newsletter } from "../components/Newsletter";
 import { CategoryFilter } from "../components/CategoryFilter";
 import { Link } from "react-router";
 import { productSlug } from "../productCatalog";
+import { CmsProductsGrid } from "../components/CmsProductsGrid";
 
 export const performanceShortsProduct = {
   id: 7,
@@ -161,6 +162,7 @@ export function MenPage() {
           {menProducts.map((product, i) => (
             <ProductCard key={product.id} product={product} index={i} />
           ))}
+          <CmsProductsGrid collection="Men" />
         </div>
       </div>
 

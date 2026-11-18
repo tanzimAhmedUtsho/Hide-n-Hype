@@ -12,6 +12,7 @@ import { performanceShortsProduct } from "./MenPage";
 import { Link } from "react-router";
 import { productSlug } from "../productCatalog";
 import { ridingGearProducts } from "../ridingGearCatalog";
+import { CmsProductsGrid } from "../components/CmsProductsGrid";
 
 
 const collectionProducts = [
@@ -130,6 +131,7 @@ export function CollectionPage() {
           {collectionProducts.map((product, i) => (
             <ProductCard key={product.collectionId} product={product} index={i} />
           ))}
+          <CmsProductsGrid />
         </div>
       </div>
 

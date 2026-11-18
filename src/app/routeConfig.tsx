@@ -18,6 +18,7 @@ import { RidingGearPage } from "./pages/RidingGearPage";
 import { FaqPage } from "./pages/FaqPage";
 import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
 import { CookiePolicyPage } from "./pages/CookiePolicyPage";
+import { SalePage } from "./pages/SalePage";
 
 export const routeConfig: RouteObject[] = [
   {
@@ -26,6 +27,7 @@ export const routeConfig: RouteObject[] = [
     children: [
       { index: true, Component: Home },
       { path: "new-arrivals", Component: NewArrivalsPage },
+      { path: "sale", Component: SalePage },
       { path: "collection", Component: CollectionPage },
       { path: "collection/men", Component: MenPage },
       { path: "collection/women", Component: WomenPage },

@@ -4,6 +4,7 @@ import { Newsletter } from "../components/Newsletter";
 import { CategoryFilter } from "../components/CategoryFilter";
 import { Link } from "react-router";
 import { productSlug } from "../productCatalog";
+import { CmsProductsGrid } from "../components/CmsProductsGrid";
 
 export const accessoriesProducts = [
   {
@@ -151,6 +152,7 @@ export function AccessoriesPage() {
           {accessoriesProducts.map((product, i) => (
             <ProductCard key={product.id} product={product} index={i} />
           ))}
+          <CmsProductsGrid collection="Accessories" />
         </div>
       </div>
 

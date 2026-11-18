@@ -10,7 +10,7 @@ export function isOriginAllowed(request: NextRequest) { return allowedOrigin(req
 export function preflight(request: NextRequest) {
   const origin = allowedOrigin(request.headers.get("origin"));
   if (origin === false) return NextResponse.json({ error: "Origin not allowed." }, { status: 403 });
-  const headers = new Headers({ "Access-Control-Allow-Methods": "POST, OPTIONS", "Access-Control-Allow-Headers": "Content-Type", "Access-Control-Max-Age": "600", "Vary": "Origin" });
+  const headers = new Headers({ "Access-Control-Allow-Methods": "GET, POST, OPTIONS", "Access-Control-Allow-Headers": "Content-Type", "Access-Control-Max-Age": "600", "Vary": "Origin" });
   if (origin) headers.set("Access-Control-Allow-Origin", origin);
   return new NextResponse(null, { status: 204, headers });
 }

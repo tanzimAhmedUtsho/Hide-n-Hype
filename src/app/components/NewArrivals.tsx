@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { Link } from "react-router";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { newArrivalProducts, type CatalogProduct } from "../productCatalog";
+import { CmsProductsGrid } from "./CmsProductsGrid";
 
 function ProductCard({ product, index }: { product: CatalogProduct; index: number }) {
   return (
@@ -117,6 +118,7 @@ export function NewArrivals() {
         {newArrivalProducts.map((product, i) => (
           <ProductCard key={product.id} product={product} index={i} />
         ))}
+        <CmsProductsGrid collection="New Arrivals" />
       </div>
     </section>
   );
