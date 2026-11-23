@@ -17,7 +17,7 @@ const countryDetails = [
   {
     name: "Finland Office",
     city: "Vuohisillantie 46 E 35,68600 Pietarsaari, Finland",
-    phone: "+358 40 2453236",
+    phone: "+358 40 5389232",
     email: "info@hiddenhype.com",
     secondaryEmail: "hidenhypeofficial@gmail.com",
     hours: "Mon-Fri, 10:00-18:00 EET",
@@ -429,4 +429,5 @@ export function ContactPage() {
     </div>
   );
 }
+
 
