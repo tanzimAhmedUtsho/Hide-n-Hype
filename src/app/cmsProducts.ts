@@ -4,10 +4,12 @@ export type CmsProduct = {
   slug: string;
   category?: string;
   collection?: string;
-  price: number;
+  price?: number | string;
   salePrice?: number | string;
   image?: string;
   description?: string;
+  seoTitle?: string;
+  seoDescription?: string;
   sizes?: string;
   colors?: string;
   status: string;

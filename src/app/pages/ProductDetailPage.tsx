@@ -145,7 +145,7 @@ export function ProductDetailPage() {
               {isCmsProduct ? product.description || `${product.name}. Contact our team to ask about current availability and product details.` : `${product.alt}. Contact our team to ask about current availability, size options, and product details.`}
             </p>
 
-            {isCmsProduct && <div className="mt-5 flex flex-wrap items-baseline gap-3"><strong className="text-xl text-foreground">৳{Number(cmsRecord?.salePrice || cmsRecord?.price || 0).toLocaleString()}</strong>{Number(cmsRecord?.salePrice) > 0 && <span className="text-muted-foreground line-through">৳{Number(cmsRecord?.price).toLocaleString()}</span>}{cmsRecord?.sizes && <span className="text-sm text-muted-foreground">Sizes: {cmsRecord.sizes}</span>}</div>}
+            {isCmsProduct && <div className="mt-5 flex flex-wrap items-baseline gap-3">{Number(cmsRecord?.salePrice || cmsRecord?.price || 0) > 0 ? <><strong className="text-xl text-foreground">৳{Number(cmsRecord?.salePrice || cmsRecord?.price).toLocaleString()}</strong>{Number(cmsRecord?.salePrice) > 0 && Number(cmsRecord?.price) > 0 && <span className="text-muted-foreground line-through">৳{Number(cmsRecord?.price).toLocaleString()}</span>}</> : <span className="text-muted-foreground">Price on request</span>}{cmsRecord?.sizes && <span className="text-sm text-muted-foreground">Sizes: {cmsRecord.sizes}</span>}</div>}
 
             <div className="mt-8 border-y border-border/30 py-6">
               <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-foreground" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
