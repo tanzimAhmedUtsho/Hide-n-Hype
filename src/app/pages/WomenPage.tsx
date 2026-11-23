@@ -105,16 +105,6 @@ function ProductCard({ product, index }: { product: typeof womenProducts[0]; ind
           {product.name}
         </h3>
         </Link>
-        <div className="flex gap-1.5 mt-2">
-          {product.colorOptions.map((color, i) => (
-            <button
-              key={i}
-              className="w-4 h-4 border border-border hover:border-foreground transition-all duration-150"
-              style={{ backgroundColor: color }}
-              title={color}
-            />
-          ))}
-        </div>
       </div>
     </motion.div>
   );
@@ -133,7 +123,7 @@ export function WomenPage() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6">
           <h1
             className="text-foreground leading-none"
-            style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(48px, 8vw, 96px)", fontWeight: 900, letterSpacing: "-0.01em" }}
+            style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(40px, 6vw, 68px)", fontWeight: 800, letterSpacing: "-0.01em" }}
           >
             WOMEN'S COLLECTION
           </h1>

@@ -103,17 +103,7 @@ function SaleProductCard({ product, index }: { product: typeof saleProducts[0]; 
         >
           {product.name}
         </h3>
-        {/* Color swatches */}
-        <div className="flex gap-1.5 mt-2">
-          {product.colorOptions.map((color, i) => (
-            <button
-              key={i}
-              className="w-4 h-4 border border-border hover:border-foreground transition-all duration-150"
-              style={{ backgroundColor: color }}
-              title={color}
-            />
-          ))}
-        </div>
+        
       </div>
     </motion.div>
   );
@@ -131,7 +121,7 @@ export function SalePage() {
         </span>
         <h1
           className="text-foreground leading-none mb-4"
-          style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(48px, 8vw, 96px)", fontWeight: 900, letterSpacing: "-0.01em" }}
+          style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(40px, 6vw, 68px)", fontWeight: 800, letterSpacing: "-0.01em" }}
         >
           SALE
         </h1>

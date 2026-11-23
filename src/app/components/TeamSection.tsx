@@ -20,7 +20,7 @@ export function TeamSection() {
         <div className="mb-10 flex flex-col justify-between gap-5 md:mb-14 md:flex-row md:items-end">
           <div className="max-w-2xl">
             <span className="mb-3 block text-[11px] font-bold uppercase tracking-[0.3em] text-accent" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>The people behind the work</span>
-            <h2 className="text-foreground" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(40px, 6vw, 68px)", fontWeight: 800, lineHeight: 0.95 }}>MEET OUR TEAM</h2>
+            <h2 className="text-foreground" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(32px, 4.5vw, 52px)", fontWeight: 800, lineHeight: 0.95 }}>MEET OUR TEAM</h2>
           </div>
           <p className="max-w-md text-sm leading-7 text-muted-foreground md:text-base" style={{ fontFamily: "'Barlow', sans-serif" }}>
             A connected team bringing design, sourcing and production together across Finland and Bangladesh.

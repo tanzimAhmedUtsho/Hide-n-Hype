@@ -54,7 +54,7 @@ export function FaqPage() {
             HELP / FAQ
           </span>
           <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
-            <h1 className="text-foreground leading-[0.9]" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(52px, 8vw, 96px)", fontWeight: 800, letterSpacing: "-0.025em" }}>
+            <h1 className="text-foreground leading-[0.9]" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(40px, 6vw, 68px)", fontWeight: 800, letterSpacing: "-0.025em" }}>
               GOOD TO KNOW.
             </h1>
             <p className="max-w-md text-muted-foreground" style={{ fontFamily: "'Barlow', sans-serif", fontSize: "15px", lineHeight: 1.75 }}>

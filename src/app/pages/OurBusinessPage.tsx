@@ -228,7 +228,7 @@ export function OurBusinessPage() {
             </div>
             <h1
               className="max-w-5xl text-foreground leading-none"
-              style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(54px, 9vw, 112px)", fontWeight: 700, letterSpacing: "-0.01em" }}
+              style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(40px, 6vw, 68px)", fontWeight: 700, letterSpacing: "-0.01em" }}
             >
               Sourcing & Manufacturing Excellence
             </h1>
@@ -289,7 +289,7 @@ export function OurBusinessPage() {
                 A New Division. A Global Outlook.
               </span>
             </div>
-            <h2 className="max-w-xl text-foreground" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(42px, 6vw, 76px)", fontWeight: 700, lineHeight: 0.98, letterSpacing: "-0.015em" }}>
+            <h2 className="max-w-xl text-foreground" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(34px, 4.5vw, 54px)", fontWeight: 700, lineHeight: 0.98, letterSpacing: "-0.015em" }}>
               Beyond Fashion.<br />
               <span className="text-[#d8bd80]">Into Global Business.</span>
             </h2>
@@ -464,7 +464,7 @@ export function OurBusinessPage() {
             </span>
             <h2
               className="mb-6 text-foreground leading-none"
-              style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(38px, 5vw, 70px)", fontWeight: 700, letterSpacing: "-0.01em" }}
+              style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(34px, 4.5vw, 52px)", fontWeight: 700, letterSpacing: "-0.01em" }}
             >
               Compliance, confirmed per partner
             </h2>
@@ -557,7 +557,7 @@ export function OurBusinessPage() {
           <div className="relative z-10 mx-auto max-w-3xl">
             <h2
               className="text-foreground leading-none"
-              style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(42px, 6vw, 78px)", fontWeight: 700, letterSpacing: "-0.01em" }}
+              style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(34px, 4.5vw, 52px)", fontWeight: 700, letterSpacing: "-0.01em" }}
             >
               Looking for a Reliable Manufacturing Partner?
             </h2>

@@ -162,7 +162,7 @@ export function ContactPage() {
               className="text-foreground leading-none mb-6 tracking-tight uppercase"
               style={{
                 fontFamily: "'Barlow Condensed', sans-serif",
-                fontSize: "clamp(40px, 6vw, 76px)",
+                fontSize: "clamp(34px, 4.5vw, 54px)",
                 fontWeight: 700,
                 letterSpacing: "-0.01em",
               }}

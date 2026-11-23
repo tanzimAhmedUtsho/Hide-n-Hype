@@ -13,7 +13,7 @@ export function RidingGearPage() {
             <span className="mb-3 block uppercase tracking-[0.35em] text-accent" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "12px", fontWeight: 600 }}>
               Collection / Performance Apparel
             </span>
-            <h1 className="text-foreground leading-none" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(48px, 8vw, 88px)", fontWeight: 900 }}>
+            <h1 className="text-foreground leading-none" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(40px, 6vw, 68px)", fontWeight: 800 }}>
               RIDING GEAR
             </h1>
           </div>

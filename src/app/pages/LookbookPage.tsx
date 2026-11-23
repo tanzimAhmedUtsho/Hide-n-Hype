@@ -80,7 +80,7 @@ export function LookbookPage() {
         </span>
         <h1
           className="text-foreground leading-none mb-4"
-          style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(48px, 8vw, 96px)", fontWeight: 900, letterSpacing: "-0.01em" }}
+          style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(40px, 6vw, 68px)", fontWeight: 800, letterSpacing: "-0.01em" }}
         >
           LOOKBOOK
         </h1>

@@ -30,7 +30,7 @@ export function Testimonials() {
         </span>
         <h2
           className="text-foreground uppercase"
-          style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(36px, 5vw, 64px)", fontWeight: 700, letterSpacing: "-0.01em" }}
+          style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(32px, 4.5vw, 52px)", fontWeight: 700, letterSpacing: "-0.01em" }}
         >
           Leadership & Commitment
         </h2>

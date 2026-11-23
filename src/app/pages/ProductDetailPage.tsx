@@ -138,7 +138,7 @@ export function ProductDetailPage() {
             <span className="text-xs font-semibold uppercase tracking-[0.3em] text-accent" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
               {product.category} · {product.tag}
             </span>
-            <h1 className="mt-4 text-foreground" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(44px, 6vw, 76px)", fontWeight: 800, lineHeight: 0.98 }}>
+            <h1 className="mt-4 text-foreground" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(38px, 5vw, 64px)", fontWeight: 800, lineHeight: 0.98 }}>
               {product.name}
             </h1>
             <p className="mt-6 max-w-xl text-muted-foreground" style={{ fontFamily: "'Barlow', sans-serif", fontSize: "17px", lineHeight: 1.8 }}>

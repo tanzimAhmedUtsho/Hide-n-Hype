@@ -55,7 +55,7 @@ export function Categories() {
           </span>
           <h2
             className="text-foreground leading-none"
-            style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(36px, 5vw, 64px)", fontWeight: 900, letterSpacing: "-0.01em" }}
+            style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(32px, 4.5vw, 52px)", fontWeight: 800, letterSpacing: "-0.01em" }}
           >
             CATEGORIES
           </h2>
@@ -100,7 +100,7 @@ export function Categories() {
               </div>
               <h3
                 className="text-foreground group-hover:text-accent transition-colors duration-200"
-                style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(20px, 3vw, 32px)", fontWeight: 900, letterSpacing: "0.03em" }}
+                style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(20px, 3vw, 32px)", fontWeight: 800, letterSpacing: "0.03em" }}
               >
                 {cat.name}
               </h3>

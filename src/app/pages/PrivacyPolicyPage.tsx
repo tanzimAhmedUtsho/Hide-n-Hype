@@ -22,7 +22,7 @@ export function PrivacyPolicyPage() {
           <div className="pointer-events-none absolute -right-8 -top-20 h-64 w-64 rounded-full bg-accent/10 blur-[90px]" />
           <div className="relative max-w-4xl">
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-accent/25 bg-accent/[0.08] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.24em] text-accent" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}><ShieldCheck size={14} /> Privacy / Transparency</div>
-            <h1 className="text-foreground leading-[0.88]" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(52px, 9vw, 104px)", fontWeight: 800, letterSpacing: "-0.035em" }}>PRIVACY<br className="sm:hidden" /> POLICY<span className="text-accent">.</span></h1>
+            <h1 className="text-foreground leading-[0.88]" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(40px, 6vw, 68px)", fontWeight: 800, letterSpacing: "-0.035em" }}>PRIVACY<br className="sm:hidden" /> POLICY<span className="text-accent">.</span></h1>
             <div className="mt-7 flex flex-col justify-between gap-4 border-t border-white/10 pt-5 sm:flex-row sm:items-end">
               <p className="max-w-2xl text-sm leading-7 text-muted-foreground md:text-base" style={{ fontFamily: "'Barlow', sans-serif" }}>A clear guide to the information you share with Hide n Hype and how it is handled across our Finland and Bangladesh operations.</p>
               <span className="shrink-0 text-[10px] uppercase tracking-[0.18em] text-muted-foreground" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>Effective 17 November 2026</span>

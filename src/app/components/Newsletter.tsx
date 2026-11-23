@@ -60,8 +60,8 @@ export function Newsletter() {
             className="leading-none mb-4"
             style={{
               fontFamily: "'Barlow Condensed', sans-serif",
-              fontSize: "clamp(48px, 8vw, 96px)",
-              fontWeight: 900,
+              fontSize: "clamp(32px, 4.5vw, 52px)",
+              fontWeight: 800,
               letterSpacing: "-0.02em",
               color: "#080808",
             }}

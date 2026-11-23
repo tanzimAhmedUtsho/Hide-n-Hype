@@ -128,7 +128,7 @@ export function Navbar() {
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Could not send your enquiry.");
-      setOrderMessage(`Thanks. Your enquiry ${result.orderNumber} has been sent. Our team will contact you to confirm availability and pricing.`);
+      setOrderMessage(`Thank you. Your enquiry ${result.orderNumber} has been sent. Our team will contact you to discuss your requirements.`);
       setOrderForm({ customer: "", email: "", phone: "", product: "", message: "" });
     } catch (error) {
       setOrderMessage(error instanceof Error ? error.message : "Could not send your enquiry.");
@@ -276,7 +276,7 @@ export function Navbar() {
               setSearchOpen(false);
               setMenuOpen(false);
             }}
-            aria-label={bagOpen ? "Close shopping bag" : "Open shopping bag"}
+            aria-label={bagOpen ? "Close product enquiry" : "Open product enquiry"}
             aria-expanded={bagOpen}
           >
             {bagOpen ? <X size={18} /> : <ShoppingBag size={18} />}
@@ -377,7 +377,7 @@ export function Navbar() {
           <>
             <motion.button
               type="button"
-              aria-label="Close shopping bag"
+              aria-label="Close product enquiry"
               className="fixed inset-0 z-[55] cursor-default bg-black/50"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -387,7 +387,7 @@ export function Navbar() {
             <motion.aside
               role="dialog"
               aria-modal="true"
-              aria-labelledby="shopping-bag-title"
+              aria-labelledby="product-enquiry-title"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
@@ -396,17 +396,17 @@ export function Navbar() {
             >
               <div className="flex items-center justify-between border-b border-border pb-5">
                 <h2
-                  id="shopping-bag-title"
+                  id="product-enquiry-title"
                   className="text-foreground"
                   style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "24px", fontWeight: 800, letterSpacing: "0.08em" }}
                 >
-                  YOUR BAG
+                  PRODUCT ENQUIRY
                 </h2>
                 <button
                   type="button"
                   onClick={() => setBagOpen(false)}
                   className="text-muted-foreground hover:text-foreground"
-                  aria-label="Close shopping bag"
+                  aria-label="Close product enquiry"
                 >
                   <X size={20} />
                 </button>
@@ -414,23 +414,23 @@ export function Navbar() {
               <div className="flex flex-1 flex-col overflow-y-auto py-5">
                 <div className="mb-5 text-center">
                   <ShoppingBag size={28} className="mx-auto mb-3 text-accent" />
-                  <p className="mb-1 text-foreground">Ask us about a product</p>
-                  <p className="text-sm leading-relaxed text-muted-foreground">Send an enquiry and our team will contact you to confirm price, stock and delivery.</p>
+                  <p className="mb-1 text-foreground">Wholesale &amp; Product Enquiries</p>
+                  <p className="text-sm leading-relaxed text-muted-foreground">We’re not currently offering retail sales. For wholesale orders, sourcing, or manufacturing enquiries, share your requirements and our team will be in touch.</p>
                 </div>
                 {orderMessage && <p role="status" className="mb-4 rounded border border-border p-3 text-sm text-foreground">{orderMessage}</p>}
                 <form onSubmit={submitOrderInquiry} className="grid gap-3">
-                  <select required aria-label="Choose a product" value={orderForm.product} onChange={event => setOrderForm(current => ({ ...current, product: event.target.value }))} className="w-full border border-border bg-background px-3 py-3 text-sm text-foreground">
-                    <option value="">Choose a product</option>
+                  <select required aria-label="Choose a product or style" value={orderForm.product} onChange={event => setOrderForm(current => ({ ...current, product: event.target.value }))} className="w-full border border-border bg-background px-3 py-3 text-sm text-foreground">
+                    <option value="">Choose a product or style</option>
                     {searchableProducts.map(product => <option key={`${product.category}-${product.name}`} value={`${product.name} (${product.category})`}>{product.name} · {product.category}</option>)}
                   </select>
                   <input required maxLength={120} value={orderForm.customer} onChange={event => setOrderForm(current => ({ ...current, customer: event.target.value }))} placeholder="Your name" autoComplete="name" className="w-full border border-border bg-background px-3 py-3 text-sm text-foreground placeholder:text-muted-foreground" />
                   <input required type="email" maxLength={254} value={orderForm.email} onChange={event => setOrderForm(current => ({ ...current, email: event.target.value }))} placeholder="Email address" autoComplete="email" className="w-full border border-border bg-background px-3 py-3 text-sm text-foreground placeholder:text-muted-foreground" />
                   <input required type="tel" maxLength={40} value={orderForm.phone} onChange={event => setOrderForm(current => ({ ...current, phone: event.target.value }))} placeholder="Phone / WhatsApp" autoComplete="tel" className="w-full border border-border bg-background px-3 py-3 text-sm text-foreground placeholder:text-muted-foreground" />
-                  <textarea maxLength={1500} value={orderForm.message} onChange={event => setOrderForm(current => ({ ...current, message: event.target.value }))} placeholder="Size, colour or delivery questions (optional)" rows={3} className="w-full resize-none border border-border bg-background px-3 py-3 text-sm text-foreground placeholder:text-muted-foreground" />
+                  <textarea maxLength={1500} value={orderForm.message} onChange={event => setOrderForm(current => ({ ...current, message: event.target.value }))} placeholder="Tell us about your requirements (optional)" rows={3} className="w-full resize-none border border-border bg-background px-3 py-3 text-sm text-foreground placeholder:text-muted-foreground" />
                   <button disabled={orderSubmitting} type="submit" className="mt-1 w-full bg-accent px-5 py-3 text-sm font-semibold tracking-widest text-accent-foreground transition-colors hover:bg-foreground disabled:opacity-60" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
                     {orderSubmitting ? "SENDING…" : "SEND PRODUCT ENQUIRY"}
                   </button>
-                  <p className="text-center text-xs text-muted-foreground">This sends an order enquiry, not a payment or confirmed purchase.</p>
+                  <p className="text-center text-xs text-muted-foreground">Submitting this form does not place an order or require payment.</p>
                 </form>
               </div>
             </motion.aside>

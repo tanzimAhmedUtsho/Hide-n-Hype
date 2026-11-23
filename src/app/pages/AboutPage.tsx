@@ -15,7 +15,7 @@ export function AboutPage() {
         <div className="mb-10 text-left md:mb-16 md:text-center">
           
           <h1
-            className="text-foreground text-[42px] leading-[0.95] sm:text-[52px] md:text-[clamp(48px,8vw,96px)]"
+            className="text-foreground text-[40px] leading-[0.95] sm:text-[48px] md:text-[clamp(40px,6vw,68px)]"
             style={{ fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700, letterSpacing: "-0.01em" }}
           >
             About Hide n Hype
@@ -42,13 +42,13 @@ export function AboutPage() {
               className="mb-4 text-muted-foreground text-[15px] leading-[1.75] md:mb-5 md:text-[16px] md:leading-[1.8]"
               style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300 }}
             >
-              Hide n Hype emerged with a global vision, born to engineer high-quality apparel that speaks to the bold, the visionary, and the unapologetically premium brands worldwide. We translate complex design concepts into flawless, high-end production.
+              Founded with a global vision, Hide n Hype creates high-quality apparel for bold, premium brands. We turn ambitious design concepts into polished, high-end production.
             </p>
             <p
               className="text-muted-foreground text-[15px] leading-[1.75] md:text-[16px] md:leading-[1.8]"
               style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300 }}
             >
-              We bridge the gap between world-class design and scalable manufacturing. By combining cutting-edge supply chain solutions with rigorous quality assurance, we operate not just as a sourcing agency, but as your strategic growth partner in the global apparel business.
+              We connect world-class design with scalable manufacturing through smart supply-chain solutions and rigorous quality control—serving as a strategic partner in our clients’ growth.
             </p>
           </motion.div>
 
@@ -69,13 +69,13 @@ export function AboutPage() {
               className="mb-4 text-muted-foreground text-[15px] leading-[1.75] md:mb-5 md:text-[16px] md:leading-[1.8]"
               style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300 }}
             >
-              Hide n Hype is a dynamic and trusted garment buying and sourcing company, committed to connecting global buyers with high-quality apparel manufacturers. We specialize in handling international clients and ensuring smooth communication between buyers and production units.
+              As a garment buying and sourcing company, we connect global buyers with trusted apparel manufacturers and make collaboration with international clients clear and seamless.
             </p>
             <p
               className="text-muted-foreground text-[15px] leading-[1.75] md:text-[16px] md:leading-[1.8]"
               style={{ fontFamily: "'Barlow', sans-serif", fontWeight: 300 }}
             >
-              As a dedicated buying house, we work closely with global brands, retailers, and importers to deliver the best products with competitive pricing, absolute tracking transparency, timely delivery, and uncompromised quality.
+              We work with brands, retailers, and importers to deliver competitive pricing, transparent production tracking, timely delivery, and dependable quality.
             </p>
           </motion.div>
 

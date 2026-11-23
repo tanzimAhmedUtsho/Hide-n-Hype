@@ -45,7 +45,7 @@ export function Hero() {
             className="text-foreground leading-none mb-4"
             style={{
               fontFamily: "'Barlow Condensed', sans-serif",
-              fontSize: "clamp(58px, min(14vw, 16svh), 180px)",
+              fontSize: "clamp(48px, min(11vw, 13svh), 144px)",
               fontWeight: 700,
               letterSpacing: "-0.02em",
               lineHeight: 0.88,

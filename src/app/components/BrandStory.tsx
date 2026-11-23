@@ -33,8 +33,8 @@ export function BrandStory() {
             className="text-foreground leading-none mb-8"
             style={{
               fontFamily: "'Barlow Condensed', sans-serif",
-              fontSize: "clamp(48px, 7vw, 96px)",
-              fontWeight: 900,
+              fontSize: "clamp(32px, 4.5vw, 52px)",
+              fontWeight: 800,
               letterSpacing: "-0.02em",
               lineHeight: 0.9,
             }}
@@ -70,7 +70,7 @@ export function BrandStory() {
               <div key={item.label}>
                 <div
                   className="text-foreground"
-                  style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "28px", fontWeight: 900 }}
+                  style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "28px", fontWeight: 800 }}
                 >
                   {item.value}
                 </div>
@@ -115,7 +115,7 @@ export function BrandStory() {
               MADE IN
             </div>
             <div
-              style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "18px", fontWeight: 900 }}
+              style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "18px", fontWeight: 800 }}
             >
               BANGLADESH
             </div>

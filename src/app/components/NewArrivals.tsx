@@ -69,17 +69,6 @@ function ProductCard({ product, index }: { product: CatalogProduct; index: numbe
           {product.name}
         </h3>
         </Link>
-        {/* Color swatches */}
-        <div className="flex gap-1.5 mt-2">
-          {product.colorOptions.map((color, i) => (
-            <button
-              key={i}
-              className="w-4 h-4 border border-border hover:border-foreground transition-all duration-150"
-              style={{ backgroundColor: color }}
-              title={color}
-            />
-          ))}
-        </div>
       </div>
     </motion.div>
   );
@@ -87,7 +76,7 @@ function ProductCard({ product, index }: { product: CatalogProduct; index: numbe
 
 export function NewArrivals() {
   return (
-    <section id="new-arrivals" className="bg-background py-20 px-6 md:px-16">
+    <section id="new-arrivals" className="bg-background px-6 pt-12 pb-16 md:px-16 md:pt-14 md:pb-20">
       {/* Section header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
         <div>
@@ -98,8 +87,8 @@ export function NewArrivals() {
             JUST DROPPED
           </span>
           <h2
-            className="text-foreground leading-none"
-            style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(40px, 6vw, 72px)", fontWeight: 900, letterSpacing: "-0.01em" }}
+            className="collection-title text-foreground leading-none"
+            style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(32px, 4vw, 50px)", fontWeight: 800, letterSpacing: "-0.01em" }}
           >
             NEW ARRIVALS
           </h2>

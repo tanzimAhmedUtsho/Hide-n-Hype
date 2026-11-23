@@ -6,7 +6,7 @@ export function CookiePolicyPage() {
     <main className="px-6 pb-20 pt-28 md:px-16 md:pt-36">
       <div className="mx-auto max-w-5xl">
         <span className="mb-3 block text-xs font-semibold uppercase tracking-[0.38em] text-accent" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>Privacy / Cookies</span>
-        <h1 className="mb-7 text-foreground leading-[0.9]" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(48px, 8vw, 88px)", fontWeight: 800, letterSpacing: "-0.025em" }}>COOKIE POLICY<span className="text-accent">.</span></h1>
+        <h1 className="mb-7 text-foreground leading-[0.9]" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(40px, 6vw, 68px)", fontWeight: 800, letterSpacing: "-0.025em" }}>COOKIE POLICY<span className="text-accent">.</span></h1>
         <p className="mb-12 max-w-3xl text-sm leading-7 text-muted-foreground md:text-base">Hide n Hype uses essential browser storage to remember your cookie choice. Google Tag Manager loads only after you allow analytics; the Google Analytics 4 tag in our container measures website visits and page views. Google advertising storage and ad personalization are set to denied.</p>
 
         <div className="divide-y divide-white/10 border-y border-white/10">
