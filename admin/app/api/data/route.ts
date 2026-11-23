@@ -9,7 +9,7 @@ function clean(input: unknown): Record<string, unknown> | null {
   const output: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(input as Record<string, unknown>).slice(0, 40)) {
     if (["__proto__", "constructor", "prototype", "id", "createdAt", "updatedAt"].includes(key)) continue;
-    if (typeof value === "string") output[key.slice(0, 60)] = (key === "password" ? value : value.trim()).slice(0, key === "description" || key === "content" ? 20000 : 2000);
+    if (typeof value === "string") output[key.slice(0, 60)] = (key === "password" ? value : value.trim()).slice(0, key === "description" || key === "content" || key === "bio" ? 20000 : 2000);
     else if (typeof value === "number" && Number.isFinite(value)) output[key.slice(0, 60)] = value;
     else if (typeof value === "boolean") output[key.slice(0, 60)] = value;
   }
@@ -47,6 +47,8 @@ export async function POST(request: NextRequest) {
   if (collection === "admins" && (typeof body.password !== "string" || body.password.length < 12)) return NextResponse.json({ error: "A temporary password of at least 12 characters is required." }, { status: 422 });
   if (collection === "products" && (!body.name || !body.slug || !Number.isFinite(Number(body.price)))) return NextResponse.json({ error: "Product name, slug and valid price are required." }, { status: 422 });
   if (collection === "categories" && !body.name) return NextResponse.json({ error: "Category name is required." }, { status: 422 });
+  if (collection === "team" && (!body.name || !body.designation)) return NextResponse.json({ error: "Team member name and designation are required." }, { status: 422 });
+  if (collection === "team" && body.status !== undefined && !["active", "inactive"].includes(String(body.status).toLowerCase())) return NextResponse.json({ error: "Choose Active or Inactive status." }, { status: 422 });
   try {
     const result = await upsertItem(collection, body);
     return result ? NextResponse.json(result, { status: 201 }) : NextResponse.json({ error: "A record with that slug, code, or email already exists." }, { status: 409 });
@@ -60,6 +62,8 @@ export async function PATCH(request: NextRequest) {
   const body = clean(await request.json().catch(() => null));
   if (!body) return NextResponse.json({ error: "Invalid data" }, { status: 400 });
   if (collection === "products" && body.collection !== undefined && !["New Arrivals", "Men", "Women", "Kids", "Accessories", "Leather", "Denim", "Riding Gear", "Sale"].includes(String(body.collection))) return NextResponse.json({ error: "Choose a valid website collection for this product." }, { status: 422 });
+  if (collection === "team" && (body.name !== undefined && !body.name || body.designation !== undefined && !body.designation)) return NextResponse.json({ error: "Team member name and designation are required." }, { status: 422 });
+  if (collection === "team" && body.status !== undefined && !["active", "inactive"].includes(String(body.status).toLowerCase())) return NextResponse.json({ error: "Choose Active or Inactive status." }, { status: 422 });
   if (collection === "admins" && id === user.id && (body.role && String(body.role).toLowerCase() !== "owner" || body.status && String(body.status).toLowerCase() !== "active")) return NextResponse.json({ error: "You cannot remove your own owner access." }, { status: 422 });
   try {
     const result = await upsertItem(collection, body, id);

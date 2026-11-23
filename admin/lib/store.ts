@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { getDb, publicAdmin } from "@/lib/db";
 import { hashPassword } from "@/lib/password";
 
-export const collections = ["products", "categories", "media", "pages", "articles", "videos", "orders", "coupons", "subscribers", "admins"] as const;
+export const collections = ["products", "categories", "media", "pages", "articles", "videos", "team", "orders", "coupons", "subscribers", "admins"] as const;
 export type Collection = typeof collections[number];
 export type Entry = { id: string; [key: string]: unknown };
 type DbItem = { _id: string; collection: string; lookup_key: string | null; data: Entry; created_at: string; updated_at: string };

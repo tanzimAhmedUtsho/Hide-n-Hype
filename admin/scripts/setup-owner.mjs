@@ -62,8 +62,10 @@ if (!env.DATABASE_URL?.startsWith("mongodb://") && !env.DATABASE_URL?.startsWith
         env.DATABASE_URL = uri;
         console.log("MongoDB Atlas connection verified.");
         break;
-      } catch {
-        console.log("MongoDB connection failed. Check the username, password, network access list, and database user permissions; try again.");
+      } catch (error) {
+        const detail = error instanceof Error ? error.message : String(error);
+        console.log(`MongoDB connection failed: ${detail}`);
+        console.log("Check the database username/password, Atlas network access list, and cluster status; then try again.");
       } finally { await client.close().catch(() => {}); }
     }
 }

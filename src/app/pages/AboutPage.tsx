@@ -1,5 +1,6 @@
 import { BrandStory } from "../components/BrandStory";
 import { Testimonials } from "../components/Testimonials";
+import { TeamSection } from "../components/TeamSection";
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
 import { Link } from "react-router";
@@ -98,6 +99,7 @@ export function AboutPage() {
       </div>
 
       <BrandStory />
+      <TeamSection />
       <Testimonials />
       {/*<Newsletter />*/}
     </div>
