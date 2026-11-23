@@ -33,19 +33,18 @@ export function BrandStory() {
             className="text-foreground leading-none mb-8"
             style={{
               fontFamily: "'Barlow Condensed', sans-serif",
-              fontSize: "clamp(32px, 4.5vw, 52px)",
-              fontWeight: 800,
-              letterSpacing: "-0.02em",
-              lineHeight: 0.9,
+              fontSize: "clamp(32px, 4.1vw, 46px)",
+              fontWeight: 700,
+              letterSpacing: "0.01em",
+              lineHeight: 1,
             }}
           >
             LUXURY IN
             <br />
-            THE DETAIL
-            <br />
-            <span className="text-accent">WORN</span>
-            <br />
-            EVERYWHERE
+            EVERY DETAIL
+            <span className="mt-2 block text-accent" style={{ fontSize: "0.58em", letterSpacing: "0.02em" }}>
+              WORN EVERYWHERE
+            </span>
           </h2>
           <p
             className="text-muted-foreground mb-6 leading-relaxed max-w-md"
