@@ -9,11 +9,14 @@ function clean(input: unknown): Record<string, unknown> | null {
   const output: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(input as Record<string, unknown>).slice(0, 40)) {
     if (["__proto__", "constructor", "prototype", "id", "createdAt", "updatedAt"].includes(key)) continue;
-    if (typeof value === "string") output[key.slice(0, 60)] = (key === "password" ? value : value.trim()).slice(0, key === "description" || key === "content" || key === "bio" ? 20000 : 2000);
+    if (typeof value === "string") output[key.slice(0, 60)] = (key === "password" ? value : value.trim()).slice(0, key === "description" || key === "content" || key === "bio" || key === "galleryImages" ? 20000 : 2000);
     else if (typeof value === "number" && Number.isFinite(value)) output[key.slice(0, 60)] = value;
     else if (typeof value === "boolean") output[key.slice(0, 60)] = value;
   }
   return output;
+}
+function hasTooManyGalleryImages(body: Record<string, unknown>) {
+  return typeof body.galleryImages === "string" && body.galleryImages.split(",").map(image => image.trim()).filter(Boolean).length > 5;
 }
 async function authorized(collection?: Collection, write = false) {
   const user = await isAdmin();
@@ -28,7 +31,7 @@ export async function GET(request: NextRequest) {
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   if (request.nextUrl.searchParams.get("summary") === "1") {
     const summary = await getSummary();
-    return NextResponse.json(user.role === "editor" ? { ...summary, orders: 0, pending: 0, sales: 0, recentOrders: [] } : summary);
+    return NextResponse.json(user.role === "editor" ? { ...summary, orders: 0, enquiries: 0, pending: 0, followUpsDue: 0, sales: 0, recentOrders: [], recentEnquiries: [] } : summary);
   }
   const collection = request.nextUrl.searchParams.get("collection");
   if (!selected(collection)) return NextResponse.json({ error: "Unknown collection" }, { status: 400 });
@@ -43,6 +46,7 @@ export async function POST(request: NextRequest) {
   if (!user) return NextResponse.json({ error: "Unauthorized or insufficient role" }, { status: 403 });
   const body = clean(await request.json().catch(() => null));
   if (!body) return NextResponse.json({ error: "Invalid data" }, { status: 400 });
+  if (collection === "products" && hasTooManyGalleryImages(body)) return NextResponse.json({ error: "You can add up to 5 additional product images." }, { status: 422 });
   if (collection === "products" && !["New Arrivals", "Men", "Women", "Kids", "Accessories", "Leather", "Denim", "Riding Gear", "Sale"].includes(String(body.collection ?? ""))) return NextResponse.json({ error: "Choose the website collection where this product should appear." }, { status: 422 });
   if (collection === "admins" && (typeof body.password !== "string" || body.password.length < 12)) return NextResponse.json({ error: "A temporary password of at least 12 characters is required." }, { status: 422 });
   if (collection === "products" && (!body.name || !body.slug || !body.sku)) return NextResponse.json({ error: "Product name, URL slug, and product code are required." }, { status: 422 });
@@ -62,6 +66,7 @@ export async function PATCH(request: NextRequest) {
   if (!user) return NextResponse.json({ error: "Unauthorized or insufficient role" }, { status: 403 });
   const body = clean(await request.json().catch(() => null));
   if (!body) return NextResponse.json({ error: "Invalid data" }, { status: 400 });
+  if (collection === "products" && hasTooManyGalleryImages(body)) return NextResponse.json({ error: "You can add up to 5 additional product images." }, { status: 422 });
   if (collection === "products" && body.collection !== undefined && !["New Arrivals", "Men", "Women", "Kids", "Accessories", "Leather", "Denim", "Riding Gear", "Sale"].includes(String(body.collection))) return NextResponse.json({ error: "Choose a valid website collection for this product." }, { status: 422 });
   if (collection === "products" && body.sku !== undefined && !body.sku) return NextResponse.json({ error: "Product code (SKU) is required." }, { status: 422 });
   if (collection === "products" && body.price !== undefined && body.price !== "" && (!Number.isFinite(Number(body.price)) || Number(body.price) < 0)) return NextResponse.json({ error: "Enter a valid non-negative product price." }, { status: 422 });

@@ -43,6 +43,16 @@ function colorLabel(color: string) {
   return labels[color.toLowerCase()] ?? color;
 }
 
+function colorSwatch(color: string) {
+  const palette: Record<string, string> = {
+    black: "#171717", white: "#f0ebe0", "off white": "#f0ebe0", cream: "#f0ebe0", ivory: "#f0ebe0",
+    navy: "#2d3748", blue: "#41678a", "denim blue": "#41678a", grey: "#808080", gray: "#808080",
+    charcoal: "#555555", brown: "#8b7355", tan: "#b48a5a", olive: "#73766b", green: "#3f6b4d",
+    red: "#c72b37", rust: "#c84b1a", gold: "#c8a84b", pink: "#d98ca3",
+  };
+  return palette[color.trim().toLowerCase()] ?? color;
+}
+
 export function ProductDetailPage() {
   const { slug } = useParams();
   const [cmsProducts, setCmsProducts] = useState<CmsProduct[]>([]);
@@ -59,6 +69,7 @@ export function ProductDetailPage() {
     category: cmsRecord.collection || cmsRecord.category || "Collection",
     tag: "NEW",
     image: cmsProductImage(cmsRecord.image),
+    images: Array.from(new Set([cmsProductImage(cmsRecord.image), ...String(cmsRecord.galleryImages ?? "").split(",").map(image => cmsProductImage(image.trim()))].filter(Boolean))),
     alt: cmsRecord.description || cmsRecord.name,
     colorOptions: String(cmsRecord.colors ?? "").split(",").map(color => color.trim()).filter(Boolean),
   } : undefined;
@@ -88,7 +99,7 @@ export function ProductDetailPage() {
   if (!product) return <main className="flex min-h-[70vh] items-center justify-center px-6 pt-24 text-muted-foreground">Loading product…</main>;
 
   const productVariants = "variants" in product ? product.variants : undefined;
-  const productImages = productVariants?.[activeVariantIndex]?.images ?? ("images" in product ? product.images : [product.image]);
+  const productImages = productVariants?.[activeVariantIndex]?.images ?? ("images" in product && product.images.length ? product.images : [product.image]);
   const productImageBackgrounds = productVariants?.[activeVariantIndex]?.backgrounds ?? ("imageBackgrounds" in product ? product.imageBackgrounds : []);
   const activeImage = productImages[activeImageIndex] ?? productImages[0];
   const activeImageBackground = productImageBackgrounds[activeImageIndex] ?? "#f3f3f3";
@@ -109,7 +120,7 @@ export function ProductDetailPage() {
             style={product.category === "Riding Gear" ? { backgroundColor: activeImageBackground } : undefined}
           >
             <div className="aspect-[4/4.6]">
-              <ImageWithFallback src={activeImage} alt={product.alt} className={`h-full w-full ${product.category === "Riding Gear" ? "object-contain" : "object-cover object-top"}`} />
+              <ImageWithFallback src={activeImage} alt={product.alt} loading="eager" fetchPriority="high" className={`h-full w-full ${product.category === "Riding Gear" ? "object-contain" : "object-cover object-top"}`} />
             </div>
             {productImages.length > 1 && (
               <div className="grid grid-cols-2 gap-2 border-t border-black/10 p-2">
@@ -145,7 +156,7 @@ export function ProductDetailPage() {
               {isCmsProduct ? product.description || `${product.name}. Contact our team to ask about current availability and product details.` : `${product.alt}. Contact our team to ask about current availability, size options, and product details.`}
             </p>
 
-            {isCmsProduct && <div className="mt-5 flex flex-wrap items-baseline gap-3">{Number(cmsRecord?.salePrice || cmsRecord?.price || 0) > 0 ? <><strong className="text-xl text-foreground">৳{Number(cmsRecord?.salePrice || cmsRecord?.price).toLocaleString()}</strong>{Number(cmsRecord?.salePrice) > 0 && Number(cmsRecord?.price) > 0 && <span className="text-muted-foreground line-through">৳{Number(cmsRecord?.price).toLocaleString()}</span>}</> : <span className="text-muted-foreground">Price on request</span>}{cmsRecord?.sizes && <span className="text-sm text-muted-foreground">Sizes: {cmsRecord.sizes}</span>}</div>}
+            {isCmsProduct && (Number(cmsRecord?.salePrice || cmsRecord?.price || 0) > 0 || cmsRecord?.sizes) && <div className="mt-5 flex flex-wrap items-baseline gap-3">{Number(cmsRecord?.salePrice || cmsRecord?.price || 0) > 0 && <><strong className="text-xl text-foreground">BDT {Number(cmsRecord?.salePrice || cmsRecord?.price).toLocaleString()}</strong>{Number(cmsRecord?.salePrice) > 0 && Number(cmsRecord?.price) > 0 && <span className="text-muted-foreground line-through">BDT {Number(cmsRecord?.price).toLocaleString()}</span>}</>}{cmsRecord?.sizes && <span className="text-sm text-muted-foreground">Sizes: {cmsRecord.sizes}</span>}</div>}
 
             <div className="mt-8 border-y border-border/30 py-6">
               <h2 className="text-sm font-semibold uppercase tracking-[0.18em] text-foreground" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
@@ -172,7 +183,7 @@ export function ProductDetailPage() {
                     key={`${color}-${index}`}
                     className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-xs font-medium ${index === 0 ? "border-accent text-foreground" : "border-border/50 text-muted-foreground"}`}
                   >
-                    <span className="h-4 w-4 rounded-full border border-white/20" style={{ backgroundColor: color }} />
+                    <span className="h-4 w-4 rounded-full border border-white/20" style={{ backgroundColor: colorSwatch(color) }} />
                     {colorLabel(color)}
                   </span>
                 ))}

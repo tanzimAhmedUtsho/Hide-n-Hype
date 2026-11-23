@@ -12,6 +12,6 @@
     { "source": "/about", "destination": "/seo-pages/about.html" },
     { "source": "/contact", "destination": "/seo-pages/contact.html" },
     { "source": "/sourcing-manufacturing", "destination": "/seo-pages/sourcing-manufacturing.html" },
-    { "source": "/products/:slug", "destination": "/seo-pages/products/:slug.html" }
+    { "source": "/products/:slug", "destination": "/index.html" }
   ]
 }

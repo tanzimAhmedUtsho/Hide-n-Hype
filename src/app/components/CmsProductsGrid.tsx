@@ -33,7 +33,7 @@ export function CmsProductsGrid({ collection = "all" }: { collection?: string })
         </div>
         <div className="pt-3">
           <Link to={`/products/${product.slug}`} className="inline-block hover:text-accent"><h3 className="mb-1 text-foreground" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "16px", fontWeight: 700, letterSpacing: "0.05em" }}>{product.name}</h3></Link>
-          <div className="flex items-center gap-2 text-sm">{price > 0 ? <><span className="text-foreground">৳{price.toLocaleString()}</span>{Number(product.salePrice) > 0 && originalPrice > 0 && <span className="text-xs text-muted-foreground line-through">৳{originalPrice.toLocaleString()}</span>}</> : <span className="text-muted-foreground">Price on request</span>}</div>
+          {price > 0 && <div className="flex items-center gap-2 text-sm"><span className="text-foreground">BDT {price.toLocaleString()}</span>{Number(product.salePrice) > 0 && originalPrice > 0 && <span className="text-xs text-muted-foreground line-through">BDT {originalPrice.toLocaleString()}</span>}</div>}
         </div>
       </article>
       );

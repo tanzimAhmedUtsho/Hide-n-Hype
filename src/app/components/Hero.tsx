@@ -10,6 +10,8 @@ export function Hero() {
         <ImageWithFallback
           src="https://res.cloudinary.com/djdrghfqs/image/upload/v1782379663/image-33_urrrop.png"
           alt="Hide n Hype campaign model in urban setting"
+          loading="eager"
+          fetchPriority="high"
           className="w-full h-full object-cover object-center"
           style={{ filter: "brightness(0.35) contrast(1.1)" }}
         />

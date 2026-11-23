@@ -61,3 +61,13 @@ Keep `admin/.env.local` private; it contains the MongoDB connection string and a
 The storefront and CMS are separate applications. `render.yaml` defines a Render web service for the Next.js CMS. Create a Render Blueprint from this repository and provide `DATABASE_URL` using your MongoDB Atlas application user, plus `ADMIN_EMAIL` and `ADMIN_PASSWORD_HASH`. Generate a password hash locally with `node admin/scripts/hash-password.mjs "your-password"` (use a password of at least 12 characters). Render generates `ADMIN_SESSION_SECRET` for the service. Use an Atlas user restricted to read/write access on the `hidenhype` database and allow the Render service to connect in Atlas Network Access.
 
 After the CMS service is live, set `VITE_CMS_API_URL` in the Vercel storefront production environment to the Render service URL, then redeploy the storefront. Sign in at the Render service `/admin` address and add products there. Local and hosted MongoDB data are separate; an existing local SQLite database is imported once when the CMS starts against the configured Atlas database.
+
+### Enquiry notifications and backups
+
+Website contact and product enquiries are saved in the Admin Orders inbox. To email the store owner when a new enquiry arrives, configure these variables in `admin/.env.local` for local development (or in the CMS host environment):
+
+- `RESEND_API_KEY`: API key from Resend.
+- `RESEND_FROM_EMAIL`: sender address verified in Resend.
+- `NOTIFICATION_EMAIL`: optional recipient address; if omitted, `ADMIN_EMAIL` is used.
+
+The CMS dashboard displays a setup reminder while email alerts are not configured. Enquiry saving continues even when email delivery is unavailable. The owner can download a JSON backup from Dashboard; order managers can export the Orders inbox to CSV. Backups include customer contact/address information, so store the downloaded file securely.

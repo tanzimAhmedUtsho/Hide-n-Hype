@@ -72,6 +72,13 @@ export function Layout() {
     const metadata = pageMetadata[normalizedPath];
     document.getElementById("cms-product-jsonld")?.remove();
 
+    if (normalizedPath === "/profile") {
+      document.title = "My Profile | Hide n Hype";
+      updateMetaTag('meta[name="robots"]', "name", "robots", "noindex, nofollow");
+      document.head.querySelector('link[rel="canonical"]')?.remove();
+      return;
+    }
+
     const productPath = normalizedPath.match(/^\/products\/([^/]+)$/);
     if (!metadata && productPath) {
       const controller = new AbortController();

@@ -19,6 +19,7 @@ import { FaqPage } from "./pages/FaqPage";
 import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
 import { CookiePolicyPage } from "./pages/CookiePolicyPage";
 import { SalePage } from "./pages/SalePage";
+import { CustomerProfilePage } from "./pages/CustomerProfilePage";
 
 export const routeConfig: RouteObject[] = [
   {
@@ -39,6 +40,7 @@ export const routeConfig: RouteObject[] = [
       { path: "lookbook", Component: LookbookPage },
       { path: "about", Component: AboutPage },
       { path: "contact", Component: ContactPage },
+      { path: "profile", Component: CustomerProfilePage },
       { path: "faq", Component: FaqPage },
       { path: "privacy-policy", Component: PrivacyPolicyPage },
       { path: "cookie-policy", Component: CookiePolicyPage },

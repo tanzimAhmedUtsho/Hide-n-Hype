@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { ShoppingBag, Search, Menu, X, ChevronDown, Mail } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { ShoppingBag, Search, Menu, X, ChevronDown, Mail, UserRound } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Link, useLocation } from "react-router";
 import logoImage from "../../imports/logo.png";
@@ -11,6 +11,7 @@ import { leatherProducts } from "../pages/LeatherPage";
 import { denimProducts } from "../pages/DenimPage";
 import { productSlug } from "../productCatalog";
 import { ridingGearProducts } from "../ridingGearCatalog";
+import { customerAccountUrl, customerProfileChangedEvent, getCustomerAccount, type CustomerProfile } from "../customerAccount";
 
 const searchableProducts = [
   ...menProducts.map((product) => ({ ...product, category: "Men", path: `/products/${productSlug(product.name)}` })),
@@ -71,10 +72,27 @@ export function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [bagOpen, setBagOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [orderForm, setOrderForm] = useState({ customer: "", email: "", phone: "", product: "", message: "" });
+  const [orderForm, setOrderForm] = useState({ customer: "", email: "", phone: "", shippingAddress: "", product: "", message: "" });
   const [orderSubmitting, setOrderSubmitting] = useState(false);
   const [orderMessage, setOrderMessage] = useState("");
+  const [customerProfile, setCustomerProfile] = useState<CustomerProfile | null>(null);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const location = useLocation();
+  useEffect(() => {
+    const refreshAccount = () => { getCustomerAccount().then(result => {
+      const customer = result.profile ?? null;
+      setCustomerProfile(customer);
+      if (customer) setOrderForm(current => ({ ...current, customer: current.customer || customer.name, email: current.email || customer.email, phone: current.phone || customer.phone, shippingAddress: current.shippingAddress || `${customer.address}, ${customer.district}, ${customer.division}${customer.postalCode ? ` ${customer.postalCode}` : ""}` }));
+    }).catch(() => setCustomerProfile(null)); };
+    refreshAccount();
+    window.addEventListener(customerProfileChangedEvent, refreshAccount);
+    return () => window.removeEventListener(customerProfileChangedEvent, refreshAccount);
+  }, []);
+
+  async function customerSignOut() {
+    await fetch(customerAccountUrl, { method: "DELETE", credentials: "include" }).catch(() => undefined);
+    setCustomerProfile(null); setProfileMenuOpen(false);
+  }
   const searchResults = useMemo(() => {
     const query = normalizeSearchText(searchQuery);
     if (!query) return { products: [], categories: [] };
@@ -129,7 +147,7 @@ export function Navbar() {
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Could not send your enquiry.");
       setOrderMessage(`Thank you. Your enquiry ${result.orderNumber} has been sent. Our team will contact you to discuss your requirements.`);
-      setOrderForm({ customer: "", email: "", phone: "", product: "", message: "" });
+      setOrderForm({ customer: "", email: "", phone: "", shippingAddress: "", product: "", message: "" });
     } catch (error) {
       setOrderMessage(error instanceof Error ? error.message : "Could not send your enquiry.");
     } finally {
@@ -239,7 +257,7 @@ export function Navbar() {
         </div>
 
         {/* Right icons */}
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-3 sm:gap-5">
           <Link
             to="/contact"
             aria-label="Contact Hide n Hype"
@@ -258,6 +276,15 @@ export function Navbar() {
           >
             <Mail size={16} />
           </Link>
+          <button
+            className="text-muted-foreground hover:text-accent transition-colors duration-200"
+            onClick={() => { setProfileMenuOpen(open => !open); setSearchOpen(false); setBagOpen(false); setMenuOpen(false); }}
+            aria-label="Customer profile"
+            aria-expanded={profileMenuOpen}
+            title={customerProfile?.name || "Sign in or create profile"}
+          >
+            <UserRound size={18} />
+          </button>
           <button
             className="text-muted-foreground hover:text-foreground transition-colors duration-200"
             onClick={() => {
@@ -289,6 +316,17 @@ export function Navbar() {
           </button>
         </div>
       </nav>
+
+      <AnimatePresence>
+        {profileMenuOpen && <>
+          <motion.button type="button" aria-label="Close profile menu" className="fixed inset-0 z-[55] cursor-default" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setProfileMenuOpen(false)} />
+          <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} className="fixed right-4 top-16 z-[60] w-[calc(100%-2rem)] max-w-xs border border-border bg-[#101010] text-foreground shadow-2xl sm:right-8">
+            <div className="border-b border-white/10 px-5 py-4"><p className="font-medium">{customerProfile?.name || "Your profile"}</p><p className="mt-1 truncate text-xs text-muted-foreground">{customerProfile?.email || "Sign in to save your details"}</p></div>
+            <Link to="/profile" onClick={() => setProfileMenuOpen(false)} className="block px-5 py-4 text-sm hover:bg-white/5">{customerProfile ? "My profile" : "Sign in / Create profile"}</Link>
+            {customerProfile && <button onClick={customerSignOut} className="w-full border-t border-white/10 px-5 py-4 text-left text-sm text-red-300 hover:bg-white/5">Sign out</button>}
+          </motion.div>
+        </>}
+      </AnimatePresence>
 
       <AnimatePresence>
         {searchOpen && (
@@ -426,6 +464,7 @@ export function Navbar() {
                   <input required maxLength={120} value={orderForm.customer} onChange={event => setOrderForm(current => ({ ...current, customer: event.target.value }))} placeholder="Your name" autoComplete="name" className="w-full border border-border bg-background px-3 py-3 text-sm text-foreground placeholder:text-muted-foreground" />
                   <input required type="email" maxLength={254} value={orderForm.email} onChange={event => setOrderForm(current => ({ ...current, email: event.target.value }))} placeholder="Email address" autoComplete="email" className="w-full border border-border bg-background px-3 py-3 text-sm text-foreground placeholder:text-muted-foreground" />
                   <input required type="tel" maxLength={40} value={orderForm.phone} onChange={event => setOrderForm(current => ({ ...current, phone: event.target.value }))} placeholder="Phone / WhatsApp" autoComplete="tel" className="w-full border border-border bg-background px-3 py-3 text-sm text-foreground placeholder:text-muted-foreground" />
+                  <textarea required maxLength={500} value={orderForm.shippingAddress} onChange={event => setOrderForm(current => ({ ...current, shippingAddress: event.target.value }))} placeholder="Business / delivery address" autoComplete="street-address" rows={2} className="w-full resize-none border border-border bg-background px-3 py-3 text-sm text-foreground placeholder:text-muted-foreground" />
                   <textarea maxLength={1500} value={orderForm.message} onChange={event => setOrderForm(current => ({ ...current, message: event.target.value }))} placeholder="Tell us about your requirements (optional)" rows={3} className="w-full resize-none border border-border bg-background px-3 py-3 text-sm text-foreground placeholder:text-muted-foreground" />
                   <button disabled={orderSubmitting} type="submit" className="mt-1 w-full bg-accent px-5 py-3 text-sm font-semibold tracking-widest text-accent-foreground transition-colors hover:bg-foreground disabled:opacity-60" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>
                     {orderSubmitting ? "SENDING…" : "SEND PRODUCT ENQUIRY"}
@@ -446,7 +485,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 bg-background flex flex-col items-center justify-center gap-8"
+            className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-5 overflow-y-auto bg-background px-5 pb-6 pt-20"
           >
             {navLinks.map((link, i) => (
               <motion.div
@@ -458,7 +497,7 @@ export function Navbar() {
                 <Link
                   to={link.path}
                   className="text-foreground hover:text-accent transition-colors tracking-widest"
-                  style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "32px", fontWeight: 800 }}
+                  style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(19px, 5.5vw, 23px)", fontWeight: 700, letterSpacing: "0.08em", lineHeight: 1.1 }}
                   onClick={() => setMenuOpen(false)}
                 >
                   {link.label}
@@ -473,10 +512,10 @@ export function Navbar() {
               <Link
                 to="/contact"
                 className="inline-flex items-center gap-3 rounded-full border border-accent/60 px-6 py-3 text-accent transition-colors hover:bg-accent hover:text-accent-foreground"
-                style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "22px", fontWeight: 700, letterSpacing: "0.12em" }}
+                style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "16px", fontWeight: 700, letterSpacing: "0.1em" }}
                 onClick={() => setMenuOpen(false)}
               >
-                <Mail size={20} /> CONTACT US
+                <Mail size={16} /> CONTACT US
               </Link>
             </motion.div>
           </motion.div>

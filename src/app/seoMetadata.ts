@@ -57,6 +57,10 @@ export const pageMetadata: Record<string, { title: string; description: string }
     description:
       "Contact Hide n Hype for apparel sourcing, manufacturing, product development, and business enquiries.",
   },
+  "/profile": {
+    title: "My Profile | Hide n Hype",
+    description: "Manage your Hide n Hype customer profile and delivery details.",
+  },
   "/faq": {
     title: "Frequently Asked Questions | Hide n Hype",
     description: "Find answers about Hide n Hype product enquiries, apparel sourcing, manufacturing, order quantities, and lead times.",

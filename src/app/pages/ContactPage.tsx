@@ -11,7 +11,7 @@ import {
   Twitter,
 } from "lucide-react";
 import { motion } from "motion/react";
-import type { FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 
 const countryDetails = [
   {
@@ -58,30 +58,6 @@ const socialLinks = [
 ];
 
 const inquiryTypes = ["General", "Wholesale", "Collaboration", "Press"];
-
-function handleContactSubmit(event: FormEvent<HTMLFormElement>) {
-  event.preventDefault();
-
-  const data = new FormData(event.currentTarget);
-  const fields = [
-    ["Name", data.get("name")],
-    ["Email", data.get("email")],
-    ["Phone", data.get("phone")],
-    ["Address / city", data.get("location")],
-    ["Instagram", data.get("instagram")],
-    ["Facebook", data.get("facebook")],
-    ["Website / portfolio", data.get("website")],
-    ["Inquiry type", data.get("inquiry")],
-    ["Message", data.get("message")],
-  ]
-    .filter(([, value]) => typeof value === "string" && value.trim())
-    .map(([label, value]) => `${label}: ${String(value).trim()}`);
-  const name = String(data.get("name") ?? "").trim();
-  const subject = encodeURIComponent(`Hide n Hype enquiry${name ? ` from ${name}` : ""}`);
-  const body = encodeURIComponent(fields.join("\n\n"));
-
-  window.location.href = `mailto:info@hiddenhype.com?subject=${subject}&body=${body}`;
-}
 
 function CountryPanel({ detail }: { detail: typeof countryDetails[0] }) {
   return (
@@ -136,6 +112,36 @@ function CountryPanel({ detail }: { detail: typeof countryDetails[0] }) {
 }
 
 export function ContactPage() {
+  const [contactMessage, setContactMessage] = useState("");
+  const [contactSubmitting, setContactSubmitting] = useState(false);
+  async function handleContactSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (contactSubmitting) return;
+    setContactSubmitting(true);
+    setContactMessage("");
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const apiBase = import.meta.env.VITE_CMS_API_URL || "http://localhost:3000";
+    try {
+      const response = await fetch(`${apiBase.replace(/\/$/, "")}/api/public/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customer: data.get("name"), email: data.get("email"), phone: data.get("phone"),
+          shippingAddress: data.get("location"), inquiryType: data.get("inquiry"), message: data.get("message"),
+          instagram: data.get("instagram"), facebook: data.get("facebook"), website: data.get("website"),
+        }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Could not send your enquiry.");
+      setContactMessage(`Thank you. Your enquiry ${result.orderNumber} has been sent to our team.`);
+      form.reset();
+    } catch (error) {
+      setContactMessage(error instanceof Error ? error.message : "Could not send your enquiry.");
+    } finally {
+      setContactSubmitting(false);
+    }
+  }
   return (
     <div className="pt-24 pb-20 overflow-hidden">
       {/* Hero Section */}
@@ -319,8 +325,9 @@ export function ContactPage() {
                   type="text"
                   name="location"
                   aria-label="Address or city"
-                  placeholder="Address / city"
-                  autoComplete="address-level2"
+                  placeholder="Full address / city"
+                  autoComplete="street-address"
+                  required
                   className="w-full rounded-[8px] border border-border/35 bg-transparent px-4 py-3 text-foreground outline-none transition-all focus:border-accent/80"
                   style={{
                     fontFamily: "'Barlow', sans-serif",
@@ -406,8 +413,10 @@ export function ContactPage() {
                 }}
               />
 
+              {contactMessage && <p role="status" className="text-sm text-accent">{contactMessage}</p>}
               <button
                 type="submit"
+                disabled={contactSubmitting}
                 className="flex w-full items-center justify-center gap-2 rounded-[8px] bg-accent px-7 py-3.5 text-accent-foreground transition-colors hover:bg-foreground sm:w-fit"
                 style={{
                   fontFamily: "'Barlow Condensed', sans-serif",
@@ -416,12 +425,9 @@ export function ContactPage() {
                   letterSpacing: "0.15em",
                 }}
               >
-                SEND MESSAGE <ArrowRight size={15} />
+                {contactSubmitting ? "SENDING..." : "SEND MESSAGE"} <ArrowRight size={15} />
               </button>
-              <p className="text-sm text-muted-foreground" style={{ fontFamily: "'Barlow', sans-serif", lineHeight: "1.7" }}>
-                This opens your email app with your enquiry ready to send. If it does not open, email{" "}
-                <a href="mailto:info@hiddenhype.com" className="text-accent underline underline-offset-4">info@hiddenhype.com</a>.
-              </p>
+              <p className="text-sm text-muted-foreground" style={{ fontFamily: "'Barlow', sans-serif", lineHeight: "1.7" }}>Your enquiry and address will be saved securely for our team to review.</p>
             </form>
           </motion.div>
         </div>

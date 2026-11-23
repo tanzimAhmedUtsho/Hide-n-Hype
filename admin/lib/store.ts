@@ -5,7 +5,7 @@ import { hashPassword } from "@/lib/password";
 export const collections = ["products", "categories", "media", "pages", "articles", "videos", "team", "orders", "coupons", "subscribers", "admins"] as const;
 export type Collection = typeof collections[number];
 export type Entry = { id: string; [key: string]: unknown };
-type DbItem = { _id: string; collection: string; lookup_key: string | null; data: Entry; created_at: string; updated_at: string };
+type DbItem = { _id: string; collection: string; lookup_key: string | null; data: Entry; created_at: string; updated_at: string; deleted_at?: string };
 type AdminRecord = { _id: string; email: string; name: string; password_hash: string; role: string; status: string; created_at: string; updated_at: string };
 
 const starterProducts = [
@@ -40,8 +40,32 @@ export async function listItems(collection: Collection): Promise<Entry[]> {
     return admins.map(admin => publicAdmin(admin) as Entry);
   }
   await seedIfNeeded();
-  const rows = await db.collection<DbItem>("cms_items").find({ collection }).sort({ created_at: -1 }).toArray();
+  const filter = collection === "products" ? { collection, deleted_at: { $exists: false } } : { collection };
+  const rows = await db.collection<DbItem>("cms_items").find(filter).sort({ created_at: -1 }).toArray();
   return rows.map(row => row.data);
+}
+
+export async function listTrashedProducts(): Promise<Entry[]> {
+  const rows = await (await getDb()).collection<DbItem>("cms_items")
+    .find({ collection: "products", deleted_at: { $exists: true } })
+    .sort({ deleted_at: -1 })
+    .toArray();
+  return rows.map(row => ({ ...row.data, deletedAt: row.deleted_at }));
+}
+
+export async function restoreTrashedProduct(id: string): Promise<boolean> {
+  const result = await (await getDb()).collection<DbItem>("cms_items").updateOne(
+    { _id: id, collection: "products", deleted_at: { $exists: true } },
+    { $unset: { deleted_at: "", "data.deletedAt": "" }, $set: { updated_at: new Date().toISOString() } },
+  );
+  return result.modifiedCount > 0;
+}
+
+export async function permanentlyDeleteTrashedProduct(id: string): Promise<boolean> {
+  const result = await (await getDb()).collection<DbItem>("cms_items").deleteOne({
+    _id: id, collection: "products", deleted_at: { $exists: true },
+  });
+  return result.deletedCount > 0;
 }
 
 export async function getSummary() {
@@ -50,10 +74,19 @@ export async function getSummary() {
   const items = db.collection<DbItem>("cms_items");
   const [orders, products] = await Promise.all([
     items.find({ collection: "orders" }).sort({ created_at: -1 }).toArray(),
-    items.countDocuments({ collection: "products" }),
+    items.countDocuments({ collection: "products", deleted_at: { $exists: false } }),
   ]);
-  const orderData = orders.map(row => row.data);
-  return { products, orders: orderData.length, pending: orderData.filter(o => String(o.status).toLowerCase() === "pending").length, sales: orderData.reduce((sum, order) => sum + Number(order.total ?? 0), 0), recentOrders: orderData.slice(0, 5) };
+  const allOrderData = orders.map(row => row.data);
+  const isEnquiry = (item: Entry) => { const type = String(item.type ?? "").toLowerCase(); return type ? ["inquiry", "contact"].includes(type) : ["storefront", "contact-form"].includes(String(item.source ?? "").toLowerCase()); };
+  const enquiryData = allOrderData.filter(isEnquiry);
+  const orderData = allOrderData.filter(item => !isEnquiry(item));
+  const now = Date.now();
+  const followUpsDue = enquiryData.filter(order => {
+    const status = String(order.leadStatus ?? "new").toLowerCase();
+    const date = Date.parse(String(order.followUpAt ?? ""));
+    return Number.isFinite(date) && date <= now && !["confirmed", "closed"].includes(status);
+  }).length;
+  return { products, orders: orderData.length, enquiries: enquiryData.length, pending: orderData.filter(o => String(o.status).toLowerCase() === "pending").length, sales: orderData.reduce((sum, order) => sum + Number(order.total ?? 0), 0), followUpsDue, notificationReady: Boolean(process.env.RESEND_API_KEY && (process.env.NOTIFICATION_EMAIL || process.env.ADMIN_EMAIL) && process.env.RESEND_FROM_EMAIL), recentOrders: orderData.slice(0, 5), recentEnquiries: enquiryData.slice(0, 5) };
 }
 
 export async function upsertItem(collection: Collection, input: Record<string, unknown>, id?: string): Promise<Entry | null> {
@@ -63,7 +96,7 @@ export async function upsertItem(collection: Collection, input: Record<string, u
   const now = new Date().toISOString();
   const key = lookupKey(collection, input);
   if (key && await items.findOne({ collection, lookup_key: key, _id: { $ne: id ?? "" } })) return null;
-  const existing = id ? await items.findOne({ _id: id, collection }) : null;
+  const existing = id ? await items.findOne({ _id: id, collection, deleted_at: { $exists: false } }) : null;
   if (id && !existing) return null;
   const current = existing?.data ?? { id: "" };
   const item: Entry = { ...current, ...input, id: existing?._id ?? randomUUID(), createdAt: current.createdAt ?? now, updatedAt: now };
@@ -114,6 +147,14 @@ export async function findAdminById(id: string) {
 
 export async function deleteItem(collection: Collection, id: string): Promise<boolean> {
   const db = await getDb();
+  if (collection === "products") {
+    const deletedAt = new Date().toISOString();
+    const result = await db.collection<DbItem>("cms_items").updateOne(
+      { _id: id, collection: "products", deleted_at: { $exists: false } },
+      { $set: { deleted_at: deletedAt, "data.deletedAt": deletedAt, updated_at: deletedAt } },
+    );
+    return result.modifiedCount > 0;
+  }
   if (collection === "admins") {
     const admins = db.collection<AdminRecord>("admin_users");
     const target = await admins.findOne({ _id: id });
@@ -134,7 +175,23 @@ export async function addSubscriber(email: string, name = "", source = "website"
   return { duplicate: false, item };
 }
 
-export async function createOrderInquiry(input: { customer: string; email: string; phone: string; product: string; message: string }) {
+export async function createOrderInquiry(input: { customer: string; email: string; phone: string; shippingAddress: string; product: string; message: string }) {
   const orderNumber = `HNH-${Date.now().toString(36).toUpperCase()}`;
-  return upsertItem("orders", { orderNumber, customer: input.customer.trim(), email: input.email.trim().toLowerCase(), phone: input.phone.trim(), shippingAddress: "", items: JSON.stringify([{ product: input.product.trim(), quantity: 1 }]), inquiry: input.message.trim(), total: 0, paymentStatus: "unpaid", status: "pending", type: "inquiry", source: "storefront" });
+  return upsertItem("orders", { orderNumber, customer: input.customer.trim(), email: input.email.trim().toLowerCase(), phone: input.phone.trim(), shippingAddress: input.shippingAddress.trim(), items: JSON.stringify([{ product: input.product.trim(), quantity: 1 }]), inquiry: input.message.trim(), total: 0, paymentStatus: "unpaid", status: "pending", type: "inquiry", source: "storefront" });
+}
+
+export async function createContactInquiry(input: { customer: string; email: string; phone: string; shippingAddress: string; inquiryType: string; message: string; links: string }) {
+  const orderNumber = `HNH-${Date.now().toString(36).toUpperCase()}`;
+  return upsertItem("orders", { orderNumber, customer: input.customer.trim(), email: input.email.trim().toLowerCase(), phone: input.phone.trim(), shippingAddress: input.shippingAddress.trim(), items: "[]", inquiry: input.message.trim(), inquiryType: input.inquiryType, links: input.links, total: 0, paymentStatus: "unpaid", status: "pending", type: "contact", source: "contact-form" });
+}
+
+export async function isCustomerBlocked(email: string, phone: string) {
+  const normalizedEmail = email.trim().toLowerCase();
+  const normalizedPhone = phone.replace(/\D/g, "");
+  const orders = (await getDb()).collection<DbItem>("cms_items");
+  const candidates = await orders.find({ collection: "orders", "data.blockedCustomer": true }).project({ data: 1 }).toArray();
+  return candidates.some(({ data }) =>
+    normalizedEmail && String(data.email ?? "").trim().toLowerCase() === normalizedEmail ||
+    normalizedPhone.length > 5 && String(data.phone ?? "").replace(/\D/g, "") === normalizedPhone
+  );
 }

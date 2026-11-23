@@ -7,6 +7,7 @@ export type CmsProduct = {
   price?: number | string;
   salePrice?: number | string;
   image?: string;
+  galleryImages?: string;
   description?: string;
   seoTitle?: string;
   seoDescription?: string;

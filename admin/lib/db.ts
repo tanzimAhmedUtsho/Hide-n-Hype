@@ -21,6 +21,7 @@ async function connectDatabase(): Promise<Db> {
       { unique: true, partialFilterExpression: { lookup_key: { $type: "string" } } },
     ),
     database.collection<AdminRecord>("admin_users").createIndex({ email: 1 }, { unique: true }),
+    database.collection("customer_users").createIndex({ email: 1 }, { unique: true }),
   ]);
 
   const email = process.env.ADMIN_EMAIL?.trim().toLowerCase();
