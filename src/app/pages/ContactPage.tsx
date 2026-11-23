@@ -18,7 +18,8 @@ const countryDetails = [
     name: "Finland Office",
     city: "Vuohisillantie 46 E 35,68600 Pietarsaari, Finland",
     phone: "+358 40 2453236",
-    emails: ["hidenhypeofficial@gmail.com", "info@hidenhype.com"],
+    email: "info@hiddenhype.com",
+    secondaryEmail: "hidenhypeofficial@gmail.com",
     hours: "Mon-Fri, 10:00-18:00 EET",
     focus: "Global customer care, retail partnerships, wholesale meetings and brand operations.",
   },
@@ -26,7 +27,8 @@ const countryDetails = [
     name: "Bangladesh Office",
     city: "Agargaon, Dhaka, Bangladesh",
     phone: "+880 1756 467670",
-    emails: ["hidenhypeofficial@gmail.com", "info@hidenhype.com"],
+    email: "info@hiddenhype.com",
+    secondaryEmail: "hidenhypeofficial@gmail.com",
     hours: "Sat-Thu, 10:00-18:00 BST",
     focus: "Design direction, sourcing, sampling, production coordination and local support.",
   },
@@ -78,107 +80,58 @@ function handleContactSubmit(event: FormEvent<HTMLFormElement>) {
   const subject = encodeURIComponent(`Hide n Hype enquiry${name ? ` from ${name}` : ""}`);
   const body = encodeURIComponent(fields.join("\n\n"));
 
-  window.location.href = `mailto:info@hidenhype.com?subject=${subject}&body=${body}`;
+  window.location.href = `mailto:info@hiddenhype.com?subject=${subject}&body=${body}`;
 }
 
 function CountryPanel({ detail }: { detail: typeof countryDetails[0] }) {
   return (
-    <div className="w-full border-t border-border/25 pt-6">
-      <div className="mb-6 flex items-center gap-4">
-        <div className="flex h-10 w-10 items-center justify-center rounded-[8px] bg-accent/10 text-accent">
-          <MapPin size={19} />
-        </div>
+    <article className="group relative h-full overflow-hidden border border-border/35 bg-card/30 p-6 transition-colors duration-300 hover:border-accent/45 md:p-8">
+      <div className="absolute inset-x-0 top-0 h-px bg-accent/70" />
+      <div className="mb-7 flex items-start justify-between gap-4">
         <div>
-          <span
-            className="text-accent tracking-[0.4em] uppercase block mb-1"
-            style={{
-              fontFamily: "'Barlow Condensed', sans-serif",
-              fontSize: "12px",
-              fontWeight: 600,
-            }}
-          >
-            Office Details
+          <span className="mb-2 block text-accent tracking-[0.32em] uppercase" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "11px", fontWeight: 700 }}>
+            {detail.name === "Finland Office" ? "EUROPE · FINLAND" : "SOUTH ASIA · BANGLADESH"}
           </span>
-          <h2
-            className="text-foreground"
-            style={{
-              fontFamily: "'Barlow Condensed', sans-serif",
-              fontSize: "28px",
-              fontWeight: 800,
-            }}
-          >
+          <h2 className="text-foreground uppercase leading-none" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(30px, 3vw, 40px)", fontWeight: 800 }}>
             {detail.name}
           </h2>
         </div>
+        <div className="mt-1 flex h-11 w-11 shrink-0 items-center justify-center border border-accent/25 text-accent"><MapPin size={19} /></div>
       </div>
 
-      <p
-        className="text-muted-foreground mb-6"
-        style={{
-          fontFamily: "'Barlow', sans-serif",
-          fontSize: "16px",
-          lineHeight: "1.7",
-        }}
-      >
+      <p className="mb-7 max-w-lg text-muted-foreground" style={{ fontFamily: "'Barlow', sans-serif", fontSize: "15px", lineHeight: "1.75" }}>
         {detail.focus}
       </p>
 
-      <div className="space-y-4">
+      <a href={`mailto:${detail.email}`} className="mb-5 flex items-center gap-4 border border-accent/35 bg-accent/[0.06] p-4 transition-colors hover:bg-accent/10">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center bg-accent text-accent-foreground"><Mail size={18} /></span>
+        <span className="min-w-0">
+          <span className="mb-1 block text-[10px] font-bold uppercase tracking-[0.22em] text-accent" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>Official email · preferred contact</span>
+          <span className="block break-all text-base font-semibold text-foreground transition-colors group-hover:text-accent" style={{ fontFamily: "'Barlow', sans-serif" }}>{detail.email}</span>
+        </span>
+      </a>
+
+      <div className="divide-y divide-border/25 border-t border-border/25">
         {[
           { icon: <MapPin size={17} />, label: "Address", value: detail.city },
           { icon: <Phone size={17} />, label: "Phone", value: detail.phone },
-          ...detail.emails.map((email) => ({
-            icon: <Mail size={17} />,
-            label: "Email",
-            value: email,
-          })),
           { icon: <Clock size={17} />, label: "Hours", value: detail.hours },
         ].map((item) => (
-          <div
-            key={`${item.label}-${item.value}`}
-            className="flex gap-3 border-b border-border/20 pb-4 last:border-b-0 last:pb-0"
-          >
-            <div className="mt-1 text-accent">{item.icon}</div>
-            <div>
-              <span
-                className="text-accent tracking-widest uppercase block mb-1"
-                style={{
-                  fontFamily: "'Barlow Condensed', sans-serif",
-                  fontSize: "11px",
-                  fontWeight: 700,
-                }}
-              >
-                {item.label}
-              </span>
-              {item.label === "Email" ? (
-                <a
-                  href={`mailto:${item.value}`}
-                  className="text-foreground break-words hover:text-accent"
-                  style={{
-                    fontFamily: "'Barlow', sans-serif",
-                    fontSize: "16px",
-                    lineHeight: "1.7",
-                  }}
-                >
-                  {item.value}
-                </a>
-              ) : (
-                <p
-                  className="text-foreground break-words"
-                  style={{
-                    fontFamily: "'Barlow', sans-serif",
-                    fontSize: "16px",
-                    lineHeight: "1.7",
-                  }}
-                >
-                  {item.value}
-                </p>
-              )}
+          <div key={`${item.label}-${item.value}`} className="flex gap-4 py-4 first:pt-5 last:pb-4">
+            <div className="mt-0.5 text-accent/80">{item.icon}</div>
+            <div className="flex flex-1 items-baseline justify-between gap-4 max-sm:flex-col max-sm:gap-1">
+              <span className="text-muted-foreground tracking-[0.16em] uppercase" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "10px", fontWeight: 700 }}>{item.label}</span>
+              <p className="text-right text-sm text-foreground max-sm:text-left" style={{ fontFamily: "'Barlow', sans-serif", lineHeight: "1.65" }}>{item.value}</p>
             </div>
           </div>
         ))}
       </div>
-    </div>
+
+      <div className="mt-2 border-t border-border/25 pt-4">
+        <span className="mb-1 block text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>Also reachable at</span>
+        <a href={`mailto:${detail.secondaryEmail}`} className="text-sm text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:text-foreground" style={{ fontFamily: "'Barlow', sans-serif" }}>{detail.secondaryEmail}</a>
+      </div>
+    </article>
   );
 }
 
@@ -467,7 +420,7 @@ export function ContactPage() {
               </button>
               <p className="text-sm text-muted-foreground" style={{ fontFamily: "'Barlow', sans-serif", lineHeight: "1.7" }}>
                 This opens your email app with your enquiry ready to send. If it does not open, email{" "}
-                <a href="mailto:info@hidenhype.com" className="text-accent underline underline-offset-4">info@hidenhype.com</a>.
+                <a href="mailto:info@hiddenhype.com" className="text-accent underline underline-offset-4">info@hiddenhype.com</a>.
               </p>
             </form>
           </motion.div>
@@ -476,3 +429,4 @@ export function ContactPage() {
     </div>
   );
 }
+
