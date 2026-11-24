@@ -110,7 +110,18 @@ export async function upsertItem(collection: Collection, input: Record<string, u
   const existing = id ? await items.findOne({ _id: id, collection, deleted_at: { $exists: false } }) : null;
   if (id && !existing) return null;
   const current = existing?.data ?? { id: "" };
-  const item: Entry = { ...current, ...input, id: existing?._id ?? randomUUID(), createdAt: current.createdAt ?? now, updatedAt: now };
+  const isFirstEnquiryResponse = collection === "orders" && existing &&
+    String(current.type ?? "").toLowerCase() !== "order" &&
+    !current.firstRespondedAt &&
+    String(current.leadStatus ?? "new").toLowerCase() === "new" &&
+    ["contacted", "quoted", "confirmed"].includes(String(input.leadStatus ?? "").toLowerCase());
+  const item: Entry = {
+    ...current,
+    ...input,
+    ...(isFirstEnquiryResponse ? { firstRespondedAt: now, firstRespondedBy: input.firstRespondedBy ?? "" } : {}),
+    ...(!isFirstEnquiryResponse && current.firstRespondedAt ? { firstRespondedBy: current.firstRespondedBy } : {}),
+    id: existing?._id ?? randomUUID(), createdAt: current.createdAt ?? now, updatedAt: now,
+  };
   const document: DbItem = { _id: item.id, collection, lookup_key: key, data: item, created_at: existing?.created_at ?? now, updated_at: now };
   try {
     await items.replaceOne({ _id: item.id }, document, { upsert: true });
@@ -188,12 +199,12 @@ export async function addSubscriber(email: string, name = "", source = "website"
 
 export async function createOrderInquiry(input: { customer: string; email: string; phone: string; shippingAddress: string; product: string; message: string; landingPageSlug?: string; landingPageTitle?: string; utmSource?: string; utmMedium?: string; utmCampaign?: string }) {
   const orderNumber = `HNH-${Date.now().toString(36).toUpperCase()}`;
-  return upsertItem("orders", { orderNumber, customer: input.customer.trim(), email: input.email.trim().toLowerCase(), phone: input.phone.trim(), shippingAddress: input.shippingAddress.trim(), items: JSON.stringify([{ product: input.product.trim(), quantity: 1 }]), inquiry: input.message.trim(), landingPageSlug: input.landingPageSlug, landingPageTitle: input.landingPageTitle, utmSource: input.utmSource, utmMedium: input.utmMedium, utmCampaign: input.utmCampaign, total: 0, paymentStatus: "unpaid", status: "pending", type: "inquiry", source: input.landingPageSlug ? "landing-page" : "storefront" });
+  return upsertItem("orders", { orderNumber, customer: input.customer.trim(), email: input.email.trim().toLowerCase(), phone: input.phone.trim(), shippingAddress: input.shippingAddress.trim(), items: JSON.stringify([{ product: input.product.trim(), quantity: 1 }]), inquiry: input.message.trim(), landingPageSlug: input.landingPageSlug, landingPageTitle: input.landingPageTitle, utmSource: input.utmSource, utmMedium: input.utmMedium, utmCampaign: input.utmCampaign, total: 0, paymentStatus: "unpaid", status: "pending", leadStatus: "new", type: "inquiry", source: input.landingPageSlug ? "landing-page" : "storefront" });
 }
 
 export async function createContactInquiry(input: { customer: string; email: string; phone: string; shippingAddress: string; inquiryType: string; message: string; links: string }) {
   const orderNumber = `HNH-${Date.now().toString(36).toUpperCase()}`;
-  return upsertItem("orders", { orderNumber, customer: input.customer.trim(), email: input.email.trim().toLowerCase(), phone: input.phone.trim(), shippingAddress: input.shippingAddress.trim(), items: "[]", inquiry: input.message.trim(), inquiryType: input.inquiryType, links: input.links, total: 0, paymentStatus: "unpaid", status: "pending", type: "contact", source: "contact-form" });
+  return upsertItem("orders", { orderNumber, customer: input.customer.trim(), email: input.email.trim().toLowerCase(), phone: input.phone.trim(), shippingAddress: input.shippingAddress.trim(), items: "[]", inquiry: input.message.trim(), inquiryType: input.inquiryType, links: input.links, total: 0, paymentStatus: "unpaid", status: "pending", leadStatus: "new", type: "contact", source: "contact-form" });
 }
 
 export async function isCustomerBlocked(email: string, phone: string) {

@@ -1,7 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { authenticateAdmin, endSession, startSession } from "@/lib/auth";
+import { authenticateAdmin, endSession, isAdmin, startSession } from "@/lib/auth";
+import { listItems } from "@/lib/store";
 
 const attempts = new Map<string, { count: number; reset: number }>();
+export async function GET() {
+  const user = await isAdmin();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const team = (await listItems("admins"))
+    .filter(member => String(member.status ?? "").toLowerCase() === "active")
+    .map(member => ({ id: String(member.id), name: String(member.name ?? "Store admin"), role: String(member.role ?? "editor") }));
+  return NextResponse.json({ user: { id: user.id, name: user.name, role: user.role }, team });
+}
 export async function POST(request: NextRequest) {
   const origin = request.headers.get("origin");
   if (origin && new URL(origin).host !== request.headers.get("host")) return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });

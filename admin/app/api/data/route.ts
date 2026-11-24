@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAdmin } from "@/lib/auth";
-import { collections, deleteItem, getSummary, listItems, upsertItem, type Collection } from "@/lib/store";
+import { collections, deleteItem, findAdminById, getSummary, listItems, upsertItem, type Collection } from "@/lib/store";
 
 export const runtime = "nodejs";
 const landingWebsitePages = ["home", "new-arrivals", "sale", "collection", "collection/men", "collection/women", "collection/kids", "collection/accessories", "collection/leather", "collection/denim", "lookbook", "sourcing-manufacturing", "our-business", "about", "contact"];
@@ -55,6 +55,16 @@ export async function POST(request: NextRequest) {
   if (collection === "categories" && !body.name) return NextResponse.json({ error: "Category name is required." }, { status: 422 });
   if (collection === "team" && (!body.name || !body.designation)) return NextResponse.json({ error: "Team member name and designation are required." }, { status: 422 });
   if (collection === "team" && body.status !== undefined && !["active", "inactive"].includes(String(body.status).toLowerCase())) return NextResponse.json({ error: "Choose Active or Inactive status." }, { status: 422 });
+  if (collection === "orders" && body.assignedTo !== undefined) {
+    if (!body.assignedTo) { body.assignedTo = ""; body.assignedToName = ""; }
+    else {
+      const assignee = await findAdminById(String(body.assignedTo));
+      if (!assignee) return NextResponse.json({ error: "Choose an active admin team member." }, { status: 422 });
+      body.assignedToName = String(assignee.name ?? "Store admin");
+    }
+  }
+  if (collection === "orders" && body.leadStatus !== undefined && !["new", "contacted", "quoted", "confirmed", "closed"].includes(String(body.leadStatus).toLowerCase())) return NextResponse.json({ error: "Choose a valid enquiry progress status." }, { status: 422 });
+  if (collection === "orders" && body.leadStatus !== undefined && ["contacted", "quoted", "confirmed"].includes(String(body.leadStatus).toLowerCase())) body.firstRespondedBy = user.name;
   if (collection === "landingPages" && (!body.title || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(String(body.slug ?? "")) || !body.heroTitle || !body.description)) return NextResponse.json({ error: "Add a page title, simple English URL, headline and description." }, { status: 422 });
   if (collection === "landingPages" && !["product", "campaign", "website"].includes(String(body.pageType))) return NextResponse.json({ error: "Choose Product, Campaign, or Website page type." }, { status: 422 });
   if (collection === "landingPages" && body.pageType === "product" && !body.productId) return NextResponse.json({ error: "Choose a product for this landing page." }, { status: 422 });
@@ -78,6 +88,16 @@ export async function PATCH(request: NextRequest) {
   if (collection === "products" && body.price !== undefined && body.price !== "" && (!Number.isFinite(Number(body.price)) || Number(body.price) < 0)) return NextResponse.json({ error: "Enter a valid non-negative product price." }, { status: 422 });
   if (collection === "team" && (body.name !== undefined && !body.name || body.designation !== undefined && !body.designation)) return NextResponse.json({ error: "Team member name and designation are required." }, { status: 422 });
   if (collection === "team" && body.status !== undefined && !["active", "inactive"].includes(String(body.status).toLowerCase())) return NextResponse.json({ error: "Choose Active or Inactive status." }, { status: 422 });
+  if (collection === "orders" && body.assignedTo !== undefined) {
+    if (!body.assignedTo) { body.assignedTo = ""; body.assignedToName = ""; }
+    else {
+      const assignee = await findAdminById(String(body.assignedTo));
+      if (!assignee) return NextResponse.json({ error: "Choose an active admin team member." }, { status: 422 });
+      body.assignedToName = String(assignee.name ?? "Store admin");
+    }
+  }
+  if (collection === "orders" && body.leadStatus !== undefined && !["new", "contacted", "quoted", "confirmed", "closed"].includes(String(body.leadStatus).toLowerCase())) return NextResponse.json({ error: "Choose a valid enquiry progress status." }, { status: 422 });
+  if (collection === "orders" && body.leadStatus !== undefined && ["contacted", "quoted", "confirmed"].includes(String(body.leadStatus).toLowerCase())) body.firstRespondedBy = user.name;
   if (collection === "landingPages" && body.slug !== undefined && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(String(body.slug))) return NextResponse.json({ error: "Use a simple English URL made of lowercase letters, numbers and hyphens." }, { status: 422 });
   if (collection === "landingPages" && (body.title !== undefined && !body.title || body.heroTitle !== undefined && !body.heroTitle || body.description !== undefined && !body.description)) return NextResponse.json({ error: "Page title, headline and description are required." }, { status: 422 });
   if (collection === "landingPages" && body.pageType === "product" && !body.productId) return NextResponse.json({ error: "Choose a product for this landing page." }, { status: 422 });
