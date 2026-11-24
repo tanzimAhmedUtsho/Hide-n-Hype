@@ -257,7 +257,11 @@ export function Navbar() {
         </div>
 
         {/* Right icons */}
-        <div className="flex items-center gap-3 sm:gap-5">
+        <motion.div
+          className="flex items-center gap-3 sm:gap-5"
+          animate={menuOpen ? { opacity: [0.35, 1], y: [-5, 0], scale: [0.97, 1] } : { opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.24, ease: "easeOut" }}
+        >
           <Link
             to="/contact"
             aria-label="Contact Hide n Hype"
@@ -308,13 +312,15 @@ export function Navbar() {
           >
             {bagOpen ? <X size={18} /> : <ShoppingBag size={18} />}
           </button>
-          <button
-            className="md:hidden text-muted-foreground hover:text-foreground transition-colors duration-200"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            {menuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
+        </motion.div>
+        <button
+          className="md:hidden text-muted-foreground hover:text-foreground transition-colors duration-200"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
+        >
+          {menuOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
       </nav>
 
       <AnimatePresence>
