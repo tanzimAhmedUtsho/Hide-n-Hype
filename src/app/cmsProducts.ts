@@ -6,6 +6,14 @@ export type CmsProduct = {
   collection?: string;
   price?: number | string;
   salePrice?: number | string;
+  availableToCustomers?: boolean;
+  newArrival?: boolean;
+  bestSeller?: boolean;
+  featured?: boolean;
+  topSelling?: boolean;
+  comboPackage?: boolean;
+  freeDelivery?: boolean;
+  preOrder?: boolean;
   image?: string;
   galleryImages?: string;
   description?: string;

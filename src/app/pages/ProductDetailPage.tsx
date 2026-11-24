@@ -67,7 +67,7 @@ export function ProductDetailPage() {
   const cmsProduct = cmsRecord ? {
     ...cmsRecord,
     category: cmsRecord.collection || cmsRecord.category || "Collection",
-    tag: "NEW",
+    tag: cmsRecord.newArrival ? "NEW ARRIVAL" : "PRODUCT",
     image: cmsProductImage(cmsRecord.image),
     images: Array.from(new Set([cmsProductImage(cmsRecord.image), ...String(cmsRecord.galleryImages ?? "").split(",").map(image => cmsProductImage(image.trim()))].filter(Boolean))),
     alt: cmsRecord.description || cmsRecord.name,
@@ -198,7 +198,7 @@ export function ProductDetailPage() {
               className="mt-8 inline-flex items-center gap-3 rounded-[8px] bg-accent px-7 py-3.5 text-accent-foreground transition-colors hover:bg-foreground"
               style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "13px", fontWeight: 800, letterSpacing: "0.15em" }}
             >
-              ASK ABOUT THIS PRODUCT <ArrowRight size={16} />
+              {isCmsProduct && cmsRecord?.availableToCustomers === false ? "ASK ABOUT AVAILABILITY" : "ASK ABOUT THIS PRODUCT"} <ArrowRight size={16} />
             </Link>
           </motion.section>
         </div>

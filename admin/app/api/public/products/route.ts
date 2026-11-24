@@ -12,7 +12,12 @@ export async function GET(request: NextRequest) {
   if (!isOriginAllowed(request)) return publicJson(request, { error: "Origin not allowed." }, 403);
   try {
     const products = await listItems("products");
-    return publicJson(request, products.filter(product => String(product.status).toLowerCase() === "published"));
+    const published = products.filter(product => String(product.status).toLowerCase() === "published").map(product => {
+      const publicProduct = { ...product };
+      delete publicProduct.buyingPrice;
+      return publicProduct;
+    });
+    return publicJson(request, published);
   } catch {
     return publicJson(request, { error: "Could not load products." }, 500);
   }
