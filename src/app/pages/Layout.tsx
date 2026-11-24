@@ -72,6 +72,13 @@ export function Layout() {
     const metadata = pageMetadata[normalizedPath];
     document.getElementById("cms-product-jsonld")?.remove();
 
+    if (/^\/landing\/[a-z0-9-]+$/.test(normalizedPath)) {
+      document.title = "Campaign | Hide n Hype";
+      updateMetaTag('meta[name="robots"]', "name", "robots", "noindex, follow");
+      document.head.querySelector('link[rel="canonical"]')?.remove();
+      return;
+    }
+
     if (normalizedPath === "/profile") {
       document.title = "My Profile | Hide n Hype";
       updateMetaTag('meta[name="robots"]', "name", "robots", "noindex, nofollow");
@@ -136,12 +143,14 @@ export function Layout() {
     applyMetadata(normalizedPath, metadata);
   }, [pathname]);
 
+  const isLandingPage = pathname.startsWith("/landing/");
+
   return (
     <div className="bg-background min-h-screen" style={{ fontFamily: "'Barlow', sans-serif" }}>
-      <Navbar />
+      {!isLandingPage && <Navbar />}
       <Outlet />
-      <Footer />
-      <LiveChat />
+      {!isLandingPage && <Footer />}
+      {!isLandingPage && <LiveChat />}
       <CookieConsent />
     </div>
   );

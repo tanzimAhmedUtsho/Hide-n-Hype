@@ -3,6 +3,7 @@ import { isAdmin } from "@/lib/auth";
 import { collections, deleteItem, getSummary, listItems, upsertItem, type Collection } from "@/lib/store";
 
 export const runtime = "nodejs";
+const landingWebsitePages = ["home", "new-arrivals", "sale", "collection", "collection/men", "collection/women", "collection/kids", "collection/accessories", "collection/leather", "collection/denim", "lookbook", "sourcing-manufacturing", "our-business", "about", "contact"];
 function selected(value: string | null): value is Collection { return !!value && collections.includes(value as Collection); }
 function clean(input: unknown): Record<string, unknown> | null {
   if (!input || typeof input !== "object" || Array.isArray(input)) return null;
@@ -54,6 +55,11 @@ export async function POST(request: NextRequest) {
   if (collection === "categories" && !body.name) return NextResponse.json({ error: "Category name is required." }, { status: 422 });
   if (collection === "team" && (!body.name || !body.designation)) return NextResponse.json({ error: "Team member name and designation are required." }, { status: 422 });
   if (collection === "team" && body.status !== undefined && !["active", "inactive"].includes(String(body.status).toLowerCase())) return NextResponse.json({ error: "Choose Active or Inactive status." }, { status: 422 });
+  if (collection === "landingPages" && (!body.title || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(String(body.slug ?? "")) || !body.heroTitle || !body.description)) return NextResponse.json({ error: "Add a page title, simple English URL, headline and description." }, { status: 422 });
+  if (collection === "landingPages" && !["product", "campaign", "website"].includes(String(body.pageType))) return NextResponse.json({ error: "Choose Product, Campaign, or Website page type." }, { status: 422 });
+  if (collection === "landingPages" && body.pageType === "product" && !body.productId) return NextResponse.json({ error: "Choose a product for this landing page." }, { status: 422 });
+  if (collection === "landingPages" && body.pageType === "website" && !landingWebsitePages.includes(String(body.sourcePage))) return NextResponse.json({ error: "Choose an existing website page." }, { status: 422 });
+  if (collection === "landingPages" && !["product-enquiry", "collection-campaign", "wholesale", "minimal"].includes(String(body.template))) return NextResponse.json({ error: "Choose a landing page template." }, { status: 422 });
   try {
     const result = await upsertItem(collection, body);
     return result ? NextResponse.json(result, { status: 201 }) : NextResponse.json({ error: "A record with that slug, code, or email already exists." }, { status: 409 });
@@ -72,6 +78,10 @@ export async function PATCH(request: NextRequest) {
   if (collection === "products" && body.price !== undefined && body.price !== "" && (!Number.isFinite(Number(body.price)) || Number(body.price) < 0)) return NextResponse.json({ error: "Enter a valid non-negative product price." }, { status: 422 });
   if (collection === "team" && (body.name !== undefined && !body.name || body.designation !== undefined && !body.designation)) return NextResponse.json({ error: "Team member name and designation are required." }, { status: 422 });
   if (collection === "team" && body.status !== undefined && !["active", "inactive"].includes(String(body.status).toLowerCase())) return NextResponse.json({ error: "Choose Active or Inactive status." }, { status: 422 });
+  if (collection === "landingPages" && body.slug !== undefined && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(String(body.slug))) return NextResponse.json({ error: "Use a simple English URL made of lowercase letters, numbers and hyphens." }, { status: 422 });
+  if (collection === "landingPages" && (body.title !== undefined && !body.title || body.heroTitle !== undefined && !body.heroTitle || body.description !== undefined && !body.description)) return NextResponse.json({ error: "Page title, headline and description are required." }, { status: 422 });
+  if (collection === "landingPages" && body.pageType === "product" && !body.productId) return NextResponse.json({ error: "Choose a product for this landing page." }, { status: 422 });
+  if (collection === "landingPages" && body.pageType === "website" && !landingWebsitePages.includes(String(body.sourcePage))) return NextResponse.json({ error: "Choose an existing website page." }, { status: 422 });
   if (collection === "admins" && id === user.id && (body.role && String(body.role).toLowerCase() !== "owner" || body.status && String(body.status).toLowerCase() !== "active")) return NextResponse.json({ error: "You cannot remove your own owner access." }, { status: 422 });
   try {
     const result = await upsertItem(collection, body, id);

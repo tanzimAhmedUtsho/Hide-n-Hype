@@ -7,7 +7,7 @@ export function CookiePolicyPage() {
       <div className="mx-auto max-w-5xl">
         <span className="mb-3 block text-xs font-semibold uppercase tracking-[0.38em] text-accent" style={{ fontFamily: "'Barlow Condensed', sans-serif" }}>Privacy / Cookies</span>
         <h1 className="mb-7 text-foreground leading-[0.9]" style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "clamp(40px, 6vw, 68px)", fontWeight: 800, letterSpacing: "-0.025em" }}>COOKIE POLICY<span className="text-accent">.</span></h1>
-        <p className="mb-12 max-w-3xl text-sm leading-7 text-muted-foreground md:text-base">Hide n Hype uses essential browser storage to remember your cookie choice. Google Tag Manager loads only after you allow analytics; the Google Analytics 4 tag in our container measures website visits and page views. Google advertising storage and ad personalization are set to denied.</p>
+        <p className="mb-12 max-w-3xl text-sm leading-7 text-muted-foreground md:text-base">Hide n Hype uses essential browser storage to remember your cookie choice. Google Tag Manager loads only after you allow analytics; the Google Analytics 4 tag in our container measures website visits and page views. Google advertising storage and ad personalization are set to denied. Landing-page UTM campaign values are attached to an enquiry only when you submit the form; they are not stored as advertising cookies.</p>
 
         <div className="divide-y divide-white/10 border-y border-white/10">
           <section className="grid gap-3 py-7 sm:grid-cols-[180px_1fr] sm:gap-8">
@@ -26,7 +26,7 @@ export function CookiePolicyPage() {
             </div>
           </section>
         </div>
-        <p className="mt-7 text-xs text-muted-foreground">Updated 17 November 2026 · Read our <Link to="/privacy-policy" className="text-accent underline underline-offset-4">Privacy Policy</Link>.</p>
+        <p className="mt-7 text-xs text-muted-foreground">Updated 24 November 2026 · Read our <Link to="/privacy-policy" className="text-accent underline underline-offset-4">Privacy Policy</Link>.</p>
       </div>
     </main>
   );

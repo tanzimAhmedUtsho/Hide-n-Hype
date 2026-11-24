@@ -7,6 +7,7 @@ type InquiryNotice = {
   inquiry?: unknown;
   inquiryType?: unknown;
   source?: unknown;
+  landingPageTitle?: unknown;
 };
 
 export async function notifyNewInquiry<T extends object>(record: T) {
@@ -24,6 +25,7 @@ export async function notifyNewInquiry<T extends object>(record: T) {
     `Address: ${String(inquiry.shippingAddress ?? "")}`,
     `Type: ${String(inquiry.inquiryType ?? "Product enquiry")}`,
     `Source: ${String(inquiry.source ?? "website")}`,
+    inquiry.landingPageTitle ? `Landing page: ${String(inquiry.landingPageTitle)}` : "",
     `Message: ${String(inquiry.inquiry ?? "")}`,
   ].join("\n");
 

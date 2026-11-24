@@ -20,6 +20,7 @@ import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
 import { CookiePolicyPage } from "./pages/CookiePolicyPage";
 import { SalePage } from "./pages/SalePage";
 import { CustomerProfilePage } from "./pages/CustomerProfilePage";
+import { LandingPage } from "./pages/LandingPage";
 
 export const routeConfig: RouteObject[] = [
   {
@@ -46,6 +47,7 @@ export const routeConfig: RouteObject[] = [
       { path: "cookie-policy", Component: CookiePolicyPage },
       { path: "sourcing-manufacturing", Component: OurBusinessPage },
       { path: "products/:slug", Component: ProductDetailPage },
+      { path: "landing/:slug", Component: LandingPage },
     ],
   },
 ];

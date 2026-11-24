@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { getDb, publicAdmin } from "@/lib/db";
 import { hashPassword } from "@/lib/password";
 
-export const collections = ["products", "categories", "media", "pages", "articles", "videos", "team", "orders", "coupons", "subscribers", "admins"] as const;
+export const collections = ["products", "categories", "media", "pages", "articles", "videos", "team", "orders", "landingPages", "coupons", "subscribers", "admins"] as const;
 export type Collection = typeof collections[number];
 export type Entry = { id: string; [key: string]: unknown };
 type DbItem = { _id: string; collection: string; lookup_key: string | null; data: Entry; created_at: string; updated_at: string; deleted_at?: string };
@@ -16,10 +16,21 @@ const seedCategories = ["T-shirts", "Denim", "Hoodies", "Jackets", "Accessories"
 const seedPages = ["Home", "About", "Contact", "FAQ", "Privacy Policy"].map(name => ({ id: name.toLowerCase().replaceAll(" ", "-"), title: name, slug: name.toLowerCase().replaceAll(" ", "-"), status: "published", content: "" }));
 
 function lookupKey(collection: Collection, input: Record<string, unknown>) {
-  if (collection === "products" || collection === "categories") return String(input.slug ?? "").trim().toLowerCase() || null;
+  if (collection === "products" || collection === "categories" || collection === "landingPages") return String(input.slug ?? "").trim().toLowerCase() || null;
   if (collection === "coupons") return String(input.code ?? "").trim().toLowerCase() || null;
   if (collection === "subscribers") return String(input.email ?? "").trim().toLowerCase() || null;
   return null;
+}
+
+export async function findPublishedLandingPage(slug: string): Promise<Entry | null> {
+  const page = await (await getDb()).collection<DbItem>("cms_items").findOne({
+    collection: "landingPages", lookup_key: slug.trim().toLowerCase(), "data.status": "Published",
+  });
+  if (page) return page.data;
+  const lowerCasePage = await (await getDb()).collection<DbItem>("cms_items").findOne({
+    collection: "landingPages", lookup_key: slug.trim().toLowerCase(), "data.status": "published",
+  });
+  return lowerCasePage?.data ?? null;
 }
 
 async function seedIfNeeded() {
@@ -175,9 +186,9 @@ export async function addSubscriber(email: string, name = "", source = "website"
   return { duplicate: false, item };
 }
 
-export async function createOrderInquiry(input: { customer: string; email: string; phone: string; shippingAddress: string; product: string; message: string }) {
+export async function createOrderInquiry(input: { customer: string; email: string; phone: string; shippingAddress: string; product: string; message: string; landingPageSlug?: string; landingPageTitle?: string; utmSource?: string; utmMedium?: string; utmCampaign?: string }) {
   const orderNumber = `HNH-${Date.now().toString(36).toUpperCase()}`;
-  return upsertItem("orders", { orderNumber, customer: input.customer.trim(), email: input.email.trim().toLowerCase(), phone: input.phone.trim(), shippingAddress: input.shippingAddress.trim(), items: JSON.stringify([{ product: input.product.trim(), quantity: 1 }]), inquiry: input.message.trim(), total: 0, paymentStatus: "unpaid", status: "pending", type: "inquiry", source: "storefront" });
+  return upsertItem("orders", { orderNumber, customer: input.customer.trim(), email: input.email.trim().toLowerCase(), phone: input.phone.trim(), shippingAddress: input.shippingAddress.trim(), items: JSON.stringify([{ product: input.product.trim(), quantity: 1 }]), inquiry: input.message.trim(), landingPageSlug: input.landingPageSlug, landingPageTitle: input.landingPageTitle, utmSource: input.utmSource, utmMedium: input.utmMedium, utmCampaign: input.utmCampaign, total: 0, paymentStatus: "unpaid", status: "pending", type: "inquiry", source: input.landingPageSlug ? "landing-page" : "storefront" });
 }
 
 export async function createContactInquiry(input: { customer: string; email: string; phone: string; shippingAddress: string; inquiryType: string; message: string; links: string }) {
