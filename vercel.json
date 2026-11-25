@@ -1,6 +1,15 @@
 {
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "hidenhype.com" }],
+      "destination": "https://www.hidenhype.com/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { "source": "/new-arrivals", "destination": "/seo-pages/new-arrivals.html" },
+    { "source": "/sale", "destination": "/seo-pages/sale.html" },
     { "source": "/collection", "destination": "/seo-pages/collection.html" },
     { "source": "/collection/men", "destination": "/seo-pages/collection--men.html" },
     { "source": "/collection/women", "destination": "/seo-pages/collection--women.html" },
@@ -8,11 +17,15 @@
     { "source": "/collection/accessories", "destination": "/seo-pages/collection--accessories.html" },
     { "source": "/collection/leather", "destination": "/seo-pages/collection--leather.html" },
     { "source": "/collection/denim", "destination": "/seo-pages/collection--denim.html" },
+    { "source": "/collection/riding-gear", "destination": "/seo-pages/collection--riding-gear.html" },
     { "source": "/lookbook", "destination": "/seo-pages/lookbook.html" },
     { "source": "/about", "destination": "/seo-pages/about.html" },
     { "source": "/contact", "destination": "/seo-pages/contact.html" },
+    { "source": "/faq", "destination": "/seo-pages/faq.html" },
+    { "source": "/privacy-policy", "destination": "/seo-pages/privacy-policy.html" },
+    { "source": "/cookie-policy", "destination": "/seo-pages/cookie-policy.html" },
     { "source": "/sourcing-manufacturing", "destination": "/seo-pages/sourcing-manufacturing.html" },
     { "source": "/landing/:slug", "destination": "/index.html" },
-    { "source": "/products/:slug", "destination": "/index.html" }
+    { "source": "/products/:slug", "destination": "/seo-pages/products/:slug.html" }
   ]
 }

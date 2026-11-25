@@ -1,4 +1,5 @@
 import { catalogProductRoutes } from "./productCatalog";
+import { ridingGearProducts } from "./ridingGearCatalog";
 
 export const siteUrl = "https://www.hidenhype.com";
 export const socialImageUrl = `${siteUrl}/hnh-social-preview.png`;
@@ -12,6 +13,10 @@ export const pageMetadata: Record<string, { title: string; description: string }
   "/new-arrivals": {
     title: "New Arrivals | Hide n Hype",
     description: "Explore the latest streetwear styles and new apparel from Hide n Hype.",
+  },
+  "/sale": {
+    title: "Sale Streetwear & Apparel | Hide n Hype",
+    description: "Explore selected streetwear and apparel offers from Hide n Hype. Contact our team for product and wholesale enquiries.",
   },
   "/collection": {
     title: "Apparel Collection | Hide n Hype",
@@ -42,6 +47,10 @@ export const pageMetadata: Record<string, { title: string; description: string }
     title: "Denim Collection | Hide n Hype",
     description:
       "Explore denim jeans, jackets, shirts, and streetwear styles from the Hide n Hype denim collection.",
+  },
+  "/collection/riding-gear": {
+    title: "Motorcycle Riding Gear | Hide n Hype",
+    description: "Browse motorcycle riding jackets, rain suits, and protective gear from Hide n Hype.",
   },
   "/lookbook": {
     title: "Lookbook | Hide n Hype",
@@ -84,5 +93,12 @@ for (const product of catalogProductRoutes) {
   pageMetadata[`/products/${product.slug}`] = {
     title: `${product.name} | Hide n Hype`,
     description: `Explore the ${product.name} in the Hide n Hype ${product.category} collection. View product details and contact us about this style.`,
+  };
+}
+
+for (const product of ridingGearProducts) {
+  pageMetadata[`/products/${product.slug}`] = {
+    title: `${product.name} | Hide n Hype`,
+    description: `${product.alt} Explore this motorcycle riding gear style from Hide n Hype and contact us for product enquiries.`,
   };
 }
